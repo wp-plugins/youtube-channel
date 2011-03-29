@@ -65,12 +65,12 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['channel']   = strip_tags($new_instance['channel']);
 		$instance['goto_txt']  = strip_tags($new_instance['goto_txt']);
 		$instance['goto_show'] = $new_instance['goto_show'];
-		$instance['title_show']= $new_instance['goto_show'];
+		$instance['title_show']= $new_instance['title_show'];
 		$instance['width']     = strip_tags($new_instance['width']);
 		$instance['height']    = strip_tags($new_instance['height']);
 		$instance['to_show']   = strip_tags($new_instance['to_show']);
 		$instance['autoplay']  = $new_instance['autoplay'];
-		$instance['ccontrl']  = $new_instance['ccontrol'];
+		$instance['ccontrl']   = $new_instance['ccontrol'];
 		$instance['ratio']     = strip_tags($new_instance['ratio']);
 		$instance['fixyt']     = $new_instance['fixyt'];
 
