@@ -63,7 +63,9 @@ I could not to find widget with link to channel and thumbnail instead of video o
 
 = 0.1.1 =
 * Fixed option to toggle video title visibility
-* Added feature to hide controls for iframe and object videos
+* Added option to hide controls for iframe and object videos
+* Added option to hide video info
+* Enabled autostart for iframe and object videos
 
 = 0.1.0 =
 * Initial release
@@ -71,7 +73,7 @@ I could not to find widget with link to channel and thumbnail instead of video o
 == Upgrade Notice ==
 
 = 0.1.1 =
-Bugfix and small feature update.
+Reconfigure widget because of variable name updates and new features.
 
 = 0.1.0 =
 Just try it and rate it. Only initial release is available right now.
