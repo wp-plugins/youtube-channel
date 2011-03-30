@@ -1,7 +1,7 @@
 === YouTube Channel ===
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
-Tags: youtube, channel, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless
+Tags: youtube, channel, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.0
 Tested up to: 3.1
 Stable tag: 0.1.0
@@ -22,12 +22,13 @@ If you like this extension and you find it useful, please rate it on the right s
 * Display or hide video title on the top of video
 * Custom set of width and height of video thumbnail/embeded object (default 220x165 px)
 * Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
-* Choose to display video thumbnail, old YouTube embed, new YouTube embed or chromeless video
+* Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
 * Fix height for old and new YouTube embed and Chromeless video object taken by controls
-* Option to enable autoplay chromeless video
-* Option to show chromeless controls
+* Option to enable autoplay video
+* Option to hide video controls
+* Option to hide video info
 * Set custom text for link to channel
-* Display or hide link to channel
+* Option to show link to channel
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
@@ -73,7 +74,7 @@ I could not to find widget with link to channel and thumbnail instead of video o
 == Upgrade Notice ==
 
 = 0.1.1 =
-Reconfigure widget because of variable name updates and new features.
+After upgrade please reconfigure widget. Some variables are changed and implemented new features.
 
 = 0.1.0 =
 Just try it and rate it. Only initial release is available right now.
@@ -81,5 +82,5 @@ Just try it and rate it. Only initial release is available right now.
 == Screenshots ==
 
 1. Widget configuration panel
-2. Widget `YouTube Channel` in action with Chromeless video w/o controls
-3. Widget `YouTube Channel` in action with New YouTube embed and fixed height
+2. Widget `YouTube Channel` in action with iframe video w/o controls
+3. Widget `YouTube Channel` in action with iframe video w/ controls and fixed height
