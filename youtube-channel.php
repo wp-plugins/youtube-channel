@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtubet-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel.
 Author: Aleksandar Urošević
-Version: 0.1.0
+Version: 0.1.1
 Author URI: http://urosevic.net/
 */
 
@@ -26,7 +26,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$height     = esc_attr($instance['height']);
 		$to_show    = esc_attr($instance['to_show']);
 		$autoplay   = esc_attr($instance['autoplay']);
-		$ccontrol   = esc_attr($instance['ccontrol']);
+		$controls   = esc_attr($instance['controls']);
 		$ratio      = esc_attr($instance['ratio']);
 		$fixyt      = esc_attr($instance['fixyt']);
 		?>
@@ -45,14 +45,14 @@ class YouTube_Channel_Widget extends WP_Widget {
             </p>
             <p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?'); ?>
             <select class="widefat" id="<?php echo $this->get_field_id( 'to_show' ); ?>" name="<?php echo $this->get_field_name( 'to_show' ); ?>">
-				<option value="thumbnail"<?php if ($instance['to_show'] == "thumbnail") { echo 'selected="selected"'; } ?>><?php _e('Thumbnail'); ?></option>
-				<option value="oldyt"<?php if ($instance['to_show'] == "oldyt") { echo 'selected="selected"'; } ?>><?php _e('Old YouTube embed'); ?></option>
-				<option value="newyt"<?php if ($instance['to_show'] == "newyt") { echo 'selected="selected"'; } ?>><?php _e('New YouTube embed'); ?></option>
-				<option value="chromeless"<?php if ($instance['to_show'] == "chromeless") { echo 'selected="selected"'; } ?>><?php _e('Chromeless video'); ?></option>
+				<option value="thumbnail"<?php if ($instance['to_show']  == "thumbnail") { echo 'selected="selected"'; } ?>><?php _e('Thumbnail'); ?></option>
+				<option value="object"<?php if ($instance['to_show']     == "object") { echo 'selected="selected"'; } ?>><?php _e('object (flash player)'); ?></option>
+				<option value="iframe"<?php if ($instance['to_show']     == "iframe") { echo 'selected="selected"'; } ?>><?php _e('iframe (HTML5 player)'); ?></option>
+				<option value="chromeless"<?php if ($instance['to_show'] == "chromeless") { echo 'selected="selected"'; } ?>><?php _e('chromeless video'); ?></option>
 			</select>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixyt'], true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay chromeless video'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['ccontrol'], true ); ?> id="<?php echo $this->get_field_id( 'ccontrol' ); ?>" name="<?php echo $this->get_field_name( 'ccontrol' ); ?>" /> <label for="<?php echo $this->get_field_id( 'ccontrol' ); ?>"><?php _e('Show chromeless controls'); ?></label></p>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['controls'], true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls'); ?></label></p>
             <p><label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
             <input class="checkbox" type="checkbox" <?php checked( (bool) $instance['goto_show'], true ); ?> id="<?php echo $this->get_field_id( 'goto_show' ); ?>" name="<?php echo $this->get_field_name( 'goto_show' ); ?>" /> <label for="<?php echo $this->get_field_id( 'goto_show' ); ?>"><?php _e('Show link to channel'); ?></label></p>
 		<?php
@@ -70,7 +70,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['height']    = strip_tags($new_instance['height']);
 		$instance['to_show']   = strip_tags($new_instance['to_show']);
 		$instance['autoplay']  = $new_instance['autoplay'];
-		$instance['ccontrol']  = $new_instance['ccontrol'];
+		$instance['controls']  = $new_instance['controls'];
 		$instance['ratio']     = strip_tags($new_instance['ratio']);
 		$instance['fixyt']     = $new_instance['fixyt'];
 
@@ -85,6 +85,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		if ( $channel == "" ) { $channel = "urkekg"; }
 		$width   = $instance['width'];
 		if ( $width == "" ) { $width = 220; }
+
 		$ratio = $instance['ratio'];
 		if ( $ratio == 1 ) { // 4:3
 			$height = round(($width / 4 ) * 3);
@@ -99,10 +100,15 @@ class YouTube_Channel_Widget extends WP_Widget {
 			}
 		}
 
+		// autplay and controls
+		$autoplay = $instance['autoplay'];
+		if ( $autoplay ) { $autoplay = "Yes"; } else { $autoplay = "No"; }
+		$controls = $instance['controls'];
+
 		$to_show = $instance['to_show'];
-		if ( $to_show == "" ) { $to_show = "oldyt"; }
-		// increase YouTube embed height for 25px taken by controls
-		if ( $instance['fixyt'] && ( $to_show == "oldyt" || $to_show == "newyt" || ( $to_show == "chromeless" && $ccontrol ) ) ) {
+		if ( $to_show == "" ) { $to_show = "object"; }
+		// increase video height for 25px taken by controls
+		if ( !$instance['thumbnail'] && !$controls ) {
 			$height += 25;
 		}
 
@@ -110,12 +116,6 @@ class YouTube_Channel_Widget extends WP_Widget {
 		if ( $goto_txt == "" ) { $goto_txt = __("Visit channel")." $channel"; }
 		$goto_show = $instance['goto_show'];
 		$title_show = $instance['title_show'];
-
-		// chromeless autplay and controls
-		$autoplay = $instance['autoplay'];
-		if ( $autoplay ) { $autoplay = "Yes"; } else { $autoplay = "No"; }
-		$ccontrol = $instance['ccontrol'];
-		if ( $ccontrol ) { $ccontrol = "Yes"; } else { $ccontrol = "No"; }
 
 		echo $before_widget;
 		if ( $title )
@@ -152,29 +152,29 @@ EOF;
 		} else if ( $to_show == "chromeless" ) {
 ?>
         <object type="application/x-shockwave-flash" data="<?php echo get_bloginfo('wpurl'); ?>/wp-content/plugins/youtube-channel/chromeless.swf" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
-          <param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?>&autoplay=<?php echo $autoplay; ?>&youtube_controls=<?php echo $controls; ?>" />
+          <param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?>&autoplay=<?php echo $autoplay; if ( !$controls ) { echo "&youtube_controls=Yes"; } ?>" />
           <param name="quality" value="high" />
           <param name="wmode" value="opaque" />
           <param name="swfversion" value="6.0.65.0" />
           <param name="movie" value="<?php echo get_bloginfo('wpurl'); ?>/wp-content/plugins/youtube-channel/chromeless.swf" />
         </object>	
 <?php
-		} else if ( $to_show == "newyt" ) {
-echo <<<EOF
-<iframe title="YouTube video player" width="$width" height="$height" src="http://www.youtube.com/embed/$yt_id" frameborder="0" allowfullscreen></iframe>
-EOF;
+		} else if ( $to_show == "iframe" ) {
+?>
+<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<?php echo $yt_id; if ( $controls ) { echo "?enablejsapi=1&controls=0"; } ?>" frameborder="0" allowfullscreen></iframe>
+<?php
 		} else {
-echo <<<EOF
-		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$width" height="$height">
-			<param name="movie" value="http://www.youtube.com/v/$yt_id&amp;rel=0" />
+?>
+		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
+			<param name="movie" value="http://www.youtube.com/v/<?php echo $yt_id; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } ?>" />
 			<!--[if !IE]>-->
-			<object type="application/x-shockwave-flash" data="http://www.youtube.com/v/$yt_id&amp;rel=0" width="$width" height="$height">
+			<object type="application/x-shockwave-flash" data="http://www.youtube.com/v/<?php echo $yt_id; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
 			<!--<![endif]-->
 			<!--[if !IE]>-->
 			</object>
 			<!--<![endif]-->
 		</object>
-EOF;
+<?php
 		}
 
 		if ( $goto_show ) {
