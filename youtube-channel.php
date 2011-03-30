@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: YouTube Channel
-Plugin URI: http://blog.urosevic.net/wordpress/youtubet-channel/
+Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel.
 Author: Aleksandar Urošević
 Version: 0.1.1
