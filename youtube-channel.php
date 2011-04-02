@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel.
 Author: Aleksandar Urošević
-Version: 0.1.1
+Version: 0.1.2
 Author URI: http://urosevic.net/
 */
 
@@ -19,6 +19,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		// outputs the options form on admin
 		$title      = esc_attr($instance['title']);
 		$channel    = esc_attr($instance['channel']);
+		$getrnd     = esc_attr($instance['getrnd']);
 		$goto_txt   = esc_attr($instance['goto_txt']);
 		$showgoto   = esc_attr($instance['showgoto']);
 		$showtitle  = esc_attr($instance['showtitle']);
@@ -32,8 +33,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$hideinfo   = esc_attr($instance['hideinfo']);
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title:'); ?><input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label></p>
-		<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title'); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label><br />
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Get random video from channel'); ?></label></p>
 		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width'); ?> (<?php _e('default'); ?> 220):<input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height'); ?> (<?php _e('default'); ?> 165):<input class="widefat" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('Aspect ratio (relative to width):'); ?>
@@ -54,7 +55,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixyt'], true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['controls'], true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info'); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title'); ?></label>
 		</p>
 		<p><label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel'); ?></label></p>
@@ -66,9 +68,10 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title']     = strip_tags($new_instance['title']);
 		$instance['channel']   = strip_tags($new_instance['channel']);
+		$instance['getrnd']    = $new_instance['getrnd'];
 		$instance['goto_txt']  = strip_tags($new_instance['goto_txt']);
-		$instance['showgoto'] = $new_instance['showgoto'];
-		$instance['showtitle']= $new_instance['showtitle'];
+		$instance['showgoto']  = $new_instance['showgoto'];
+		$instance['showtitle'] = $new_instance['showtitle'];
 		$instance['width']     = strip_tags($new_instance['width']);
 		$instance['height']    = strip_tags($new_instance['height']);
 		$instance['to_show']   = strip_tags($new_instance['to_show']);
@@ -129,12 +132,23 @@ class YouTube_Channel_Widget extends WP_Widget {
 	include_once(ABSPATH . WPINC . '/rss.php');
 
 	$rss = fetch_rss('http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile');
-
-	if ($rss) { $items = array_slice($rss->items, 0, 1); }
+	if ($rss) {
+		$getrnd = $instance['getrnd'];
+		if ( $getrnd ) {
+			$items = array_slice($rss->items, 0);
+		} else {
+			$items = array_slice($rss->items, 0, 1);
+		}
+	}
+	
 	if (empty($items)) {
 		echo "No items";
 	} else {
-		$item = $items[0];
+		if ( $getrnd ) {
+			$item = $items[mt_rand(0, (count($items)-1))];
+		} else {
+			$item = $items[0];
+		}
 		$yt_id = split(":", $item['guid']);
 		$yt_id = $yt_id[3];
 		$yt_thumb = "http://i3.ytimg.com/vi/$yt_id/default.jpg";

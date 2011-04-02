@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.0
 Tested up to: 3.1
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel.
 
@@ -18,8 +18,8 @@ If you like this extension and you find it useful, please rate it on the right s
 
 = Features =
 * Display latest video from YouTube channel
+* Option to get random video from channel
 * Set custom widget title
-* Display or hide video title on the top of video
 * Custom set of width and height of video thumbnail/embeded object (default 220x165 px)
 * Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
 * Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
@@ -27,6 +27,7 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to enable autoplay video
 * Option to hide video controls
 * Option to hide video info
+* Option to show video title on top of the video
 * Set custom text for link to channel
 * Option to show link to channel
 
@@ -62,6 +63,9 @@ I could not to find widget with link to channel and thumbnail instead of video o
 
 == Changelog ==
 
+= 0.1.2 =
+* Option to display random video from channel
+
 = 0.1.1 =
 * Fixed option to toggle video title visibility
 * Added option to hide controls for iframe and object videos
@@ -72,6 +76,9 @@ I could not to find widget with link to channel and thumbnail instead of video o
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+After upgrade set option for random video from channel.
 
 = 0.1.1 =
 After upgrade please reconfigure widget. Some variables are changed and implemented new features.
