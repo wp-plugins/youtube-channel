@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.0
 Tested up to: 3.1
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 
 Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel.
 
@@ -30,6 +30,9 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to show video title on top of the video
 * Set custom text for link to channel
 * Option to show link to channel
+* Option to open channel in new tab/window
+* Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
+* Translated to Serbian
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
@@ -63,6 +66,17 @@ I could not to find widget with link to channel and thumbnail instead of video o
 
 == Changelog ==
 
+= 0.1.3 =
+* Uses selected() instead of if [dimadin]
+* Uses sprintf for better i18n [dimadin]
+* Wraps some strings in gettext [dimadin]
+* Adds textdomain and loads it [dimadin]
+* Adds target="_blank" for channel link [dimadin]
+* Adds option to open channel link in popup
+* Uses plugin_dir_url() instead of guessing of location [dimadin]
+* Loads widget in its own function [dimadin]
+* Adds Serbian translation
+
 = 0.1.2 =
 * Option to display random video from channel
 
@@ -77,6 +91,9 @@ I could not to find widget with link to channel and thumbnail instead of video o
 
 == Upgrade Notice ==
 
+= 0.1.3 =
+After upgrade check widget options.
+
 = 0.1.2 =
 After upgrade set option for random video from channel.
 
@@ -89,5 +106,6 @@ Just try it and rate it. Only initial release is available right now.
 == Screenshots ==
 
 1. Widget configuration panel
-2. Widget `YouTube Channel` in action with iframe video w/o controls
-3. Widget `YouTube Channel` in action with iframe video w/ controls and fixed height
+2. Widget configuration panel localised to Serbian
+3. Widget `YouTube Channel` in action with iframe video w/o controls
+4. Widget `YouTube Channel` in action with iframe video w/ controls and fixed height
