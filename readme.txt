@@ -36,6 +36,7 @@ If you like this extension and you find it useful, please rate it on the right s
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
+Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
 
 == Installation ==
 = Manual =
