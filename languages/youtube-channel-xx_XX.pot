@@ -7,7 +7,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-04-08 21:50+0200\n"
+        "POT-Creation-Date: 2011-09-23 22:46+0200\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,81 +16,85 @@ msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Content-Type: text/plain; charset=CHARSET\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: ../youtube-channel.php:50
+#: ../youtube-channel.php:52
 msgid   "Aspect ratio (relative to width):"
 msgstr  ""
 
-#: ../youtube-channel.php:66
+#: ../youtube-channel.php:68
 msgid   "Autoplay video"
 msgstr  ""
 
-#: ../youtube-channel.php:46
+#: ../youtube-channel.php:47
 msgid   "Channel:"
 msgstr  ""
 
-#: ../youtube-channel.php:65
+#: ../youtube-channel.php:67
 msgid   "Fix height taken by controls"
 msgstr  ""
 
-#: ../youtube-channel.php:47
+#: ../youtube-channel.php:49
 msgid   "Get random video from channel"
 msgstr  ""
 
-#: ../youtube-channel.php:49
+#: ../youtube-channel.php:51
 msgid   "Height"
 msgstr  ""
 
-#: ../youtube-channel.php:67
+#: ../youtube-channel.php:69
 msgid   "Hide player controls"
 msgstr  ""
 
-#: ../youtube-channel.php:68
+#: ../youtube-channel.php:70
 msgid   "Hide video info"
 msgstr  ""
 
-#: ../youtube-channel.php:159
+#: ../youtube-channel.php:48
+msgid   "Maximum items to fetch:"
+msgstr  ""
+
+#: ../youtube-channel.php:170
 msgid   "No items"
 msgstr  ""
 
-#: ../youtube-channel.php:73
+#: ../youtube-channel.php:75
 msgid   "Open channel in new window/tab"
 msgstr  ""
 
-#: ../youtube-channel.php:72
+#: ../youtube-channel.php:74
 msgid   "Show link to channel"
 msgstr  ""
 
-#: ../youtube-channel.php:69
+#: ../youtube-channel.php:71
 msgid   "Show video title"
 msgstr  ""
 
-#: ../youtube-channel.php:74
+#: ../youtube-channel.php:76
 msgid   "Use target=\"_blank\" (invalid XHTML)"
 msgstr  ""
 
-#: ../youtube-channel.php:71
+#: ../youtube-channel.php:73
 msgid   "Visit YouTube Channel text:"
 msgstr  ""
 
-#: ../youtube-channel.php:219
+#: ../youtube-channel.php:231
 #, php-format
 msgid   "Visit channel %1$s"
 msgstr  ""
 
-#: ../youtube-channel.php:183
+#: ../youtube-channel.php:195
 #, php-format
 msgid   "Watch video %1$s published on %2$s"
 msgstr  ""
 
-#: ../youtube-channel.php:58
+#: ../youtube-channel.php:60
 msgid   "What to show?"
 msgstr  ""
 
-#: ../youtube-channel.php:45
+#: ../youtube-channel.php:46
 msgid   "Widget Title:"
 msgstr  ""
 
-#: ../youtube-channel.php:48
+#: ../youtube-channel.php:50
 msgid   "Width"
 msgstr  ""
 
@@ -98,30 +102,30 @@ msgstr  ""
 msgid   "YouTube Channel"
 msgstr  ""
 
-#: ../youtube-channel.php:63
+#: ../youtube-channel.php:65
 msgid   "chromeless video"
 msgstr  ""
 
-#: ../youtube-channel.php:52
+#: ../youtube-channel.php:54
 msgid   "custom"
 msgstr  ""
 
-#: ../youtube-channel.php:48 ../youtube-channel.php:49
+#: ../youtube-channel.php:50 ../youtube-channel.php:51
 msgid   "default"
 msgstr  ""
 
-#: ../youtube-channel.php:62
+#: ../youtube-channel.php:64
 msgid   "iframe (HTML5 player)"
 msgstr  ""
 
-#: ../youtube-channel.php:222
+#: ../youtube-channel.php:234
 msgid   "in new window/tab"
 msgstr  ""
 
-#: ../youtube-channel.php:61
+#: ../youtube-channel.php:63
 msgid   "object (flash player)"
 msgstr  ""
 
-#: ../youtube-channel.php:60
+#: ../youtube-channel.php:62
 msgid   "thumbnail"
 msgstr  ""

@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel.
 Author: Aleksandar Urošević
-Version: 0.1.3
+Version: 1.0
 Author URI: http://urosevic.net/
 */
 
@@ -28,6 +28,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$title      = esc_attr($instance['title']);
 		$channel    = esc_attr($instance['channel']);
 		$getrnd     = esc_attr($instance['getrnd']);
+		$maxrnd     = esc_attr($instance['maxrnd']);
 		$goto_txt   = esc_attr($instance['goto_txt']);
 		$showgoto   = esc_attr($instance['showgoto']);
 		$popupgoto  = esc_attr($instance['popupgoto']);
@@ -43,7 +44,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$hideinfo   = esc_attr($instance['hideinfo']);
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title:', 'youtube-channel'); ?><input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label><br />
+		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('maxrnd'); ?>"><?php _e('Maximum items to fetch:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('maxrnd'); ?>" name="<?php echo $this->get_field_name('maxrnd'); ?>" type="text" value="<?php echo $maxrnd; ?>" /></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Get random video from channel', 'youtube-channel'); ?></label></p>
 		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 220):<input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 165):<input class="widefat" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" /></label></p>
@@ -81,6 +83,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['title']     = strip_tags($new_instance['title']);
 		$instance['channel']   = strip_tags($new_instance['channel']);
 		$instance['getrnd']    = $new_instance['getrnd'];
+		$instance['maxrnd']    = $new_instance['maxrnd'];
 		$instance['goto_txt']  = strip_tags($new_instance['goto_txt']);
 		$instance['showgoto']  = $new_instance['showgoto'];
 		$instance['popupgoto'] = $new_instance['popupgoto'];
@@ -107,6 +110,10 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$channel = $instance['channel'];
 		if ( $channel == "" ) { $channel = "urkekg"; }
 
+		// get max items for random video
+		$maxrnd = $instance['maxrnd'];
+		if ( $maxrnd < 1 ) { $maxrnd = 10; } // default 10
+
 		// get hideinfo, autoplay and controls settings
 		$hideinfo = $instance['hideinfo'];
 		$autoplay = $instance['autoplay'];
@@ -127,6 +134,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 			$height = $instance['height'];
 			if ( $height == "" ) { $height = 165; }
 		}
+		// calculate image height based on width for 4:3 thumbnail
+		$imgfixedheight = $width / 4 * 3;
 
 		// which type to show
 		$to_show = $instance['to_show'];
@@ -145,32 +154,35 @@ class YouTube_Channel_Widget extends WP_Widget {
 	<?php
 	include_once(ABSPATH . WPINC . '/rss.php');
 
-	$rss = fetch_rss('http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile');
-	if ($rss) {
+	$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile';
+	//$rss_url = 'http://www.youtube.com/rss/user/'.$channel.'/videos.rss';
+	$rss = fetch_feed($rss_url);
+	if ( !is_wp_error($rss) ) {
+		$maxitems = $rss->get_item_quantity($maxrnd); // max items in widget settings
 		$getrnd = $instance['getrnd'];
 		if ( $getrnd ) {
-			$items = array_slice($rss->items, 0);
+			$items = $rss->get_items(0, $maxitems);
 		} else {
-			$items = array_slice($rss->items, 0, 1);
+			$items = $rss->get_items(0, 1); // set 0, 2 for next video
 		}
 	}
-
-	if (empty($items)) {
+	if ($maxitems == 0) {
 		echo __( 'No items' , 'youtube-channel' );
 	} else {
 		if ( $getrnd ) {
 			$item = $items[mt_rand(0, (count($items)-1))];
 		} else {
 			$item = $items[0];
+			//$next_item = $items[1];
 		}
-		$yt_id = split(":", $item['guid']);
+
+		$yt_id = split(":", $item->get_id());
 		$yt_id = $yt_id[3];
-		$yt_thumb = "http://i3.ytimg.com/vi/$yt_id/default.jpg";
-		$yt_video = "http://www.youtube.com/watch?v=$yt_id";
-		$yt_title = $item['title'];
-		$yt_date  = $item['pubdate'];
-		// $next = $items[1];
-		// $next_id = split(":", $next['guid']);
+		$yt_thumb = "http://img.youtube.com/vi/$yt_id/0.jpg";
+		$yt_video = $item->get_permalink();
+		$yt_title = esc_html( $item->get_title() );
+		$yt_date  = $item->get_date('j F Y | g:i a');
+		// $next_id = split(":", $next_item->get_id());
 		// $next_id = $yt_id[3];
 
 		// show video title?
@@ -182,7 +194,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		if ( $to_show == "thumbnail" ) {
 		$title = sprintf( __( 'Watch video %1$s published on %2$s' , 'youtube-channel' ), $yt_title, $yt_date );
 echo <<<EOF
-		<a href="$yt_video" title="$title"><img src="$yt_thumb" alt="$yt_title" style="width: ${width}px; height: ${height}px; border: 0;" /></a>
+		<a href="$yt_video" title="$title"><div style="width: ${width}px; height: ${height}px; overflow: hidden; background: url($yt_thumb) 50% 50% no-repeat; background-size: ${width}px ${imgfixedheight}px;" title="$yt_title"></div></a>
 EOF;
 		} else if ( $to_show == "chromeless" ) {
 ?>

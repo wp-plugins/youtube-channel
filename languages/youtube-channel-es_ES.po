@@ -2,10 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2011-09-23 22:46+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,147 +14,150 @@ msgstr ""
 "X-Poedit-Language: \n"
 "X-Poedit-Country: \n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
 "X-Poedit-Basepath: \n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Textdomain-Support: yes"
+"X-Textdomain-Support: yes\n"
 
-#: youtube-channel.php:23
-#@ youtube-channel
-msgid "YouTube Channel"
-msgstr "Canal de YouTube"
-
-#: youtube-channel.php:45
-#@ youtube-channel
-msgid "Widget Title:"
-msgstr "Título de widget"
-
-#: youtube-channel.php:46
-#@ youtube-channel
-msgid "Channel:"
-msgstr "Canal:"
-
-#: youtube-channel.php:47
-#@ youtube-channel
-msgid "Get random video from channel"
-msgstr "Mostrar vídeo aleatorio del canal"
-
-#: youtube-channel.php:48
-#@ youtube-channel
-msgid "Width"
-msgstr "Ancho"
-
-#: youtube-channel.php:48
-#: youtube-channel.php:49
-#@ youtube-channel
-msgid "default"
-msgstr "por defecto"
-
-#: youtube-channel.php:49
-#@ youtube-channel
-msgid "Height"
-msgstr "Alto"
-
-#: youtube-channel.php:50
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:52
 msgid "Aspect ratio (relative to width):"
 msgstr "Aspecto de ratio (relativo al ancho):"
 
-#: youtube-channel.php:52
-#@ youtube-channel
-msgid "custom"
-msgstr "Personalizado"
-
-#: youtube-channel.php:58
-#@ youtube-channel
-msgid "What to show?"
-msgstr "¿Qué mostrar?"
-
-#: youtube-channel.php:60
-#@ youtube-channel
-msgid "thumbnail"
-msgstr "miniatura"
-
-#: youtube-channel.php:61
-#@ youtube-channel
-msgid "object (flash player)"
-msgstr "objeto (flash)"
-
-#: youtube-channel.php:62
-#@ youtube-channel
-msgid "iframe (HTML5 player)"
-msgstr "iframe (html5) - el bueno"
-
-#: youtube-channel.php:63
-#@ youtube-channel
-msgid "chromeless video"
-msgstr "vídeo sin marco"
-
-#: youtube-channel.php:65
-#@ youtube-channel
-msgid "Fix height taken by controls"
-msgstr "Fijar la altura tomada por los controles"
-
-#: youtube-channel.php:66
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:68
 msgid "Autoplay video"
 msgstr "Reproducción automática"
 
-#: youtube-channel.php:67
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:47
+msgid "Channel:"
+msgstr "Canal:"
+
+# @ youtube-channel
+#: ../youtube-channel.php:67
+msgid "Fix height taken by controls"
+msgstr "Fijar la altura tomada por los controles"
+
+# @ youtube-channel
+#: ../youtube-channel.php:49
+msgid "Get random video from channel"
+msgstr "Mostrar vídeo aleatorio del canal"
+
+# @ youtube-channel
+#: ../youtube-channel.php:51
+msgid "Height"
+msgstr "Alto"
+
+# @ youtube-channel
+#: ../youtube-channel.php:69
 msgid "Hide player controls"
 msgstr "Esconder controles de reproducción"
 
-#: youtube-channel.php:68
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:70
 msgid "Hide video info"
 msgstr "Esconder info de vídeo"
 
-#: youtube-channel.php:69
-#@ youtube-channel
-msgid "Show video title"
-msgstr "Mostrar título"
+#: ../youtube-channel.php:48
+msgid "Maximum items to fetch:"
+msgstr ""
 
-#: youtube-channel.php:71
-#@ youtube-channel
-msgid "Visit YouTube Channel text:"
-msgstr "Visitar canal de YouTube"
-
-#: youtube-channel.php:72
-#@ youtube-channel
-msgid "Show link to channel"
-msgstr "Mostrar enlace a canal"
-
-#: youtube-channel.php:73
-#@ youtube-channel
-msgid "Open channel in new window/tab"
-msgstr "Abrir canal en nueva ventana"
-
-#: youtube-channel.php:74
-#@ youtube-channel
-msgid "Use target=\"_blank\" (invalid XHTML)"
-msgstr "Utilice objetivo = \"blank\" (XHTML no válido)"
-
-#: youtube-channel.php:159
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:170
 msgid "No items"
 msgstr "No hay elementos"
 
-#: youtube-channel.php:183
-#, php-format
-#@ youtube-channel
-msgid "Watch video %1$s published on %2$s"
-msgstr "Ver vídeo %1$s publicado en %2$s"
+# @ youtube-channel
+#: ../youtube-channel.php:75
+msgid "Open channel in new window/tab"
+msgstr "Abrir canal en nueva ventana"
 
-#: youtube-channel.php:219
+# @ youtube-channel
+#: ../youtube-channel.php:74
+msgid "Show link to channel"
+msgstr "Mostrar enlace a canal"
+
+# @ youtube-channel
+#: ../youtube-channel.php:71
+msgid "Show video title"
+msgstr "Mostrar título"
+
+# @ youtube-channel
+#: ../youtube-channel.php:76
+msgid "Use target=\"_blank\" (invalid XHTML)"
+msgstr "Utilice objetivo = \"blank\" (XHTML no válido)"
+
+# @ youtube-channel
+#: ../youtube-channel.php:73
+msgid "Visit YouTube Channel text:"
+msgstr "Visitar canal de YouTube"
+
+# @ youtube-channel
+#: ../youtube-channel.php:231
 #, php-format
-#@ youtube-channel
 msgid "Visit channel %1$s"
 msgstr "Visitar canal %1$s"
 
-#: youtube-channel.php:222
-#@ youtube-channel
+# @ youtube-channel
+#: ../youtube-channel.php:195
+#, php-format
+msgid "Watch video %1$s published on %2$s"
+msgstr "Ver vídeo %1$s publicado en %2$s"
+
+# @ youtube-channel
+#: ../youtube-channel.php:60
+msgid "What to show?"
+msgstr "¿Qué mostrar?"
+
+# @ youtube-channel
+#: ../youtube-channel.php:46
+msgid "Widget Title:"
+msgstr "Título de widget"
+
+# @ youtube-channel
+#: ../youtube-channel.php:50
+msgid "Width"
+msgstr "Ancho"
+
+# @ youtube-channel
+#: ../youtube-channel.php:23
+msgid "YouTube Channel"
+msgstr "Canal de YouTube"
+
+# @ youtube-channel
+#: ../youtube-channel.php:65
+msgid "chromeless video"
+msgstr "vídeo sin marco"
+
+# @ youtube-channel
+#: ../youtube-channel.php:54
+msgid "custom"
+msgstr "Personalizado"
+
+# @ youtube-channel
+#: ../youtube-channel.php:50 ../youtube-channel.php:51
+msgid "default"
+msgstr "por defecto"
+
+# @ youtube-channel
+#: ../youtube-channel.php:64
+msgid "iframe (HTML5 player)"
+msgstr "iframe (html5) - el bueno"
+
+# @ youtube-channel
+#: ../youtube-channel.php:234
 msgid "in new window/tab"
 msgstr "en nueva ventana/pestaña"
 
+# @ youtube-channel
+#: ../youtube-channel.php:63
+msgid "object (flash player)"
+msgstr "objeto (flash)"
+
+# @ youtube-channel
+#: ../youtube-channel.php:62
+msgid "thumbnail"
+msgstr "miniatura"
