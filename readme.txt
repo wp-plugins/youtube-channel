@@ -1,24 +1,24 @@
 === YouTube Channel ===
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
-Tags: youtube, channel, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.2.0
+Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
+Requires at least: 3.2.1
 Tested up to: 3.2.1
-Stable tag: 1.0
+Stable tag: 1.1
 
-Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel.
+Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
 == Description ==
 
-When you need to display sidebar widget with latest video from some YouTube channel, you can use customisable `YouTube Channel` plugin.
+When you need to display sidebar widget with latest video from some YouTube channel or playlist, you can use customisable `YouTube Channel` plugin.
 
-Simply insert widget to sidebar, set channel name and if you wish leave all options on default. You will get latesat video from chosen YouTube channel embedded in sidebar widget, with link to channel on bottom of the widget.
+Simply insert widget to sidebar, set channel name and if you wish leave all other options on default. You will get latest video from chosen YouTube channel embedded in sidebar widget, with link to channel on the bottom of the widget. If you wish to use playlist instead of channel, just set playlist ID and injoy!
 
 If you like this extension and you find it useful, please rate it on the right side.
 
 = Features =
-* Display latest video from YouTube channel
-* Option to get random video from channel
+* Display latest video from YouTube channel or playlist
+* Option to get random video from channel or playlist
 * Set custom widget title
 * Custom set of width and height of video thumbnail/embeded object (default 220x165 px)
 * Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
@@ -67,11 +67,14 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
 == Changelog ==
+= 1.1 =
+* Added option to use the playlist instead of channel (suggested by Stacy)
 
 = 1.0 =
-* Ported to WordPress 3.2.1 by replacing deprecated function get_rss() with fetch_feed()
+* Ported to WordPress 3.2.1
 * Added option to set maximum number of items for random video
 * Version changed from major.minor.micro to to major.minor format
+* Adds Spanish translation
 
 = 0.1.3 =
 * Uses selected() instead of if [dimadin]

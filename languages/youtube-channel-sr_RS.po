@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-23 22:46+0200\n"
+"POT-Creation-Date: 2011-09-24 10:16+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Aleksandar Urošević <urke@users.sourceforge.net>\n"
 "Language-Team: \n"
@@ -17,103 +17,111 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 # @ youtube-channel
-#: ../youtube-channel.php:52
+#: ../youtube-channel.php:56
 msgid "Aspect ratio (relative to width):"
 msgstr "Однос страница (база је ширина):"
 
 # @ youtube-channel
-#: ../youtube-channel.php:68
+#: ../youtube-channel.php:72
 msgid "Autoplay video"
 msgstr "Аутоматска репродукција"
 
 # @ youtube-channel
-#: ../youtube-channel.php:47
+#: ../youtube-channel.php:49
 msgid "Channel:"
 msgstr "Канал:"
 
 # @ youtube-channel
-#: ../youtube-channel.php:67
+#: ../youtube-channel.php:71
 msgid "Fix height taken by controls"
 msgstr "Поправи висину контрола"
 
 # @ youtube-channel
-#: ../youtube-channel.php:49
+#: ../youtube-channel.php:53
 msgid "Get random video from channel"
 msgstr "Насумични видео са канала"
 
 # @ youtube-channel
-#: ../youtube-channel.php:51
+#: ../youtube-channel.php:55
 msgid "Height"
 msgstr "Висина"
 
 # @ youtube-channel
-#: ../youtube-channel.php:69
+#: ../youtube-channel.php:73
 msgid "Hide player controls"
 msgstr "Сакривање контрола"
 
 # @ youtube-channel
-#: ../youtube-channel.php:70
+#: ../youtube-channel.php:74
 msgid "Hide video info"
 msgstr "Сакривање информација о видеу"
 
-#: ../youtube-channel.php:48
+#: ../youtube-channel.php:52
 msgid "Maximum items to fetch:"
 msgstr "Максималан број видеа:"
 
 # @ youtube-channel
-#: ../youtube-channel.php:170
+#: ../youtube-channel.php:185
 msgid "No items"
 msgstr "Нема видео снимака"
 
 # @ youtube-channel
-#: ../youtube-channel.php:75
+#: ../youtube-channel.php:79
 msgid "Open channel in new window/tab"
 msgstr "Отвори канал у новом прозору"
 
+#: ../youtube-channel.php:50
+msgid "Playlist:"
+msgstr "Плејлиста:"
+
 # @ youtube-channel
-#: ../youtube-channel.php:74
+#: ../youtube-channel.php:78
 msgid "Show link to channel"
 msgstr "Прикажи везу до канала"
 
 # @ youtube-channel
-#: ../youtube-channel.php:71
+#: ../youtube-channel.php:75
 msgid "Show video title"
 msgstr "Прикажи наслов видеа"
 
 # @ youtube-channel
-#: ../youtube-channel.php:76
+#: ../youtube-channel.php:80
 msgid "Use target=\"_blank\" (invalid XHTML)"
 msgstr "Користи target=\"_blank\"<br />(даје невалидан XHTML)"
 
+#: ../youtube-channel.php:51
+msgid "Use the playlist instead of channel"
+msgstr "Користи плејлисту уместо канала"
+
 # @ youtube-channel
-#: ../youtube-channel.php:73
+#: ../youtube-channel.php:77
 msgid "Visit YouTube Channel text:"
 msgstr "Текст за везу „посети Јутјуб канал“:"
 
 # @ youtube-channel
-#: ../youtube-channel.php:231
+#: ../youtube-channel.php:253
 #, php-format
 msgid "Visit channel %1$s"
 msgstr "Посети канал %1$s"
 
 # @ youtube-channel
-#: ../youtube-channel.php:195
+#: ../youtube-channel.php:217
 #, php-format
 msgid "Watch video %1$s published on %2$s"
 msgstr "Погледај видео %1$s објављен дана %2$s"
 
 # @ youtube-channel
-#: ../youtube-channel.php:60
+#: ../youtube-channel.php:64
 msgid "What to show?"
 msgstr "Шта да прикажем?"
 
 # @ youtube-channel
-#: ../youtube-channel.php:46
+#: ../youtube-channel.php:48
 msgid "Widget Title:"
 msgstr "Наслов виџета:"
 
 # @ youtube-channel
-#: ../youtube-channel.php:50
+#: ../youtube-channel.php:54
 msgid "Width"
 msgstr "Ширина"
 
@@ -123,38 +131,38 @@ msgid "YouTube Channel"
 msgstr "YouTube Channel"
 
 # @ youtube-channel
-#: ../youtube-channel.php:65
+#: ../youtube-channel.php:69
 msgid "chromeless video"
 msgstr "„chromeless“ видео"
 
 # @ youtube-channel
-#: ../youtube-channel.php:54
+#: ../youtube-channel.php:58
 msgid "custom"
 msgstr "прилагођено"
 
 # @ youtube-channel
-#: ../youtube-channel.php:50
-#: ../youtube-channel.php:51
+#: ../youtube-channel.php:54
+#: ../youtube-channel.php:55
 msgid "default"
 msgstr "подразумевано"
 
 # @ youtube-channel
-#: ../youtube-channel.php:64
+#: ../youtube-channel.php:68
 msgid "iframe (HTML5 player)"
 msgstr "уграђени фрејм (HTML5 плејер)"
 
 # @ youtube-channel
-#: ../youtube-channel.php:234
+#: ../youtube-channel.php:256
 msgid "in new window/tab"
 msgstr "у новом прозору/језичку"
 
 # @ youtube-channel
-#: ../youtube-channel.php:63
+#: ../youtube-channel.php:67
 msgid "object (flash player)"
 msgstr "објекат (флеш плејер)"
 
 # @ youtube-channel
-#: ../youtube-channel.php:62
+#: ../youtube-channel.php:66
 msgid "thumbnail"
 msgstr "умањену слику"
 
