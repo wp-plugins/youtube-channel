@@ -2,26 +2,39 @@
 /*
 Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
-Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel.
+Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 0.1.2
+Version: 1.1
 Author URI: http://urosevic.net/
 */
+
+define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
+
+/* Load plugin's textdomain */
+function youtube_channel_init() {
+	load_plugin_textdomain( 'youtube-channel', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+add_action( 'init', 'youtube_channel_init' );
 
 /* youtube widget */
 class YouTube_Channel_Widget extends WP_Widget {
 	function YouTube_Channel_Widget() {
 		// widget actual processes
-		parent::WP_Widget(false, $name = 'YouTube Channel');
+		parent::WP_Widget( false, $name = __( 'YouTube Channel' , 'youtube-channel' ) );
 	}
 
 	function form($instance) {
 		// outputs the options form on admin
 		$title      = esc_attr($instance['title']);
 		$channel    = esc_attr($instance['channel']);
+		$playlist   = esc_attr($instance['playlist']);
+		$usepl      = esc_attr($instance['usepl']);
 		$getrnd     = esc_attr($instance['getrnd']);
+		$maxrnd     = esc_attr($instance['maxrnd']);
 		$goto_txt   = esc_attr($instance['goto_txt']);
 		$showgoto   = esc_attr($instance['showgoto']);
+		$popupgoto  = esc_attr($instance['popupgoto']);
+		$target     = esc_attr($instance['target']);
 		$showtitle  = esc_attr($instance['showtitle']);
 		$width      = esc_attr($instance['width']);
 		$height     = esc_attr($instance['height']);
@@ -32,34 +45,39 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$fixyt      = esc_attr($instance['fixyt']);
 		$hideinfo   = esc_attr($instance['hideinfo']);
 		?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title:'); ?><input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label><br />
-		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Get random video from channel'); ?></label></p>
-		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width'); ?> (<?php _e('default'); ?> 220):<input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height'); ?> (<?php _e('default'); ?> 165):<input class="widefat" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" /></label></p>
-		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('Aspect ratio (relative to width):'); ?>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title:', 'youtube-channel'); ?><input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('playlist'); ?>"><?php _e('Playlist:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('playlist'); ?>" name="<?php echo $this->get_field_name('playlist'); ?>" type="text" value="<?php echo $playlist; ?>" /></label>
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['usepl'], true ); ?> id="<?php echo $this->get_field_id( 'usepl' ); ?>" name="<?php echo $this->get_field_name( 'usepl' ); ?>" /> <label for="<?php echo $this->get_field_id( 'usepl' ); ?>"><?php _e('Use the playlist instead of channel', 'youtube-channel'); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('maxrnd'); ?>"><?php _e('Maximum items to fetch:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('maxrnd'); ?>" name="<?php echo $this->get_field_name('maxrnd'); ?>" type="text" value="<?php echo $maxrnd; ?>" /></label><br />
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Get random video from channel', 'youtube-channel'); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 220):<input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 165):<input class="widefat" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('Aspect ratio (relative to width):', 'youtube-channel'); ?>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
-				<option value="0"<?php if ($instance['ratio'] == "0") { echo 'selected="selected"'; } ?>><?php _e('Custom'); ?></option>
-				<option value="1"<?php if ($instance['ratio'] == "1") { echo 'selected="selected"'; } ?>>4:3</option>
-				<option value="2"<?php if ($instance['ratio'] == "2") { echo 'selected="selected"'; } ?>>16:10</option>
-				<option value="3"<?php if ($instance['ratio'] == "3") { echo 'selected="selected"'; } ?>>16:9</option>
+				<option value="0"<?php selected( $instance['ratio'], 0 ); ?>><?php _e('custom', 'youtube-channel'); ?></option>
+				<option value="1"<?php selected( $instance['ratio'], 1 ); ?>>4:3</option>
+				<option value="2"<?php selected( $instance['ratio'], 2 ); ?>>16:10</option>
+				<option value="3"<?php selected( $instance['ratio'], 3 ); ?>>16:9</option>
 			</select>
 		</p>
-		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?'); ?>
+		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?', 'youtube-channel'); ?>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'to_show' ); ?>" name="<?php echo $this->get_field_name( 'to_show' ); ?>">
-				<option value="thumbnail"<?php if ($instance['to_show']  == "thumbnail") { echo 'selected="selected"'; } ?>><?php _e('Thumbnail'); ?></option>
-				<option value="object"<?php if ($instance['to_show']     == "object") { echo 'selected="selected"'; } ?>><?php _e('object (flash player)'); ?></option>
-				<option value="iframe"<?php if ($instance['to_show']     == "iframe") { echo 'selected="selected"'; } ?>><?php _e('iframe (HTML5 player)'); ?></option>
-				<option value="chromeless"<?php if ($instance['to_show'] == "chromeless") { echo 'selected="selected"'; } ?>><?php _e('chromeless video'); ?></option>
+				<option value="thumbnail"<?php selected( $instance['to_show'], 'thumbnail' ); ?>><?php _e('thumbnail', 'youtube-channel'); ?></option>
+				<option value="object"<?php selected( $instance['to_show'], 'object' ); ?>><?php _e('object (flash player)', 'youtube-channel'); ?></option>
+				<option value="iframe"<?php selected( $instance['to_show'], 'iframe' ); ?>><?php _e('iframe (HTML5 player)', 'youtube-channel'); ?></option>
+				<option value="chromeless"<?php selected( $instance['to_show'], 'chromeless' ); ?>><?php _e('chromeless video', 'youtube-channel'); ?></option>
 			</select>
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixyt'], true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['controls'], true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title'); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixyt'], true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['controls'], true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', 'youtube-channel'); ?></label>
 		</p>
-		<p><label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
-		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel'); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', 'youtube-channel'); ?></label><br />
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['popupgoto'], true ); ?> id="<?php echo $this->get_field_id( 'popupgoto' ); ?>" name="<?php echo $this->get_field_name( 'popupgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'popupgoto' ); ?>"><?php _e('Open channel in new window/tab', 'youtube-channel'); ?></label><br />
+		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['target'], true ); ?> id="<?php echo $this->get_field_id( 'target' ); ?>" name="<?php echo $this->get_field_name( 'target' ); ?>" /> <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e('Use target="_blank" (invalid XHTML)', 'youtube-channel'); ?></label></p>
 		<?php
 	}
 
@@ -68,9 +86,14 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title']     = strip_tags($new_instance['title']);
 		$instance['channel']   = strip_tags($new_instance['channel']);
+		$instance['playlist']  = strip_tags($new_instance['playlist']);
+		$instance['usepl']     = $new_instance['usepl'];
 		$instance['getrnd']    = $new_instance['getrnd'];
+		$instance['maxrnd']    = $new_instance['maxrnd'];
 		$instance['goto_txt']  = strip_tags($new_instance['goto_txt']);
 		$instance['showgoto']  = $new_instance['showgoto'];
+		$instance['popupgoto'] = $new_instance['popupgoto'];
+		$instance['target']    = $new_instance['target'];
 		$instance['showtitle'] = $new_instance['showtitle'];
 		$instance['width']     = strip_tags($new_instance['width']);
 		$instance['height']    = strip_tags($new_instance['height']);
@@ -93,6 +116,15 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$channel = $instance['channel'];
 		if ( $channel == "" ) { $channel = "urkekg"; }
 
+		// set playlist id
+		$playlist = $instance['playlist'];
+		if ( $playlist == "" ) { $playlist = "9DD839E3EB7475DF"; }
+		$usepl = $instance['usepl'];
+		
+		// get max items for random video
+		$maxrnd = $instance['maxrnd'];
+		if ( $maxrnd < 1 ) { $maxrnd = 10; } // default 10
+
 		// get hideinfo, autoplay and controls settings
 		$hideinfo = $instance['hideinfo'];
 		$autoplay = $instance['autoplay'];
@@ -113,6 +145,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 			$height = $instance['height'];
 			if ( $height == "" ) { $height = 165; }
 		}
+		// calculate image height based on width for 4:3 thumbnail
+		$imgfixedheight = $width / 4 * 3;
 
 		// which type to show
 		$to_show = $instance['to_show'];
@@ -131,32 +165,46 @@ class YouTube_Channel_Widget extends WP_Widget {
 	<?php
 	include_once(ABSPATH . WPINC . '/rss.php');
 
-	$rss = fetch_rss('http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile');
-	if ($rss) {
+	if ( $usepl ) {
+		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.'?alt=rss&v=2&orderby=published';
+	} else {
+		$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile';
+	}
+
+	$rss = fetch_feed($rss_url);
+	if ( !is_wp_error($rss) ) {
+		$maxitems = $rss->get_item_quantity($maxrnd); // max items in widget settings
 		$getrnd = $instance['getrnd'];
 		if ( $getrnd ) {
-			$items = array_slice($rss->items, 0);
+			$items = $rss->get_items(0, $maxitems);
 		} else {
-			$items = array_slice($rss->items, 0, 1);
+			$items = $rss->get_items(0, 1); // set 0, 2 for next video
 		}
 	}
-	
-	if (empty($items)) {
-		echo "No items";
+	if ($maxitems == 0) {
+		echo __( 'No items' , 'youtube-channel' );
 	} else {
 		if ( $getrnd ) {
 			$item = $items[mt_rand(0, (count($items)-1))];
 		} else {
 			$item = $items[0];
+			//$next_item = $items[1];
 		}
-		$yt_id = split(":", $item['guid']);
-		$yt_id = $yt_id[3];
-		$yt_thumb = "http://i3.ytimg.com/vi/$yt_id/default.jpg";
-		$yt_video = "http://www.youtube.com/watch?v=$yt_id";
-		$yt_title = $item['title'];
-		$yt_date  = $item['pubdate'];
-		// $next = $items[1];
-		// $next_id = split(":", $next['guid']);
+		
+		if ( $usepl )  {
+			$yt_id = $item->get_link();
+			$yt_id = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
+			$yt_url = "p/$playlist";
+		} else {
+			$yt_id = split(":", $item->get_id());
+			$yt_id = $yt_id[3];
+			$yt_url = "v/$yt_id";
+		}
+		$yt_thumb = "http://img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
+		$yt_video = $item->get_permalink();
+		$yt_title = esc_html( $item->get_title() );
+		$yt_date  = $item->get_date('j F Y | g:i a');
+		// $next_id = split(":", $next_item->get_id());
 		// $next_id = $yt_id[3];
 
 		// show video title?
@@ -166,29 +214,30 @@ class YouTube_Channel_Widget extends WP_Widget {
 		
 		// print out video
 		if ( $to_show == "thumbnail" ) {
+		$title = sprintf( __( 'Watch video %1$s published on %2$s' , 'youtube-channel' ), $yt_title, $yt_date );
 echo <<<EOF
-		<a href="$yt_video" title="Watch video $yt_title published on $yt_date"><img src="$yt_thumb" alt="$yt_title" style="width: ${width}px; height: ${height}px; border: 0;" /></a>
+		<a href="$yt_video" title="$title"><div style="width: ${width}px; height: ${height}px; overflow: hidden; background: url($yt_thumb) 50% 50% no-repeat; background-size: ${width}px ${imgfixedheight}px;" title="$yt_title"></div></a>
 EOF;
 		} else if ( $to_show == "chromeless" ) {
 ?>
-	<object type="application/x-shockwave-flash" data="<?php echo get_bloginfo('wpurl'); ?>/wp-content/plugins/youtube-channel/chromeless.swf" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
+	<object type="application/x-shockwave-flash" data="<?php echo YOUTUBE_CHANNEL_URL . 'chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
 		<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?><?php if ( $autoplay ) { echo "&autoplay=Yes"; } if ( !$controls ) { echo "&youtube_controls=Yes"; } ?>" />
 		<param name="quality" value="high" />
 		<param name="wmode" value="opaque" />
 		<param name="swfversion" value="6.0.65.0" />
-		<param name="movie" value="<?php echo get_bloginfo('wpurl'); ?>/wp-content/plugins/youtube-channel/chromeless.swf" />
+		<param name="movie" value="<?php echo YOUTUBE_CHANNEL_URL . 'chromeless.swf'; ?>" />
 	</object>	
 <?php
 		} else if ( $to_show == "iframe" ) {
 ?>
-	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<?php echo "$yt_id?enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
+	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<? echo $yt_url."?enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
 <?php
 		} else { // default is object
 ?>
 	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
-		<param name="movie" value="http://www.youtube.com/v/<?php echo $yt_id; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } if ( $hideinfo ) { echo "&amp;showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" />
+		<param name="movie" value="http://www.youtube.com/<?php echo $yt_url; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } if ( $hideinfo ) { echo "&amp;showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" />
 		<!--[if !IE]>-->
-		<object type="application/x-shockwave-flash" data="http://www.youtube.com/v/<?php echo $yt_id; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } if ( $hideinfo ) { echo "&amp;showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
+		<object type="application/x-shockwave-flash" data="http://www.youtube.com/<?php echo $yt_url; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } if ( $hideinfo ) { echo "&amp;showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
 		<!--<![endif]-->
 		<!--[if !IE]>-->
 		</object>
@@ -200,10 +249,25 @@ EOF;
 		// do we need to show goto link?
 		if ( $instance['showgoto'] ) {
 			$goto_txt = $instance['goto_txt'];
-			if ( $goto_txt == "" ) { $goto_txt = __("Visit channel")." $channel"; }
+			if ( $goto_txt == "" ) {
+				$goto_txt = sprintf( __( 'Visit channel %1$s' , 'youtube-channel' ), $channel );
+			}
+			if ( $instance['popupgoto'] ) {
+				$newtab = __("in new window/tab", "youtube-channel");
+				if ( $instance['target'] ) {
 echo <<<EOF
-	<p><a href="javascript: window.open('http://www.youtube.com/user/$channel/'); void 0;" title="$goto_txt">$goto_txt</a></p>
+	<p><a href="http://www.youtube.com/user/$channel/" target="_blank" title="$goto_txt $newtab">$goto_txt</a></p>
 EOF;
+				} else {
+echo <<<EOF
+	<p><a href="javascript: window.open('http://www.youtube.com/user/$channel/'); void 0;" title="$goto_txt $newtab">$goto_txt</a></p>
+EOF;
+				} // target
+			} else {
+echo <<<EOF
+	<p><a href="http://www.youtube.com/user/$channel/" title="$goto_txt">$goto_txt</a></p>
+EOF;
+			} // popupgoto
 		} // showgoto
 	}
 	?>
@@ -213,5 +277,10 @@ EOF;
 	}
 
 }
-add_action('widgets_init', create_function('', 'return register_widget("YouTube_Channel_Widget");'));
+
+/* Register plugin's widget */
+function youtube_channel_register_widget() {
+	register_widget( 'YouTube_Channel_Widget' );
+}
+add_action( 'widgets_init', 'youtube_channel_register_widget' );
 ?>
