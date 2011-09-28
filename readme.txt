@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.2.1
 Tested up to: 3.2.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
@@ -67,6 +67,10 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
 == Changelog ==
+= 1.2 =
+* Fixed number of items for random video (min 1, max 50)
+* Fixed no-controls for HTML5 iframe
+
 = 1.1 =
 * Added option to use the playlist instead of channel (suggested by Stacy)
 

@@ -7,7 +7,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-09-24 10:16+0200\n"
+        "POT-Creation-Date: 2011-09-28 21:16+0200\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,10 +49,10 @@ msgid   "Hide video info"
 msgstr  ""
 
 #: ../youtube-channel.php:52
-msgid   "Maximum items to fetch:"
+msgid   "Items to fetch (min 1, max 50):"
 msgstr  ""
 
-#: ../youtube-channel.php:185
+#: ../youtube-channel.php:187
 msgid   "No items"
 msgstr  ""
 
@@ -84,12 +84,12 @@ msgstr  ""
 msgid   "Visit YouTube Channel text:"
 msgstr  ""
 
-#: ../youtube-channel.php:253
+#: ../youtube-channel.php:256
 #, php-format
 msgid   "Visit channel %1$s"
 msgstr  ""
 
-#: ../youtube-channel.php:217
+#: ../youtube-channel.php:219
 #, php-format
 msgid   "Watch video %1$s published on %2$s"
 msgstr  ""
@@ -126,7 +126,7 @@ msgstr  ""
 msgid   "iframe (HTML5 player)"
 msgstr  ""
 
-#: ../youtube-channel.php:256
+#: ../youtube-channel.php:259
 msgid   "in new window/tab"
 msgstr  ""
 

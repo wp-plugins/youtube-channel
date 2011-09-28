@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-24 10:16+0200\n"
+"POT-Creation-Date: 2011-09-28 21:16+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Aleksandar Urošević <urke@users.sourceforge.net>\n"
 "Language-Team: \n"
@@ -12,7 +12,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -57,11 +58,11 @@ msgid "Hide video info"
 msgstr "Esconder info de vídeo"
 
 #: ../youtube-channel.php:52
-msgid "Maximum items to fetch:"
-msgstr "Máximo de elementos en busca de:"
+msgid "Items to fetch (min 1, max 50):"
+msgstr ""
 
 # @ youtube-channel
-#: ../youtube-channel.php:185
+#: ../youtube-channel.php:187
 msgid "No items"
 msgstr "No hay elementos"
 
@@ -99,13 +100,13 @@ msgid "Visit YouTube Channel text:"
 msgstr "Visitar canal de YouTube"
 
 # @ youtube-channel
-#: ../youtube-channel.php:253
+#: ../youtube-channel.php:256
 #, php-format
 msgid "Visit channel %1$s"
 msgstr "Visitar canal %1$s"
 
 # @ youtube-channel
-#: ../youtube-channel.php:217
+#: ../youtube-channel.php:219
 #, php-format
 msgid "Watch video %1$s published on %2$s"
 msgstr "Ver vídeo %1$s publicado en %2$s"
@@ -141,8 +142,7 @@ msgid "custom"
 msgstr "Personalizado"
 
 # @ youtube-channel
-#: ../youtube-channel.php:54
-#: ../youtube-channel.php:55
+#: ../youtube-channel.php:54 ../youtube-channel.php:55
 msgid "default"
 msgstr "por defecto"
 
@@ -152,7 +152,7 @@ msgid "iframe (HTML5 player)"
 msgstr "iframe (html5) - el bueno"
 
 # @ youtube-channel
-#: ../youtube-channel.php:256
+#: ../youtube-channel.php:259
 msgid "in new window/tab"
 msgstr "en nueva ventana/pestaña"
 
@@ -166,3 +166,5 @@ msgstr "objeto (flash)"
 msgid "thumbnail"
 msgstr "miniatura"
 
+#~ msgid "Maximum items to fetch:"
+#~ msgstr "Máximo de elementos en busca de:"

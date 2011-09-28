@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.1
+Version: 1.2
 Author URI: http://urosevic.net/
 */
 
@@ -49,7 +49,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('playlist'); ?>"><?php _e('Playlist:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('playlist'); ?>" name="<?php echo $this->get_field_name('playlist'); ?>" type="text" value="<?php echo $playlist; ?>" /></label>
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['usepl'], true ); ?> id="<?php echo $this->get_field_id( 'usepl' ); ?>" name="<?php echo $this->get_field_name( 'usepl' ); ?>" /> <label for="<?php echo $this->get_field_id( 'usepl' ); ?>"><?php _e('Use the playlist instead of channel', 'youtube-channel'); ?></label></p>
-		<p><label for="<?php echo $this->get_field_id('maxrnd'); ?>"><?php _e('Maximum items to fetch:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('maxrnd'); ?>" name="<?php echo $this->get_field_name('maxrnd'); ?>" type="text" value="<?php echo $maxrnd; ?>" /></label><br />
+		<p><label for="<?php echo $this->get_field_id('maxrnd'); ?>"><?php _e('Items to fetch (min 1, max 50):', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('maxrnd'); ?>" name="<?php echo $this->get_field_name('maxrnd'); ?>" type="text" value="<?php echo $maxrnd; ?>" /></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Get random video from channel', 'youtube-channel'); ?></label></p>
 		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 220):<input class="widefat" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="text" value="<?php echo $width; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 165):<input class="widefat" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="text" value="<?php echo $height; ?>" /></label></p>
@@ -118,13 +118,15 @@ class YouTube_Channel_Widget extends WP_Widget {
 
 		// set playlist id
 		$playlist = $instance['playlist'];
+		// trim PL in front of playlist ID
+		$playlist = preg_replace('/^PL/', '', $playlist);
 		if ( $playlist == "" ) { $playlist = "9DD839E3EB7475DF"; }
 		$usepl = $instance['usepl'];
 		
 		// get max items for random video
 		$maxrnd = $instance['maxrnd'];
 		if ( $maxrnd < 1 ) { $maxrnd = 10; } // default 10
-
+		elseif ( $maxrnd > 50 ) { $maxrnd = 50; } // max 50
 		// get hideinfo, autoplay and controls settings
 		$hideinfo = $instance['hideinfo'];
 		$autoplay = $instance['autoplay'];
@@ -164,11 +166,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 	<div class="youtube_channel">
 	<?php
 	include_once(ABSPATH . WPINC . '/rss.php');
-
+	$rss_settings = '?alt=rss&v=2&orderby=published&rel=0&max-results='.$maxrnd;
 	if ( $usepl ) {
-		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.'?alt=rss&v=2&orderby=published';
+		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$rss_settings;
 	} else {
-		$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads?alt=rss&v=2&orderby=published&client=ytapi-youtube-profile';
+		$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads'.$rss_settings;
 	}
 
 	$rss = fetch_feed($rss_url);
@@ -229,8 +231,9 @@ EOF;
 	</object>	
 <?php
 		} else if ( $to_show == "iframe" ) {
+			if (!$usepl) { $yt_url = $yt_id; }
 ?>
-	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<? echo $yt_url."?enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
+	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<? echo $yt_url."?enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
 <?php
 		} else { // default is object
 ?>

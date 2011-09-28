@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-24 10:16+0200\n"
+"POT-Creation-Date: 2011-09-28 21:16+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Aleksandar Urošević <urke@users.sourceforge.net>\n"
 "Language-Team: \n"
@@ -57,11 +57,11 @@ msgid "Hide video info"
 msgstr "Сакривање информација о видеу"
 
 #: ../youtube-channel.php:52
-msgid "Maximum items to fetch:"
-msgstr "Максималан број видеа:"
+msgid "Items to fetch (min 1, max 50):"
+msgstr "Ставки за добављање (мин 1, макс 50)"
 
 # @ youtube-channel
-#: ../youtube-channel.php:185
+#: ../youtube-channel.php:187
 msgid "No items"
 msgstr "Нема видео снимака"
 
@@ -99,13 +99,13 @@ msgid "Visit YouTube Channel text:"
 msgstr "Текст за везу „посети Јутјуб канал“:"
 
 # @ youtube-channel
-#: ../youtube-channel.php:253
+#: ../youtube-channel.php:256
 #, php-format
 msgid "Visit channel %1$s"
 msgstr "Посети канал %1$s"
 
 # @ youtube-channel
-#: ../youtube-channel.php:217
+#: ../youtube-channel.php:219
 #, php-format
 msgid "Watch video %1$s published on %2$s"
 msgstr "Погледај видео %1$s објављен дана %2$s"
@@ -152,7 +152,7 @@ msgid "iframe (HTML5 player)"
 msgstr "уграђени фрејм (HTML5 плејер)"
 
 # @ youtube-channel
-#: ../youtube-channel.php:256
+#: ../youtube-channel.php:259
 msgid "in new window/tab"
 msgstr "у новом прозору/језичку"
 
@@ -166,3 +166,5 @@ msgstr "објекат (флеш плејер)"
 msgid "thumbnail"
 msgstr "умањену слику"
 
+#~ msgid "Maximum items to fetch:"
+#~ msgstr "Максималан број видеа:"
