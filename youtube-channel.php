@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.2
+Version: 1.3
 Author URI: http://urosevic.net/
 */
 
@@ -41,6 +41,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$to_show    = esc_attr($instance['to_show']);
 		$autoplay   = esc_attr($instance['autoplay']);
 		$controls   = esc_attr($instance['controls']);
+		$fixnoitem  = esc_attr($instance['fixnoitem']);
 		$ratio      = esc_attr($instance['ratio']);
 		$fixyt      = esc_attr($instance['fixyt']);
 		$hideinfo   = esc_attr($instance['hideinfo']);
@@ -69,6 +70,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 				<option value="chromeless"<?php selected( $instance['to_show'], 'chromeless' ); ?>><?php _e('chromeless video', 'youtube-channel'); ?></option>
 			</select>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixyt'], true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixnoitem'], true ); ?> id="<?php echo $this->get_field_id( 'fixnoitem' ); ?>" name="<?php echo $this->get_field_name( 'fixnoitem' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixnoitem' ); ?>"><?php _e('Try to fix `No items` error', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['controls'], true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', 'youtube-channel'); ?></label><br />
@@ -100,6 +102,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['to_show']   = strip_tags($new_instance['to_show']);
 		$instance['autoplay']  = $new_instance['autoplay'];
 		$instance['controls']  = $new_instance['controls'];
+		$instance['fixnoitem'] = $new_instance['fixnoitem'];
 		$instance['ratio']     = strip_tags($new_instance['ratio']);
 		$instance['fixyt']     = $new_instance['fixyt'];
 		$instance['hideinfo']  = $new_instance['hideinfo'];
@@ -166,7 +169,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 	<div class="youtube_channel">
 	<?php
 	include_once(ABSPATH . WPINC . '/rss.php');
-	$rss_settings = '?alt=rss&v=2&orderby=published&rel=0&max-results='.$maxrnd;
+	$rss_settings = '?alt=rss&v=2';
+	if ( !$instance['fixnoitem'] ) {
+		$rss_settings .= '&orderby=published';
+	}
+	$rss_settings .= '&rel=0&max-results='.$maxrnd;
 	if ( $usepl ) {
 		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$rss_settings;
 	} else {

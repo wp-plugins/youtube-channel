@@ -67,6 +67,9 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
 == Changelog ==
+= dev =
+* Add option to try to fix 'No items' error
+
 = 1.2 =
 * Fixed number of items for random video (min 1, max 50)
 * Fixed no-controls for HTML5 iframe
