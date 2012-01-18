@@ -241,7 +241,7 @@ EOF;
 		} else if ( $to_show == "iframe" ) {
 			if (!$usepl) { $yt_url = $yt_id; }
 ?>
-	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<? echo $yt_url."?wmode=opaque&enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
+	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<?php echo $yt_url."?wmode=opaque&enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
 <?php
 		} else { // default is object
 ?>
