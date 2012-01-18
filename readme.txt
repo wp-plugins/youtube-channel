@@ -3,10 +3,10 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.2.1
-Tested up to: 3.2.1
+Tested up to: 3.3.1
 Stable tag: 1.2
 
-Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
+Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
 == Description ==
 
@@ -32,31 +32,27 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to show link to channel
 * Option to open channel in new tab/window
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
-* Translated to Serbian and Spanish
+* Translated to Serbian and Spanish (English by default)
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
 Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
+[Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 
 == Installation ==
-= Manual =
-1. Upload the entire `youtube-channel` folder to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the `Plugins` menu in WordPress.
-1. Insert new widget on `Appearance` → `Widgets`.
-1. Set YouTube channel in proper widget field.
 
-= Automatic =
-1. Go to `Plugins` → `Add New` and search for `youtube-channel`.
-1. Click on `Install Now` link bellow `YouTube Channel` search result and aswer `Yes` on popup question.
-1. If you need enter FTP parameters for your host and click on `Proceed`.
-1. Activate the plugin through the `Plugins` menu in WordPress.
-1. Insert new widget on `Appearance` → `Widgets`.
-1. Set YouTube channel in proper widget field.
+You can use the built in installer and upgrader, or you can install the plugin manually.
+
+1. You can either use the automatic plugin installer or your FTP program to upload unziped `youtube-channel` directory to your `wp-content/plugins` directory.
+2. Activate the plugin through the `Plugins` menu in WordPress
+3. Add YouTube Channel widget to your sidebar
+4. Set channel name and save changes
+
+If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
 
 == TODO ==
 
 * Add option to show favorite videos
-* Enable translations
 * Option to force display of HD video (useless for small sized video?)
 * Add option to show more than one (and how much) latest videos
 
@@ -67,8 +63,10 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
 == Changelog ==
-= dev =
+= 1.3 =
+* Fixed z-index problem with flash and iframe object
 * Add option to try to fix 'No items' error
+* Add donate button in options dialog
 
 = 1.2 =
 * Fixed number of items for random video (min 1, max 50)
