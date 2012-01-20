@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.3
+Version: 1.3.1
 Author URI: http://urosevic.net/
 */
 
@@ -80,6 +80,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['popupgoto'], true ); ?> id="<?php echo $this->get_field_id( 'popupgoto' ); ?>" name="<?php echo $this->get_field_name( 'popupgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'popupgoto' ); ?>"><?php _e('Open channel in new window/tab', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['target'], true ); ?> id="<?php echo $this->get_field_id( 'target' ); ?>" name="<?php echo $this->get_field_name( 'target' ); ?>" /> <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e('Use target="_blank" (invalid XHTML)', 'youtube-channel'); ?></label></p>
+		<p><input type="button" value="Support YTC / Donate via PayPal" onclick="window.location='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6'" class="button-secondary"></p>
 		<?php
 	}
 
@@ -175,6 +176,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 	}
 	$rss_settings .= '&rel=0&max-results='.$maxrnd;
 	if ( $usepl ) {
+		// check what is set: full URL or playlist ID
+		if ( substr($playlist,0,4) == "http" ) {
+			// if URL provided, extract playlist ID
+			$playlist = preg_replace('/.*list=PL([A-Z0-9]*).*/','$1', $playlist);
+		}
 		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$rss_settings;
 	} else {
 		$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads'.$rss_settings;
@@ -203,7 +209,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 		if ( $usepl )  {
 			$yt_id = $item->get_link();
 			$yt_id = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
-			$yt_url = "p/$playlist";
+			if ( $getrnd ) {
+				$yt_url = "v/$yt_id";
+			} else {
+				$yt_url = "p/$playlist";
+			}
 		} else {
 			$yt_id = split(":", $item->get_id());
 			$yt_id = $yt_id[3];
@@ -240,7 +250,7 @@ EOF;
 		} else if ( $to_show == "iframe" ) {
 			if (!$usepl) { $yt_url = $yt_id; }
 ?>
-	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<? echo $yt_url."?enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
+	<iframe title="YouTube video player" width="<?php echo $width; ?>" height="<?php echo $height; ?>" src="http://www.youtube.com/embed/<?php echo $yt_url."?wmode=opaque&enablejsapi=1"; if ( $controls ) { echo "&controls=0"; } if ( $hideinfo ) { echo "&showinfo=0"; } if ( $autoplay ) { echo "&autoplay=1"; } ?>" frameborder="0" allowfullscreen></iframe>
 <?php
 		} else { // default is object
 ?>
@@ -249,6 +259,7 @@ EOF;
 		<!--[if !IE]>-->
 		<object type="application/x-shockwave-flash" data="http://www.youtube.com/<?php echo $yt_url; ?>?version=3<?php if ( $controls ) { echo "&amp;controls=0"; } if ( $hideinfo ) { echo "&amp;showinfo=0"; } if ( $autoplay ) { echo "&amp;autoplay=1"; } ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
 		<!--<![endif]-->
+		<param name="wmode" value="opaque" />
 		<!--[if !IE]>-->
 		</object>
 		<!--<![endif]-->
