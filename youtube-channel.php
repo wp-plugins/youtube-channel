@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.3
+Version: 1.3.1
 Author URI: http://urosevic.net/
 */
 
@@ -176,6 +176,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 	}
 	$rss_settings .= '&rel=0&max-results='.$maxrnd;
 	if ( $usepl ) {
+		// check what is set: full URL or playlist ID
+		if ( substr($playlist,0,4) == "http" ) {
+			// if URL provided, extract playlist ID
+			$playlist = preg_replace('/.*list=PL([A-Z0-9]*).*/','$1', $playlist);
+		}
 		$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$rss_settings;
 	} else {
 		$rss_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads'.$rss_settings;
@@ -204,7 +209,11 @@ class YouTube_Channel_Widget extends WP_Widget {
 		if ( $usepl )  {
 			$yt_id = $item->get_link();
 			$yt_id = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
-			$yt_url = "p/$playlist";
+			if ( $getrnd ) {
+				$yt_url = "v/$yt_id";
+			} else {
+				$yt_url = "p/$playlist";
+			}
 		} else {
 			$yt_id = split(":", $item->get_id());
 			$yt_id = $yt_id[3];

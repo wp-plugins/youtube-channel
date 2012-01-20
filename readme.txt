@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
@@ -62,7 +62,25 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
+= I set more thano one items to fetch, but only one video is displayed. How to fix this? =
+
+Currently YTC can display only one video per time. Option `Items to fetch` us used for calculating what random video from channel or playlist to get as limit of videos of which random is calculated.
+
+= How to get playlist ID? =
+
+Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters `PL` represent playlist ID.
+
+Since version 1.3.1 you can paste full YouTube playlist URL and ID will be automaticaly extracted.
+
+= How to force embeding 320p video with better audio quality? =
+
+YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
+
 == Changelog ==
+= 1.3.1 =
+* Add support for playlist full URL
+* Fixed no random video for playlist
+
 = 1.3 =
 * Fixed z-index problem with flash and iframe object
 * Add option to try to fix 'No items' error
@@ -120,7 +138,6 @@ Just try it and rate it. Only initial release is available right now.
 
 == Screenshots ==
 
-1. Widget configuration panel
-2. Widget configuration panel localised to Serbian
-3. Widget `YouTube Channel` in action with iframe video w/o controls
-4. Widget `YouTube Channel` in action with iframe video w/ controls and fixed height
+1. Widget `YouTube Channel` configuration panel
+2. Widget `YouTube Channel` in action with iframe (HTML5) video object with controls and fixed height
+3. Widget `YouTube Channel` in action with Chromeless video object w/o controls
