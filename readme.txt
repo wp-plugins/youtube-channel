@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.2.1
 Tested up to: 3.3.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
@@ -28,11 +28,17 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to hide video controls
 * Option to hide video info
 * Option to show video title on top of the video
+* Option to show video description below vide (experimental)
+* Option to hide annotations from video
+* Option to use light controls theme
 * Set custom text for link to channel
 * Option to show link to channel
 * Option to open channel in new tab/window
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
 * Translated to Serbian and Spanish (English by default)
+
+= Issues =
+Controls light theme and hidden annotations does not work for chromeless object.
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
@@ -77,6 +83,12 @@ Since version 1.3.1 you can paste full YouTube playlist URL and ID will be autom
 YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
 
 == Changelog ==
+= 1.3.2 =
+* Add option to show video description below video
+* Add option to shorten video description to N characters
+* Add option to use light theme for controls instead of default dark theme (HTML5 iframe and flash object)
+* Add option to hide annotations from video
+
 = 1.3.1 =
 * Add support for playlist full URL
 * Fixed no random video for playlist
