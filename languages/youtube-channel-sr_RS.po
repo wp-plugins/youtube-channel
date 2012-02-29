@@ -19,213 +19,123 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: .-----youtube-channel.php:63
-#: .----youtube-channel.php:57
-#: .---youtube-channel.php:58
 #: youtube-channel.php:63
 #@ youtube-channel
 msgid "Aspect ratio (relative to width):"
 msgstr "Однос страница (база је ширина):"
 
-#: .-----youtube-channel.php:81
-#: .----youtube-channel.php:74
-#: .---youtube-channel.php:75
 #: youtube-channel.php:81
 #@ youtube-channel
 msgid "Autoplay video"
 msgstr "Аутоматска репродукција"
 
-#: .-----youtube-channel.php:54
-#: .----youtube-channel.php:50
-#: .---youtube-channel.php:51
 #: youtube-channel.php:54
 #@ youtube-channel
 msgid "Channel:"
 msgstr "Канал:"
 
-#: .-----youtube-channel.php:80
-#: .----youtube-channel.php:72
-#: .---youtube-channel.php:73
 #: youtube-channel.php:80
 #@ youtube-channel
 msgid "Fix height taken by controls"
 msgstr "Поправи висину контрола"
 
-#: .-----youtube-channel.php:58
-#: .----youtube-channel.php:54
-#: .---youtube-channel.php:55
-#@ youtube-channel
-msgid "Get random video from channel"
-msgstr "Насумични видео са канала"
-
-#: .-----youtube-channel.php:62
-#: .----youtube-channel.php:56
-#: .---youtube-channel.php:57
 #: youtube-channel.php:62
 #@ youtube-channel
 msgid "Height"
 msgstr "Висина"
 
-#: .-----youtube-channel.php:79
-#: .----youtube-channel.php:75
-#: .---youtube-channel.php:77
 #: youtube-channel.php:79
 #@ youtube-channel
 msgid "Hide player controls"
 msgstr "Сакривање контрола"
 
-#: .-----youtube-channel.php:86
-#: .----youtube-channel.php:76
-#: .---youtube-channel.php:78
 #: youtube-channel.php:86
 #@ youtube-channel
 msgid "Hide video info"
 msgstr "Сакривање информација о видеу"
 
-#: .-----youtube-channel.php:57
-#: .----youtube-channel.php:53
-#: .---youtube-channel.php:54
-#@ youtube-channel
-msgid "Items to fetch (min 1, max 50):"
-msgstr "Ставки за добављање (мин 1, макс 50)"
-
-#: .-----youtube-channel.php:218
-#: .----youtube-channel.php:200
-#: .---youtube-channel.php:206
 #: youtube-channel.php:218
 #@ youtube-channel
 msgid "No items"
 msgstr "Нема видео снимака"
 
-#: .-----youtube-channel.php:92
-#: .----youtube-channel.php:81
-#: .---youtube-channel.php:83
 #: youtube-channel.php:92
 #@ youtube-channel
 msgid "Open channel in new window/tab"
 msgstr "Отвори канал у новом прозору"
 
-#: .-----youtube-channel.php:55
-#: .----youtube-channel.php:51
-#: .---youtube-channel.php:52
 #: youtube-channel.php:55
 #@ youtube-channel
 msgid "Playlist:"
 msgstr "Плејлиста:"
 
-#: .-----youtube-channel.php:91
-#: .----youtube-channel.php:80
-#: .---youtube-channel.php:82
 #: youtube-channel.php:91
 #@ youtube-channel
 msgid "Show link to channel"
 msgstr "Прикажи везу до канала"
 
-#: .-----youtube-channel.php:83
-#: .----youtube-channel.php:77
-#: .---youtube-channel.php:79
 #: youtube-channel.php:83
 #@ youtube-channel
 msgid "Show video title"
 msgstr "Прикажи наслов видеа"
 
-#: .-----youtube-channel.php:93
-#: .----youtube-channel.php:82
-#: .---youtube-channel.php:84
 #: youtube-channel.php:93
 #@ youtube-channel
 msgid "Use target=\"_blank\" (invalid XHTML)"
 msgstr "Користи target=\"_blank\"<br />(даје невалидан XHTML)"
 
-#: .-----youtube-channel.php:56
-#: .----youtube-channel.php:52
-#: .---youtube-channel.php:53
 #: youtube-channel.php:56
 #@ youtube-channel
 msgid "Use the playlist instead of channel"
 msgstr "Користи плејлисту уместо канала"
 
-#: .-----youtube-channel.php:90
-#: .----youtube-channel.php:79
-#: .---youtube-channel.php:81
 #: youtube-channel.php:90
 #@ youtube-channel
 msgid "Visit YouTube Channel text:"
 msgstr "Текст за везу „посети Јутјуб канал“:"
 
-#: .-----youtube-channel.php:307
-#: .----youtube-channel.php:277
-#: .---youtube-channel.php:283
 #: youtube-channel.php:307
 #, php-format
 #@ youtube-channel
 msgid "Visit channel %1$s"
 msgstr "Посети канал %1$s"
 
-#: .-----youtube-channel.php:257
-#: .----youtube-channel.php:239
-#: .---youtube-channel.php:245
 #: youtube-channel.php:257
 #, php-format
 #@ youtube-channel
 msgid "Watch video %1$s published on %2$s"
 msgstr "Погледај видео %1$s објављен дана %2$s"
 
-#: .-----youtube-channel.php:71
-#: .----youtube-channel.php:65
-#: .---youtube-channel.php:66
 #: youtube-channel.php:71
 #@ youtube-channel
 msgid "What to show?"
 msgstr "Шта да прикажем?"
 
-#: .-----youtube-channel.php:53
-#: .----youtube-channel.php:49
-#: .---youtube-channel.php:50
 #: youtube-channel.php:53
 #@ youtube-channel
 msgid "Widget Title:"
 msgstr "Наслов виџета:"
 
-#: .-----youtube-channel.php:61
-#: .----youtube-channel.php:55
-#: .---youtube-channel.php:56
 #: youtube-channel.php:61
 #@ youtube-channel
 msgid "Width"
 msgstr "Ширина"
 
-#: .-----youtube-channel.php:23
-#: .----youtube-channel.php:23
-#: .---youtube-channel.php:23
 #: youtube-channel.php:23
 #@ youtube-channel
 msgid "YouTube Channel"
 msgstr "YouTube Channel"
 
-#: .-----youtube-channel.php:76
-#: .----youtube-channel.php:70
-#: .---youtube-channel.php:71
 #: youtube-channel.php:76
 #@ youtube-channel
 msgid "chromeless video"
 msgstr "„chromeless“ видео"
 
-#: .-----youtube-channel.php:65
-#: .----youtube-channel.php:59
-#: .---youtube-channel.php:60
 #: youtube-channel.php:65
 #@ youtube-channel
 msgid "custom"
 msgstr "прилагођено"
 
-#: .-----youtube-channel.php:61
-#: .-----youtube-channel.php:62
-#: .-----youtube-channel.php:88
-#: .----youtube-channel.php:55
-#: .----youtube-channel.php:56
-#: .---youtube-channel.php:56
-#: .---youtube-channel.php:57
 #: youtube-channel.php:61
 #: youtube-channel.php:62
 #: youtube-channel.php:88
@@ -233,74 +143,50 @@ msgstr "прилагођено"
 msgid "default"
 msgstr "подразумевано"
 
-#: .-----youtube-channel.php:75
-#: .----youtube-channel.php:69
-#: .---youtube-channel.php:70
 #: youtube-channel.php:75
 #@ youtube-channel
 msgid "iframe (HTML5 player)"
 msgstr "уграђени фрејм (HTML5 плејер)"
 
-#: .-----youtube-channel.php:310
-#: .----youtube-channel.php:280
-#: .---youtube-channel.php:286
 #: youtube-channel.php:310
 #@ youtube-channel
 msgid "in new window/tab"
 msgstr "у новом прозору/језичку"
 
-#: .-----youtube-channel.php:74
-#: .----youtube-channel.php:68
-#: .---youtube-channel.php:69
 #: youtube-channel.php:74
 #@ youtube-channel
 msgid "object (flash player)"
 msgstr "објекат (флеш плејер)"
 
-#: .-----youtube-channel.php:73
-#: .----youtube-channel.php:67
-#: .---youtube-channel.php:68
 #: youtube-channel.php:73
 #@ youtube-channel
 msgid "thumbnail"
 msgstr "умањену слику"
 
-#: .-----youtube-channel.php:59
-#: .----youtube-channel.php:73
-#: .---youtube-channel.php:74
 #: youtube-channel.php:59
 #@ youtube-channel
 msgid "Try to fix `No items` error"
 msgstr "Покушај да поправиш гершку „No items“"
 
-#: .-----youtube-channel.php:78
 #: youtube-channel.php:78
 #@ youtube-channel
 msgid "Use light theme (default is dark)"
 msgstr "Користи светлу тему"
 
-#: .-----youtube-channel.php:84
 #: youtube-channel.php:84
 #@ youtube-channel
 msgid "Show video description"
 msgstr "Прикажи опис видеа"
 
-#: .-----youtube-channel.php:85
 #: youtube-channel.php:85
 #@ youtube-channel
 msgid "Hide annotations from video"
 msgstr "Сакриј белешке са видеа"
 
-#: .-----youtube-channel.php:88
 #: youtube-channel.php:88
 #@ youtube-channel
 msgid "Description length"
 msgstr "Дужина описа"
-
-#: .---youtube-channel.php:76
-#@ youtube-channel
-msgid "Use HD video"
-msgstr "Користи HD видео"
 
 #: youtube-channel.php:57
 #@ youtube-channel
@@ -313,17 +199,17 @@ msgid "Show random video from channel"
 msgstr "Прикажи насумични видео са канала"
 
 #: youtube-channel.php:60
-#@ ytc
+#@ youtube-channel
 msgid "Video property"
-msgstr ""
+msgstr "Поставке видеа"
 
 #: youtube-channel.php:82
-#@ ytc
+#@ youtube-channel
 msgid "Layout behaviour"
-msgstr ""
+msgstr "Изглед"
 
 #: youtube-channel.php:89
-#@ <tc
+#@ youtube-channel
 msgid "Link to channel"
-msgstr ""
+msgstr "Веза до канала"
 
