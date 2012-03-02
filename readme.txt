@@ -37,6 +37,12 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
 * Translated to Serbian and Spanish (English by default)
 
+= Translations =
+* English by Aleksandar Urošević
+* Serbian by Aleksandar Urošević
+* Spanish by Miguel Becker
+* Czech by Ladislav Drábek
+
 = Issues =
 Controls light theme and hidden annotations does not work for chromeless object.
 
@@ -83,6 +89,9 @@ Since version 1.3.1 you can paste full YouTube playlist URL and ID will be autom
 YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
 
 == Changelog ==
+= 1.3.3 =
+* Added Czech translation by Ladislav Drábek
+
 = 1.3.2 =
 * Add option to show video description below video
 * Add option to shorten video description to N characters
