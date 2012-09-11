@@ -37,12 +37,6 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
 * Translated to Serbian and Spanish (English by default)
 
-= Translations =
-* English by Aleksandar Urošević
-* Serbian by Aleksandar Urošević
-* Spanish by Miguel Becker
-* Czech by Ladislav Drábek
-
 = Issues =
 Controls light theme and hidden annotations does not work for chromeless object.
 
@@ -64,9 +58,8 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 
 == TODO ==
 
+* Add option to open video for thumbnail image in lightbox
 * Add option to show favorite videos
-* Option to force display of HD video (useless for small sized video?)
-* Add option to show more than one (and how much) latest videos
 
 == Frequently Asked Questions ==
 
@@ -88,7 +81,26 @@ Since version 1.3.1 you can paste full YouTube playlist URL and ID will be autom
 
 YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
 
+= There is two playlist checkboxes, how they works? =
+
+If you wish to use videos from playlist instead of videos from channel (display random videos, one or more videos, with all kind of settings) enable option `Use the playlist instead of channel`.
+If you wish to show only single embedded playlist block using IFRAME (HTML5), then enable option `Embed only standard playlist` and all other settings will be ignored.
+
+= What is a difference between `Fetch latest` and `Show ... videos`? =
+
+Value for `Fetch latest` says how many items will containt set of videos for choosing random video.
+value for `Show ... videos` says how many videos will be displayed in widget.
+
 == Changelog ==
+= 1.4.0 =
+* Added option to show preferred quantity of videos
+* Added option to embed classic playlist
+* For random video use channel or playlist
+* Fields for width and height converted to number with spinner
+* Added class to video title .ytc_title
+* Added class to video container: universal .ytc_video_container and selective (.ytc_video_first, .ytc_video_mid, .ytc_video_last)
+* Added routine to unique random video from channel if displayed more than one video
+
 = 1.3.3 =
 * Added Czech translation by Ladislav Drábek
 
