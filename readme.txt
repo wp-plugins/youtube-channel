@@ -5,6 +5,8 @@ Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash
 Requires at least: 3.2.1
 Tested up to: 3.4.2
 Stable tag: 1.4.0
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
@@ -38,16 +40,17 @@ If you like this extension and you find it useful, please rate it on the right s
 * Translated to Serbian and Spanish (English by default)
 
 = Styling =
-You can use `style.css` from theme to style `YouTube Video` widget content.
-* .youtube_channel - widget wrapper class
-* .ytc_title - class of video title abowe thumbnail/video object
-* .ytc_video_container - class of container for single item
-* .ytc_video_1, .ytc_video_2, ... - class of container for single item with ordering number of item in widget
-* .ytc_video_first - class of first container for single item
-* .ytc_video_last - class of last container for single item
-* .ytc_video_mid - class of all other containers for single item 
-* .ytc_description - class for video description text
-* .ytc_link - class of container for link to channel
+You can use `style.css` from theme to style `YouTube Video` widget content:
+
+* `.youtube_channel` - widget wrapper class
+* `.ytc_title` - class of video title abowe thumbnail/video object
+* `.ytc_video_containerv` - class of container for single item
+* `.ytc_video_1`, `.ytc_video_2`, ... - class of container for single item with ordering number of item in widget
+* `.ytc_video_first` - class of first container for single item
+* `.ytc_video_last` - class of last container for single item
+* `.ytc_video_mid` - class of all other containers for single item 
+* `.ytc_description` - class for video description text
+* `.ytc_link` - class of container for link to channel
 
 = Issues =
 Controls light theme and hidden annotations does not work for chromeless object.
@@ -106,6 +109,9 @@ Value for `Fetch latest` says how many items will containt set of videos for cho
 value for `Show ... videos` says how many videos will be displayed in widget.
 
 == Changelog ==
+= 1.4.1 =
+* Small word changes in widget settings
+
 = 1.4.0 =
 * Added option to show preferred quantity of videos
 * Added option to embed classic playlist

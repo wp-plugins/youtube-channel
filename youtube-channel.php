@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.4.0
+Version: 1.4.1
 Author URI: http://urosevic.net/
 */
 
@@ -415,7 +415,7 @@ function ytc_channel_link($instance) {
 
 		echo '<div class="ytc_link">';
 		if ( $instance['popupgoto'] ) {
-			$newtab = __("in new window/tab", "youtube-channel");
+			$newtab = __("in a new window/tab", "youtube-channel");
 			if ( $instance['target'] ) {
 echo <<<EOF
 	<a href="http://www.youtube.com/user/$channel/" target="_blank" title="$goto_txt $newtab">$goto_txt</a>
