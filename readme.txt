@@ -39,15 +39,16 @@ If you like this extension and you find it useful, please rate it on the right s
 
 = Styling =
 You can use `style.css` from theme to style `YouTube Video` widget content.
-* .youtube_channel - widget wrapper class
-* .ytc_title - class of video title abowe thumbnail/video object
-* .ytc_video_container - class of container for single item
-* .ytc_video_1, .ytc_video_2, ... - class of container for single item with ordering number of item in widget
-* .ytc_video_first - class of first container for single item
-* .ytc_video_last - class of last container for single item
-* .ytc_video_mid - class of all other containers for single item 
-* .ytc_description - class for video description text
-* .ytc_link - class of container for link to channel
+
+* `.youtube_channel` - widget wrapper class
+* `.ytc_title` - class of video title abowe thumbnail/video object
+* `.ytc_video_container` - class of container for single item
+* `.ytc_video_1`, `.ytc_video_2`, ... - class of container for single item with ordering number of item in widget
+* `.ytc_video_first` - class of first container for single item
+* `.ytc_video_last` - class of last container for single item
+* `.ytc_video_mid` - class of all other containers for single item 
+* `.ytc_description` - class for video description text
+* `.ytc_link` - class of container for link to channel
 
 = Issues =
 Controls light theme and hidden annotations does not work for chromeless object.
