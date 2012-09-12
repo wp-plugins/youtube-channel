@@ -3,8 +3,8 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.2.1
-Tested up to: 3.3.1
-Stable tag: 1.3.2
+Tested up to: 3.4.2
+Stable tag: 1.4.0
 
 Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
@@ -37,8 +37,21 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
 * Translated to Serbian and Spanish (English by default)
 
+= Styling =
+You can use `style.css` from theme to style `YouTube Video` widget content.
+* .youtube_channel - widget wrapper class
+* .ytc_title - class of video title abowe thumbnail/video object
+* .ytc_video_container - class of container for single item
+* .ytc_video_1, .ytc_video_2, ... - class of container for single item with ordering number of item in widget
+* .ytc_video_first - class of first container for single item
+* .ytc_video_last - class of last container for single item
+* .ytc_video_mid - class of all other containers for single item 
+* .ytc_description - class for video description text
+* .ytc_link - class of container for link to channel
+
 = Issues =
 Controls light theme and hidden annotations does not work for chromeless object.
+Video description for videos from playlist does nt work.
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
@@ -59,6 +72,7 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 == TODO ==
 
 * Add option to open video for thumbnail image in lightbox
+* Improve autoplay option to start playing only first video item
 * Add option to show favorite videos
 
 == Frequently Asked Questions ==
@@ -73,7 +87,7 @@ Currently YTC can display only one video per time. Option `Items to fetch` us us
 
 = How to get playlist ID? =
 
-Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters `PL` represent playlist ID.
+Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters `PL` represent playlist ID. You can paste ID with or without leading `PL` string.
 
 Since version 1.3.1 you can paste full YouTube playlist URL and ID will be automaticaly extracted.
 
@@ -95,11 +109,15 @@ value for `Show ... videos` says how many videos will be displayed in widget.
 = 1.4.0 =
 * Added option to show preferred quantity of videos
 * Added option to embed classic playlist
-* For random video use channel or playlist
-* Fields for width and height converted to number with spinner
-* Added class to video title .ytc_title
 * Added class to video container: universal .ytc_video_container and selective (.ytc_video_first, .ytc_video_mid, .ytc_video_last)
+* Added class to video title .ytc_title
+* Added class to video description text .ytc_description
+* Added class to container for link to channel .ytc_link
 * Added routine to unique random video from channel if displayed more than one video
+* Added option to set `et cetera` string for shortened video description
+* Changed option for random video to use channel or playlist
+* Fields for width and height converted to number with spinner
+* Improved playlist ID handler
 
 = 1.3.3 =
 * Added Czech translation by Ladislav Drábek
@@ -172,5 +190,4 @@ Just try it and rate it. Only initial release is available right now.
 == Screenshots ==
 
 1. Widget `YouTube Channel` configuration panel
-2. Widget `YouTube Channel` in action with iframe (HTML5) video object with controls and fixed height
-3. Widget `YouTube Channel` in action with Chromeless video object w/o controls
+2. Widget `YouTube Channel` in action with iframe (HTML5) video object with two video items, displayed video title and shortened description

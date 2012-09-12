@@ -40,6 +40,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$showtitle  = esc_attr($instance['showtitle']);
 		$showvidesc = esc_attr($instance['showvidesc']);
 		$videsclen  = esc_attr($instance['videsclen']);
+		$descappend = esc_attr($instance['descappend']);
 		$width      = esc_attr($instance['width']);
 		$height     = esc_attr($instance['height']);
 		$to_show    = esc_attr($instance['to_show']);
@@ -91,6 +92,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showvidesc'], true ); ?> id="<?php echo $this->get_field_id( 'showvidesc' ); ?>" name="<?php echo $this->get_field_name( 'showvidesc' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showvidesc' ); ?>"><?php _e('Show video description', 'youtube-channel'); ?></label><br />
 			<label for="<?php echo $this->get_field_id('videsclen'); ?>"><?php _e('Description length', 'youtube-channel'); ?>: <input class="small-text" id="<?php echo $this->get_field_id('videsclen'); ?>" name="<?php echo $this->get_field_name('videsclen'); ?>" type="number" value="<?php echo $videsclen; ?>" /> (0 = full)</label><br />
+			<label for="descappend">Et cetera string <input class="small-text" id="<?php echo $this->get_field_id('descappend'); ?>" name="<?php echo $this->get_field_name('descappend'); ?>" type="text" value="<?php echo $descappend; ?>" /> default &amp;hellip;</label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideanno'], true ); ?> id="<?php echo $this->get_field_id( 'hideanno' ); ?>" name="<?php echo $this->get_field_name( 'hideanno' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideanno' ); ?>"><?php _e('Hide annotations from video', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', 'youtube-channel'); ?></label></p>
 		</p>
@@ -120,6 +122,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['target']     = $new_instance['target'];
 		$instance['showtitle']  = $new_instance['showtitle'];
 		$instance['showvidesc'] = $new_instance['showvidesc'];
+		$instance['descappend'] = strip_tags($new_instance['descappend']);
 		$instance['videsclen']  = strip_tags($new_instance['videsclen']);
 		$instance['width']      = strip_tags($new_instance['width']);
 		$instance['height']     = strip_tags($new_instance['height']);
@@ -182,10 +185,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			$rss_settings .= '&rel=0&max-results='.$maxrnd;
 			if ( $usepl ) {
 				// check what is set: full URL or playlist ID
-				if ( substr($playlist,0,4) == "http" ) {
-					// if URL provided, extract playlist ID
-					$playlist = preg_replace('/.*list=PL([A-Z0-9]*).*/','$1', $playlist);
-				}
+				$playlist = ytc_clean_playlist_id($playlist);
 		
 				$rss_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$rss_settings;
 			} else {
@@ -245,9 +245,10 @@ class YouTube_Channel_Widget extends WP_Widget {
 function ytc_only_pl($instance) {
 		$width = $instance['width'];
 		$height = height_ratio($width, $instance['ratio']) + 25;
+		$playlist = ytc_clean_playlist_id($instance['playlist']);
 		print '
 			<div class="ytc_video_container ytc_video_1 ytc_video_single">
-<iframe src="http://www.youtube.com/embed/videoseries?list='.$instance['playlist'].'" 
+<iframe src="http://www.youtube.com/embed/videoseries?list=PL'.$playlist.'" 
 width="'.$width.'" height="'.$height.'" frameborder="0"></iframe>
 			</div>
 			';
@@ -373,7 +374,14 @@ EOF;
 		} else {
 			$video_description = $videsc[1];
 		}
-		echo '<p class="video_description">' .$video_description. '</p>';
+		if ( $video_description != '' ) {
+			if ( $instance['descappend'] ) {
+				$etcetera = $instance['descappend'];
+			} else {
+				$etcetera = '&hellip;';
+			}
+		}
+		echo '<p class="ytc_description">' .$video_description.$etcetera. '</p>';
 	}
 	echo '</div><!-- .ytc_video_container -->';
 }
@@ -404,15 +412,17 @@ function ytc_channel_link($instance) {
 		if ( $goto_txt == "" ) {
 			$goto_txt = sprintf( __( 'Visit channel %1$s' , 'youtube-channel' ), $channel );
 		}
+
+		echo '<div class="ytc_link">';
 		if ( $instance['popupgoto'] ) {
 			$newtab = __("in new window/tab", "youtube-channel");
 			if ( $instance['target'] ) {
 echo <<<EOF
-	<p><a href="http://www.youtube.com/user/$channel/" target="_blank" title="$goto_txt $newtab">$goto_txt</a></p>
+	<a href="http://www.youtube.com/user/$channel/" target="_blank" title="$goto_txt $newtab">$goto_txt</a>
 EOF;
 			} else {
 echo <<<EOF
-	<p><a href="javascript: window.open('http://www.youtube.com/user/$channel/'); void 0;" title="$goto_txt $newtab">$goto_txt</a></p>
+	<a href="javascript: window.open('http://www.youtube.com/user/$channel/'); void 0;" title="$goto_txt $newtab">$goto_txt</a>
 EOF;
 			} // target
 		} else {
@@ -420,7 +430,19 @@ echo <<<EOF
 	<p><a href="http://www.youtube.com/user/$channel/" title="$goto_txt">$goto_txt</a></p>
 EOF;
 		} // popupgoto
+		echo '</div>';
+
 	} // showgoto
+}
+
+function ytc_clean_playlist_id($playlist) {
+	if ( substr($playlist,0,4) == "http" ) {
+		// if URL provided, extract playlist ID
+		$playlist = preg_replace('/.*list=PL([A-Z0-9]*).*/','$1', $playlist);
+	} else if ( substr($playlist,0,2) == 'PL' ) {
+		$playlist = substr($playlist,2);
+	}
+	return $playlist;
 }
 
 /* Register plugin's widget */
