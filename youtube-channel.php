@@ -9,6 +9,8 @@ Author URI: http://urosevic.net/
 */
 
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
+$ytc_plugin_data = get_plugin_data( __FILE__ );
+define( 'YTC_VER',  $ytc_plugin_data['Version'] );
 
 /* Load plugin's textdomain */
 function youtube_channel_init() {
@@ -53,12 +55,13 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$hideinfo   = esc_attr($instance['hideinfo']);
 		$hideanno   = esc_attr($instance['hideanno']);
 		$themelight = esc_attr($instance['themelight']);
+		$debugon    = esc_attr($instance['debugon']);
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Widget Title:', 'youtube-channel'); ?><input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('channel'); ?>"><?php _e('Channel:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('channel'); ?>" name="<?php echo $this->get_field_name('channel'); ?>" type="text" value="<?php echo $channel; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('playlist'); ?>"><?php _e('Playlist:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('playlist'); ?>" name="<?php echo $this->get_field_name('playlist'); ?>" type="text" value="<?php echo $playlist; ?>" /></label></p>
 		<p><label for="<?php echo $this->get_field_id('maxrnd'); ?>"><?php _e('Fetch latest:', 'youtube-channel'); ?> <input class="small-text" id="<?php echo $this->get_field_id('maxrnd'); ?>" name="<?php echo $this->get_field_name('maxrnd'); ?>" type="number" min="2" value="<?php echo $maxrnd; ?>" /> (min 2, max 50)</label></p>
-		<p><label for="<?php echo $this->get_field_id('vidqty'); ?>"><?php _e('Show:', 'youtube-channel'); ?></label> <input class="small-text" id="<?php echo $this->get_field_id('vidqty'); ?>" name="<?php echo $this->get_field_name('vidqty'); ?>" type="number" min="1" value="<?php echo $vidqty; ?>" /> videos</p>
+		<p><label for="<?php echo $this->get_field_id('vidqty'); ?>"><?php _e('Show:', 'youtube-channel'); ?></label> <input class="small-text" id="<?php echo $this->get_field_id('vidqty'); ?>" name="<?php echo $this->get_field_name('vidqty'); ?>" type="number" min="1" value="<?php echo ( $vidqty ) ? $vidqty : '1'; ?>" /> videos</p>
 		<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['fixnoitem'], true ); ?> id="<?php echo $this->get_field_id( 'fixnoitem' ); ?>" name="<?php echo $this->get_field_name( 'fixnoitem' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixnoitem' ); ?>"><?php _e('Try to fix `No items` error', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['usepl'], true ); ?> id="<?php echo $this->get_field_id( 'usepl' ); ?>" name="<?php echo $this->get_field_name( 'usepl' ); ?>" /> <label for="<?php echo $this->get_field_id( 'usepl' ); ?>"><?php _e('Use the playlist instead of channel', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['getrnd'], true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Show random video', 'youtube-channel'); ?></label><br />
@@ -101,7 +104,24 @@ class YouTube_Channel_Widget extends WP_Widget {
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['popupgoto'], true ); ?> id="<?php echo $this->get_field_id( 'popupgoto' ); ?>" name="<?php echo $this->get_field_name( 'popupgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'popupgoto' ); ?>"><?php _e('Open channel in new window/tab', 'youtube-channel'); ?></label><br />
 		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['target'], true ); ?> id="<?php echo $this->get_field_id( 'target' ); ?>" name="<?php echo $this->get_field_name( 'target' ); ?>" /> <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e('Use target="_blank" (invalid XHTML)', 'youtube-channel'); ?></label></p>
-		<p><input type="button" value="Support YTC / Donate via PayPal" onclick="window.location='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6'" class="button-secondary"></p>
+
+<h4><?php _e('Debug YTC', 'youtube-channel'); ?></h4>
+<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['debugon'], true ); ?> id="<?php echo $this->get_field_id( 'debugon' ); ?>" name="<?php echo $this->get_field_name( 'debugon' ); ?>" /><label for="debugon">Enable debugging</label><br />
+<?php if ( $instance['debugon'] ) {
+	$debug_arr = array_merge(
+		array(
+			'apache ver' => apache_get_version(),
+			'php ver' => phpversion(),
+			'wp ver'  => get_bloginfo('version'),
+			'ytc ver' => YTC_VER
+		),
+		$instance); ?>
+<textarea name="debug" class="widefat" style="height: 100px;"><?php var_export($debug_arr); ?></textarea><br />
+Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.
+<?php } ?></p>
+
+<p><input type="button" value="Support YTC / Donate via PayPal" onclick="window.location='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6'" class="button-secondary"></p>
+
 		<?php
 	}
 
@@ -136,6 +156,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		$instance['hideinfo']   = $new_instance['hideinfo'];
 		$instance['hideanno']   = $new_instance['hideanno'];
 		$instance['themelight'] = $new_instance['themelight'];
+		$instance['debugon']    = $new_instance['debugon'];
 
 		return $instance;
 	}
@@ -196,6 +217,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			if ( !is_wp_error($rss) ) {
 				$getrnd = $instance['getrnd'];
 				$vidqty = $instance['vidqty'];
+				if ( $vidqty == '' || !$vidqty ) { $vidqty = 1; }
 				if ( $vidqty > $maxrnd ) { $maxrnd = $vidqty; }
 				$maxitems = $rss->get_item_quantity($maxrnd); // max items in widget settings
 

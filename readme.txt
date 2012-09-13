@@ -77,6 +77,7 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 * Add option to open video for thumbnail image in lightbox
 * Improve autoplay option to start playing only first video item
 * Add option to show favorite videos
+* Change the link target, using the thumbnail option, to "blank"
 
 == Frequently Asked Questions ==
 
@@ -110,6 +111,8 @@ value for `Show ... videos` says how many videos will be displayed in widget.
 
 == Changelog ==
 = 1.4.1 =
+* Added debug info, if something goes wrong in frontend
+* Fixed bug with unset number of videos if random enabled
 * Small word changes in widget settings
 
 = 1.4.0 =
