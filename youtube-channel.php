@@ -9,8 +9,7 @@ Author URI: http://urosevic.net/
 */
 
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
-$ytc_plugin_data = get_plugin_data( __FILE__ );
-define( 'YTC_VER',  $ytc_plugin_data['Version'] );
+define( 'YTC_VER',  '1.4.1' );
 
 /* Load plugin's textdomain */
 function youtube_channel_init() {
