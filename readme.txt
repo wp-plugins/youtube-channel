@@ -2,10 +2,10 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.2.1
-Tested up to: 3.4.2
-Stable tag: 1.4.0
-License: GPLv3 or later
+Requires at least: 3.4.0
+Tested up to: 3.5.1
+Stable tag: 1.5.0
+License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
@@ -40,11 +40,11 @@ If you like this extension and you find it useful, please rate it on the right s
 * Translated to Serbian and Spanish (English by default)
 
 = Styling =
-You can use `style.css` from theme to style `YouTube Video` widget content:
+You can use `style.css` from theme to style `YouTube Video` widget content.
 
 * `.youtube_channel` - widget wrapper class
 * `.ytc_title` - class of video title abowe thumbnail/video object
-* `.ytc_video_containerv` - class of container for single item
+* `.ytc_video_container` - class of container for single item
 * `.ytc_video_1`, `.ytc_video_2`, ... - class of container for single item with ordering number of item in widget
 * `.ytc_video_first` - class of first container for single item
 * `.ytc_video_last` - class of last container for single item
@@ -77,7 +77,6 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 * Add option to open video for thumbnail image in lightbox
 * Improve autoplay option to start playing only first video item
 * Add option to show favorite videos
-* Change the link target, using the thumbnail option, to "blank"
 
 == Frequently Asked Questions ==
 
@@ -110,10 +109,14 @@ Value for `Fetch latest` says how many items will containt set of videos for cho
 value for `Show ... videos` says how many videos will be displayed in widget.
 
 == Changelog ==
-= 1.4.1 =
-* Added debug info, if something goes wrong in frontend
-* Fixed bug with unset number of videos if random enabled
-* Small word changes in widget settings
+= 1.5.0 =
+* Add inline debug tracker
+* Fix deprecated functions - changed rss.php by feed.php and split() by extract()
+* Fix video description parser for new YouTube feed format
+* Fix autoplay for single video bug
+* Fix autoplay for multiple videos to play only first video
+* Code cleanup
+* Update compatibility to WordPress 3.5.1
 
 = 1.4.0 =
 * Added option to show preferred quantity of videos
