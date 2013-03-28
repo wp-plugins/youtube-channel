@@ -2,11 +2,13 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.2.1
-Tested up to: 3.2.1
-Stable tag: 1.2
+Requires at least: 3.4.0
+Tested up to: 3.5.1
+Stable tag: 1.5.0
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Sidebar widget that display latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
+Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
 
 == Description ==
 
@@ -28,37 +30,53 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to hide video controls
 * Option to hide video info
 * Option to show video title on top of the video
+* Option to show video description below vide (experimental)
+* Option to hide annotations from video
+* Option to use light controls theme
 * Set custom text for link to channel
 * Option to show link to channel
 * Option to open channel in new tab/window
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
-* Translated to Serbian and Spanish
+* Translated to Serbian and Spanish (English by default)
+
+= Styling =
+You can use `style.css` from theme to style `YouTube Video` widget content.
+
+* `.youtube_channel` - widget wrapper class
+* `.ytc_title` - class of video title abowe thumbnail/video object
+* `.ytc_video_container` - class of container for single item
+* `.ytc_video_1`, `.ytc_video_2`, ... - class of container for single item with ordering number of item in widget
+* `.ytc_video_first` - class of first container for single item
+* `.ytc_video_last` - class of last container for single item
+* `.ytc_video_mid` - class of all other containers for single item 
+* `.ytc_description` - class for video description text
+* `.ytc_link` - class of container for link to channel
+
+= Issues =
+Controls light theme and hidden annotations does not work for chromeless object.
+Video description for videos from playlist does nt work.
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
 Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
+[Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 
 == Installation ==
-= Manual =
-1. Upload the entire `youtube-channel` folder to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the `Plugins` menu in WordPress.
-1. Insert new widget on `Appearance` → `Widgets`.
-1. Set YouTube channel in proper widget field.
 
-= Automatic =
-1. Go to `Plugins` → `Add New` and search for `youtube-channel`.
-1. Click on `Install Now` link bellow `YouTube Channel` search result and aswer `Yes` on popup question.
-1. If you need enter FTP parameters for your host and click on `Proceed`.
-1. Activate the plugin through the `Plugins` menu in WordPress.
-1. Insert new widget on `Appearance` → `Widgets`.
-1. Set YouTube channel in proper widget field.
+You can use the built in installer and upgrader, or you can install the plugin manually.
+
+1. You can either use the automatic plugin installer or your FTP program to upload unziped `youtube-channel` directory to your `wp-content/plugins` directory.
+2. Activate the plugin through the `Plugins` menu in WordPress
+3. Add YouTube Channel widget to your sidebar
+4. Set channel name and save changes
+
+If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
 
 == TODO ==
 
+* Add option to open video for thumbnail image in lightbox
+* Improve autoplay option to start playing only first video item
 * Add option to show favorite videos
-* Enable translations
-* Option to force display of HD video (useless for small sized video?)
-* Add option to show more than one (and how much) latest videos
 
 == Frequently Asked Questions ==
 
@@ -66,9 +84,70 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 
 I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
 
+= I set more thano one items to fetch, but only one video is displayed. How to fix this? =
+
+Currently YTC can display only one video per time. Option `Items to fetch` us used for calculating what random video from channel or playlist to get as limit of videos of which random is calculated.
+
+= How to get playlist ID? =
+
+Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters `PL` represent playlist ID. You can paste ID with or without leading `PL` string.
+
+Since version 1.3.1 you can paste full YouTube playlist URL and ID will be automaticaly extracted.
+
+= How to force embeding 320p video with better audio quality? =
+
+YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
+
+= There is two playlist checkboxes, how they works? =
+
+If you wish to use videos from playlist instead of videos from channel (display random videos, one or more videos, with all kind of settings) enable option `Use the playlist instead of channel`.
+If you wish to show only single embedded playlist block using IFRAME (HTML5), then enable option `Embed only standard playlist` and all other settings will be ignored.
+
+= What is a difference between `Fetch latest` and `Show ... videos`? =
+
+Value for `Fetch latest` says how many items will containt set of videos for choosing random video.
+value for `Show ... videos` says how many videos will be displayed in widget.
+
 == Changelog ==
-= dev =
+= 1.5.0 =
+* Add inline debug tracker
+* Fix deprecated functions - changed rss.php by feed.php and split() by extract()
+* Fix video description parser for new YouTube feed format
+* Fix autoplay for single video bug
+* Fix autoplay for multiple videos to play only first video
+* Code cleanup
+* Update compatibility to WordPress 3.5.1
+
+= 1.4.0 =
+* Added option to show preferred quantity of videos
+* Added option to embed classic playlist
+* Added class to video container: universal .ytc_video_container and selective (.ytc_video_first, .ytc_video_mid, .ytc_video_last)
+* Added class to video title .ytc_title
+* Added class to video description text .ytc_description
+* Added class to container for link to channel .ytc_link
+* Added routine to unique random video from channel if displayed more than one video
+* Added option to set `et cetera` string for shortened video description
+* Changed option for random video to use channel or playlist
+* Fields for width and height converted to number with spinner
+* Improved playlist ID handler
+
+= 1.3.3 =
+* Added Czech translation by Ladislav Drábek
+
+= 1.3.2 =
+* Add option to show video description below video
+* Add option to shorten video description to N characters
+* Add option to use light theme for controls instead of default dark theme (HTML5 iframe and flash object)
+* Add option to hide annotations from video
+
+= 1.3.1 =
+* Add support for playlist full URL
+* Fixed no random video for playlist
+
+= 1.3 =
+* Fixed z-index problem with flash and iframe object
 * Add option to try to fix 'No items' error
+* Add donate button in options dialog
 
 = 1.2 =
 * Fixed number of items for random video (min 1, max 50)
@@ -122,7 +201,5 @@ Just try it and rate it. Only initial release is available right now.
 
 == Screenshots ==
 
-1. Widget configuration panel
-2. Widget configuration panel localised to Serbian
-3. Widget `YouTube Channel` in action with iframe video w/o controls
-4. Widget `YouTube Channel` in action with iframe video w/ controls and fixed height
+1. Widget `YouTube Channel` configuration panel
+2. Widget `YouTube Channel` in action with iframe (HTML5) video object with two video items, displayed video title and shortened description
