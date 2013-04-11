@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.4.0
 Tested up to: 3.5.1
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,11 @@ Value for `Fetch latest` says how many items will containt set of videos for cho
 value for `Show ... videos` says how many videos will be displayed in widget.
 
 == Changelog ==
+= 1.5.1 =
+* Fix issue in widget settings when no apache_get_version() support on server
+* Fix validation errors for widget settings
+* Fix broken sidebar issue introduced in 1.5.0 release
+
 = 1.5.0 =
 * Add inline debug tracker
 * Fix deprecated functions - changed rss.php by feed.php and split() by extract()
