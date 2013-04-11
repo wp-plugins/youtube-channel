@@ -4,11 +4,11 @@ Plugin Name: YouTube Channel
 Plugin URI: http://blog.urosevic.net/wordpress/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 1.5.0
+Version: 1.5.1
 Author URI: http://urosevic.net/
 */
 error_reporting(E_DEPRECATED);
-define( 'YTCVER', '1.5.0' );
+define( 'YTCVER', '1.5.1' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -71,7 +71,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 <h4><?php _e('Video property', 'youtube-channel'); ?></h4>
 		<p><label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 220):</label> <input class="small-text" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="number" min="32" value="<?php echo $width; ?>" /> px</p>
 		<p><label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height', 'youtube-channel'); ?> (<?php _e('default', 'youtube-channel'); ?> 165):</label> <input class="small-text" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="number" min="32" value="<?php echo $height; ?>" /> px</p>
-		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('Aspect ratio (relative to width):', 'youtube-channel'); ?>
+		<p><label for="<?php echo $this->get_field_id('ratio'); ?>"><?php _e('Aspect ratio (relative to width):', 'youtube-channel'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
 				<option value="0"<?php selected( $instance['ratio'], 0 ); ?>><?php _e('custom', 'youtube-channel'); ?></option>
 				<option value="1"<?php selected( $instance['ratio'], 1 ); ?>>4:3</option>
@@ -79,7 +79,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 				<option value="3"<?php selected( $instance['ratio'], 3 ); ?>>16:9</option>
 			</select>
 		</p>
-		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?', 'youtube-channel'); ?>
+		<p><label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?', 'youtube-channel'); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'to_show' ); ?>" name="<?php echo $this->get_field_name( 'to_show' ); ?>">
 				<option value="thumbnail"<?php selected( $instance['to_show'], 'thumbnail' ); ?>><?php _e('thumbnail', 'youtube-channel'); ?></option>
 				<option value="object"<?php selected( $instance['to_show'], 'object' ); ?>><?php _e('object (flash player)', 'youtube-channel'); ?></option>
@@ -93,33 +93,42 @@ class YouTube_Channel_Widget extends WP_Widget {
 <?php /*if ( $instance['to_show'] == 'thumbnail' && $instance['lightbox'] && !is_plugin_active('wp-video-lightbox/wp-video-lightbox.php') ){ echo '<p>To load videos in lightbox please install and activate <a href="http://wordpress.org/extend/plugins/wp-video-lightbox/">WP Video Lightbox</a> plugin by Ruhul Amin.</p>'; } */?>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['autoplay'], true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video or playlist', 'youtube-channel'); ?></label></p>
 <h4><?php _e('Layout behaviour', 'youtube-channel'); ?></h4>
-			<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', 'youtube-channel'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showvidesc'], true ); ?> id="<?php echo $this->get_field_id( 'showvidesc' ); ?>" name="<?php echo $this->get_field_name( 'showvidesc' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showvidesc' ); ?>"><?php _e('Show video description', 'youtube-channel'); ?></label><br />
-			<label for="<?php echo $this->get_field_id('videsclen'); ?>"><?php _e('Description length', 'youtube-channel'); ?>: <input class="small-text" id="<?php echo $this->get_field_id('videsclen'); ?>" name="<?php echo $this->get_field_name('videsclen'); ?>" type="number" value="<?php echo $videsclen; ?>" /> (0 = full)</label><br />
-			<label for="descappend">Et cetera string <input class="small-text" id="<?php echo $this->get_field_id('descappend'); ?>" name="<?php echo $this->get_field_name('descappend'); ?>" type="text" value="<?php echo $descappend; ?>" /> default &amp;hellip;</label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideanno'], true ); ?> id="<?php echo $this->get_field_id( 'hideanno' ); ?>" name="<?php echo $this->get_field_name( 'hideanno' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideanno' ); ?>"><?php _e('Hide annotations from video', 'youtube-channel'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', 'youtube-channel'); ?></label></p>
-		</p>
+			<p>
+				<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showtitle'], true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', 'youtube-channel'); ?></label><br />
+				<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showvidesc'], true ); ?> id="<?php echo $this->get_field_id( 'showvidesc' ); ?>" name="<?php echo $this->get_field_name( 'showvidesc' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showvidesc' ); ?>"><?php _e('Show video description', 'youtube-channel'); ?></label><br />
+				<label for="<?php echo $this->get_field_id('videsclen'); ?>"><?php _e('Description length', 'youtube-channel'); ?>: <input class="small-text" id="<?php echo $this->get_field_id('videsclen'); ?>" name="<?php echo $this->get_field_name('videsclen'); ?>" type="number" value="<?php echo $videsclen; ?>" /> (0 = full)</label><br />
+				<label for="<?php echo $this->get_field_id('descappend'); ?>"><?php _e('Et cetera string', 'youtube-channel'); ?> <input class="small-text" id="<?php echo $this->get_field_id('descappend'); ?>" name="<?php echo $this->get_field_name('descappend'); ?>" type="text" value="<?php echo $descappend; ?>" /> default &amp;hellip;</label><br />
+				<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideanno'], true ); ?> id="<?php echo $this->get_field_id( 'hideanno' ); ?>" name="<?php echo $this->get_field_name( 'hideanno' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideanno' ); ?>"><?php _e('Hide annotations from video', 'youtube-channel'); ?></label><br />
+				<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['hideinfo'], true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', 'youtube-channel'); ?></label>
+			</p>
 <h4><?php _e('Link to channel', 'youtube-channel'); ?></h4>
-		<p><label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
-		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', 'youtube-channel'); ?></label><br />
-		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['popupgoto'], true ); ?> id="<?php echo $this->get_field_id( 'popupgoto' ); ?>" name="<?php echo $this->get_field_name( 'popupgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'popupgoto' ); ?>"><?php _e('Open channel in new window/tab', 'youtube-channel'); ?></label><br />
-		<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['target'], true ); ?> id="<?php echo $this->get_field_id( 'target' ); ?>" name="<?php echo $this->get_field_name( 'target' ); ?>" /> <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e('Use target="_blank" (invalid XHTML)', 'youtube-channel'); ?></label></p>
+		<p>
+			<label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:', 'youtube-channel'); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" /></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['showgoto'], true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['popupgoto'], true ); ?> id="<?php echo $this->get_field_id( 'popupgoto' ); ?>" name="<?php echo $this->get_field_name( 'popupgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'popupgoto' ); ?>"><?php _e('Open channel in new window/tab', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['target'], true ); ?> id="<?php echo $this->get_field_id( 'target' ); ?>" name="<?php echo $this->get_field_name( 'target' ); ?>" /> <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e('Use target="_blank" (invalid XHTML)', 'youtube-channel'); ?></label>
+		</p>
 
 <h4><?php _e('Debug YTC', 'youtube-channel'); ?></h4>
-<p><input class="checkbox" type="checkbox" <?php checked( (bool) $instance['debugon'], true ); ?> id="<?php echo $this->get_field_id( 'debugon' ); ?>" name="<?php echo $this->get_field_name( 'debugon' ); ?>" /><label for="debugon">Enable debugging</label><br />
-<?php if ( $instance['debugon'] ) {
+		<p>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $instance['debugon'], true ); ?> id="<?php echo $this->get_field_id( 'debugon' ); ?>" name="<?php echo $this->get_field_name( 'debugon' ); ?>" /> <label for="<?php echo $this->get_field_id( 'debugon' ); ?>">Enable debugging</label><br />
+
+<?php
+if ( $instance['debugon'] == 'on' ) {
 	$debug_arr = array_merge(
 		array(
-			'apache ver' => apache_get_version(),
-			'php ver' => phpversion(),
-			'wp ver'  => get_bloginfo('version'),
-			'ytc ver' => YTCVER
+			'server' => $_SERVER["SERVER_SOFTWARE"],
+			'php' => phpversion(),
+			'wp'  => get_bloginfo('version'),
+			'ytc' => YTCVER
 		),
-		$instance); ?>
-<textarea name="debug" class="widefat" style="height: 100px;"><?php var_export($debug_arr); ?></textarea><br />
-Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.
-<?php } ?></p>
+		$instance);
+?>
+
+			<textarea name="debug" class="widefat" style="height: 100px;"><?php var_export($debug_arr); ?></textarea><br />
+			Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.
+<?php } ?>
+		</p>
 
 <p><input type="button" value="Support YTC / Donate via PayPal" onclick="window.location='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6'" class="button-secondary"></p>
 
@@ -200,7 +209,7 @@ Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channe
 			$rss_settings = '?alt=rss&v=2';
 			if ( !$instance['fixnoitem'] )
 				$rss_settings .= '&orderby=published';
-			
+				
 			#$vidqty = $instance['vidqty'];
 			#if ( $maxrnd > $vidqty ) {}
 			$rss_settings .= '&rel=0&max-results='.$maxrnd;
@@ -215,7 +224,9 @@ Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channe
 
 			//include_once(ABSPATH . WPINC . '/rss.php');
 			include_once(ABSPATH . WPINC . '/feed.php');
+
 			$rss = fetch_feed($rss_url);
+
 			if ( !is_wp_error($rss) ) {
 				$getrnd = $instance['getrnd'];
 				$vidqty = $instance['vidqty'];
@@ -466,7 +477,8 @@ function height_ratio($width, $ratio) {
 
 // function to insert link to channel
 function ytc_channel_link($instance) {
-	//$output = '';
+	// initialize array
+	$output = array();
 	// do we need to show goto link?
 	if ( $instance['showgoto'] ) {
 		$channel = $instance['channel'];
@@ -490,6 +502,7 @@ function ytc_channel_link($instance) {
 		$output[] = '</div>';
 
 	} // showgoto
+
 	return $output;
 }
 
