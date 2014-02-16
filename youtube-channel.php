@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: YouTube Channel
-Plugin URI: http://urosevic.net/wordpress/youtube-channel/
+Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
 Version: 2.0.0
@@ -406,11 +406,8 @@ function ytc_only_pl($instance) {
 			$playlist = YTCPLID;
 
 		$height = height_ratio($width, $instance['height'], $instance['ratio']);
-adbg("height before = ".$height);
 
 		$height += ($instance['fixyt']) ? 25 : 0;
-
-adbg("height before = ".$height);
 
 		$playlist = ytc_clean_playlist_id($playlist);
 

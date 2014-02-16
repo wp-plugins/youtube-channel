@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.7.0
 Tested up to: 3.8.1
-Stable tag: 1.5.1
+Stable tag: 2.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,8 @@ If you like this extension and you find it useful, please rate it on the right s
 * Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
 * Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
 * Fix height for old and new YouTube embed and Chromeless video object taken by controls
+* Custom caching timeout
+* Optimized gdata feeds
 * Option to enable autoplay video
 * Option to hide video controls
 * Option to hide video info
@@ -38,7 +40,6 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to show link to channel
 * Option to open channel in new tab/window
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
-* Translated to Serbian and Spanish (English by default)
 
 = Styling =
 You can use `style.css` from theme to style `YouTube Video` widget content.
@@ -222,7 +223,14 @@ After upgrade please reconfigure widget. Some variables are changed and implemen
 = 0.1.0 =
 Just try it and rate it. Only initial release is available right now.
 
+== Upgrade Notice ==
+
+= 2.0.0 =
+
+This version introduces caching, optimized feeds, JSON, and better user experience.
+We highly recommend to you made database backup before you upgrade to latest version 2.0.0.
+
 == Screenshots ==
 
-1. YouTube Channel widget settings with default setup
+1. YouTube Channel widget settings
 2. YouTube Channel widget settings customized
