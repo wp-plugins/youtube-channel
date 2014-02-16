@@ -2,8 +2,8 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.4.0
-Tested up to: 3.5.1
+Requires at least: 3.7.0
+Tested up to: 3.8.1
 Stable tag: 1.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -22,6 +22,7 @@ If you like this extension and you find it useful, please rate it on the right s
 * Display latest video from YouTube channel or playlist
 * Option to get random video from channel or playlist
 * Set custom widget title
+* Enhanced Privacy
 * Custom set of width and height of video thumbnail/embeded object (default 220x165 px)
 * Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
 * Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
@@ -80,35 +81,52 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 
 == Frequently Asked Questions ==
 
-= Why yet another YouTube widget extension? =
+= I set more than one items to fetch, but only one video is displayed. How to fix this? =
 
-I could not to find widget with link to channel and thumbnail instead of video object, so I made this one.
-
-= I set more thano one items to fetch, but only one video is displayed. How to fix this? =
-
-Currently YTC can display only one video per time. Option `Items to fetch` us used for calculating what random video from channel or playlist to get as limit of videos of which random is calculated.
+Below option `Fetch ... video(s)` you can find `Show ... video(s)` since version 2.0.0. Here you can set number of videos to display.
 
 = How to get playlist ID? =
 
 Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters `PL` represent playlist ID. You can paste ID with or without leading `PL` string.
 
-Since version 1.3.1 you can paste full YouTube playlist URL and ID will be automaticaly extracted.
+Since version 1.3.1 you can also paste full YouTube playlist URL and ID will be automaticaly extracted.
 
 = How to force embeding 320p video with better audio quality? =
 
-YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead.
-
-= There is two playlist checkboxes, how they works? =
-
-If you wish to use videos from playlist instead of videos from channel (display random videos, one or more videos, with all kind of settings) enable option `Use the playlist instead of channel`.
-If you wish to show only single embedded playlist block using IFRAME (HTML5), then enable option `Embed only standard playlist` and all other settings will be ignored.
+YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead. So, you could not force 720p in tiny YTC.
 
 = What is a difference between `Fetch latest` and `Show ... videos`? =
 
-Value for `Fetch latest` says how many items will containt set of videos for choosing random video.
-value for `Show ... videos` says how many videos will be displayed in widget.
+Value for `Fetch latest` says how many items will containt videos feed for choosing random video.
+Value for `Show ... videos` says how many videos will be displayed in widget.
+
+= In wich way does the plugin order the videos? Not by the time they were uploaded... =
+
+By default, YTC sort videos by publishing date/time, not by uploaded date/time.
+
+If you have enabled option `Fix No items error/Respect playlist order`, then videos are not sorted by publishing date, but by YouTube default order.
+
+= When I upload a new video at youtube, it is not in the list at my site =
+
+Video feed for YTC has been retreived with standard youtube feed [uploads by specified user](https://developers.google.com/youtube/2.0/developers_guide_protocol?hl=en#User_Uploaded_Videos "User Uploaded Videos"), and as Google say: [uploaded videos will be included in a user's public uploaded videos feed a few minutes after the upload completes and YouTube finishes processing the video](https://developers.google.com/youtube/2.0/reference#Latency_Information).
+
+If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.0.0 =
+* Fix: undefined vars notices
+* Fix: embedding default plugin playlist instead custom set for "Embed standard playlist"
+* Add: caching system
+* Add: option to link to channel instead to user
+* Add: support for enhanced privacy by YouTube
+* Enhance: RSS feed replaced with JSON
+* Enhance: better formatted debug info with site URL
+* Enhance: re-group widget options
+* Enhance: updated wording
+* Enhance: added tooltips for options
+* Enhance: playlist ID detection from URL
+* Remove: modified error_reporting
+
 = 1.5.1 =
 * Fix issue in widget settings when no apache_get_version() support on server
 * Fix validation errors for widget settings
@@ -206,5 +224,5 @@ Just try it and rate it. Only initial release is available right now.
 
 == Screenshots ==
 
-1. Widget `YouTube Channel` configuration panel
-2. Widget `YouTube Channel` in action with iframe (HTML5) video object with two video items, displayed video title and shortened description
+1. YouTube Channel widget settings with default setup
+2. YouTube Channel widget settings customized
