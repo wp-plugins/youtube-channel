@@ -78,7 +78,6 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 
 * Add option to open video for thumbnail image in lightbox
 * Improve autoplay option to start playing only first video item
-* Add option to show favorite videos
 
 == Frequently Asked Questions ==
 
@@ -114,6 +113,7 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+
 = 2.0.0 =
 * Fix: undefined vars notices
 * Fix: embedding default plugin playlist instead custom set for "Embed standard playlist"
