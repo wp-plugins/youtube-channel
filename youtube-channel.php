@@ -4,37 +4,14 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.0.1
+Version: 2.1.0
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.0.1' );
+define( 'YTCVER', '2.1.0' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
 define( 'YTCTDOM', 'youtube-channel' );
-
-/* Load plugin's textdomain */
-add_action( 'init', 'youtube_channel_init' ); /*TODO: move inside class*/
-function youtube_channel_init() {
-	load_plugin_textdomain( YTCTDOM, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-}
-
-
-/* Load YTC player script */
-function ytc_enqueue_scripts() {
-	wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
-}
-add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
-function ytc_mute_script() {
-?>
-<script type="text/javascript">
-function ytc_mute(event){
-	event.target.mute();
-}
-</script>
-<?php
-}
-add_action( 'wp_footer', 'ytc_mute_script' );
 
 /* youtube widget */
 class YouTube_Channel_Widget extends WP_Widget {
@@ -46,7 +23,92 @@ class YouTube_Channel_Widget extends WP_Widget {
 			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', YTCTDOM ) )
 		);
 	}
-// TODO: Form code
+
+
+    /**
+     * Activate the plugin
+     */
+    public static function activate()
+    {
+        // Transit old settings to new format
+		// get pre-2.0.0 YTC widgets, and if exist, convert to 2.0.0+ version
+		if ( $old = get_option('widget_youtube_channel_widget') ) {
+		    // if we have pre-2.0.0 YTC widgets, merge them to new version    
+
+		    // get new YTC widgets
+		    $new = get_option('widget_youtube-channel');
+
+		    // get all widget areas
+			$widget_areas = get_option('sidebars_widgets');
+
+		    // update options to 2.0.0+ version
+		    foreach ($old as $k=>$v) {
+
+		    	if ( $k !== "_multiwidget" ){
+					// option for resource
+					$v['use_res'] = 0;
+					if ( $v['usepl'] == "on" ) {
+						$v['use_res'] = 2;
+					}
+
+					$v['popup_goto'] = 0;
+					if ( $v['popupgoto'] == "on" ) {
+						$v['popup_goto'] = 1;
+					} else if ($v['target'] == "on") {
+						$v['popup_goto'] = 2;
+					}
+					unset($v['usepl'], $v['popupgoto'], $v['target']);
+
+					$v['cache_time'] = 0;
+					$v['userchan'] = 0;
+					$v['enhprivacy'] = 0;
+					$v['autoplay_mute'] = 0;
+
+					// add old YTC widget to new set
+					// but append at the end if YTC widget with same ID already exist
+					// in new set (created in version 2.0.0)
+					if ( is_array($new[$k]) ) {
+						// populate at the end
+						array_push($new, $v);
+						$ytc_widget_id = "youtube-channel-".end(array_keys($new));
+					} else {
+						// set as current widget ID
+						$new[$k] = $v;						
+						$ytc_widget_id = "youtube-channel-$k";
+					}
+
+					$ytc_widget_added = 0;
+					foreach ( $widget_areas as $wak => $wav ) {
+						// check if here we have this widget
+						if ( is_array($wav) && in_array($ytc_widget_id,$wav) )
+							$ytc_widget_added++;
+					}
+					// if YTC widget has not present in any widget area, add it to inactive widgets ;)
+					if ( $ytc_widget_added == 0 )
+						array_push($widget_areas['wp_inactive_widgets'], $ytc_widget_id);
+
+		    	}
+		    	// add to inactive widgets if don't belong to any widget area
+
+		    } // foreach widget option
+
+		    // update widget areas set
+		    update_option('sidebars_widgets',$widget_areas);
+
+		    // update new YTC widgets
+		    update_option('widget_youtube-channel',$new);
+
+		    // remove old YTC widgets entry
+		    delete_option('widget_youtube_channel_widget');
+
+		    // clear temporary vars
+		    unset ($old,$new);
+
+		} // if we have old YTC widgets
+
+    } // END public static function activate
+
+	// TODO: Form code
 	public function form($instance) {
 		// outputs the options form on admin
 		$title         = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
@@ -346,7 +408,13 @@ if ( $debugon == 'on' ) {
 				// get/set transient cache
 				if ( false === ($json = get_transient($cache_key)) ) {
 					// no cached JSON, get new
-					$json = file_get_contents($feed_url,0,null,null);
+                    $wprga = array(
+                        'timeout' => 2 // two seconds only
+                    );
+                    $response = wp_remote_get($feed_url, $wprga);
+                    $json = wp_remote_retrieve_body( $response );
+
+					// $json = file_get_contents($feed_url,0,null,null);
 					// set decoded JSON to transient cache_key
 					set_transient($cache_key, json_decode($json), $instance['cache_time']);
 				} else {
@@ -355,9 +423,15 @@ if ( $debugon == 'on' ) {
 				}
 			} else {
 				// just get fresh feed if cache disabled
-				$json = file_get_contents($feed_url,0,null,null);
+				// $json = file_get_contents($feed_url,0,null,null);
+                $wprga = array(
+                    'timeout' => 2 // two seconds only
+                );
+                $response = wp_remote_get($feed_url, $wprga);
+                $json = wp_remote_retrieve_body( $response );
 			}
-
+adbg($feed_url);
+adbg($json);
 			// decode JSON data
 			$json_output = json_decode($json);
 
@@ -414,6 +488,40 @@ if ( $debugon == 'on' ) {
 		echo implode('',$output);
 
 	}
+
+} // class YouTube_Channel_Widget()
+
+if( class_exists('YouTube_Channel_Widget'))
+{
+    // Installation and uninstallation hooks
+    register_activation_hook(__FILE__, array('YouTube_Channel_Widget', 'activate'));
+
+
+	/* Load plugin's textdomain */
+	add_action( 'init', 'youtube_channel_init' ); /*TODO: move inside class*/
+	function youtube_channel_init() {
+		load_plugin_textdomain( YTCTDOM, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	}
+
+	/* Load YTC player script */
+	function ytc_enqueue_scripts() {
+		wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
+	}
+	add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
+
+	function ytc_footer_js() {
+	?>
+	<script type="text/javascript">
+	function onYouTubePlayerAPIReady() {
+	<?php echo $_SESSION['ytc_html5_js']; ?>
+	}
+	function ytc_mute(event){
+		event.target.mute();
+	}
+	</script>
+	<?php
+	}
+	add_action( 'wp_footer', 'ytc_footer_js' );
 
 }
 
@@ -533,17 +641,6 @@ function ytc_print_video($item, $instance, $y) {
 	} else if ( $to_show == "iframe" ) {
 		if ( empty($usepl) ) $yt_url = $yt_id;
 
-/*
-		$output[] = '<iframe title="YouTube video player" width="'.$width.'" height="'.$height.'" src="//'.$yt_domain.'/embed/'.$yt_url.'?wmode=opaque'; //&enablejsapi=1';
-		if ( $controls ) $output[] = "&amp;controls=0";
-		if ( $hideinfo ) $output[] = "&amp;showinfo=0";
-		if ( $autoplay ) $output[] = "&amp;autoplay=1";
-		if ( $autoplay_mute ) $output[] = "&amp;enablejsapi=1";
-		if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
-		if ( $themelight ) $output[] = "&amp;theme=light";
-
-		$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
-*/
 		$js_controls       = ( $controls ) ? "controls: 0," : '';
 		$js_showinfo       = ( $hideinfo ) ? "showinfo: 0," : '';
 		$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
@@ -552,10 +649,9 @@ function ytc_print_video($item, $instance, $y) {
 		$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
 		$js_player_id      = str_replace('-', '_', $yt_url);
 
-		$output[] = <<<JS
-		<div id="ytc_player_$js_player_id"></div>
-		<script type="text/javascript">
-		function onYouTubePlayerAPIReady() {
+		$output[] = '<div id="ytc_player_'.$js_player_id.'"></div>';
+		$site_domain = $_SERVER['HTTP_HOST'];
+		$ytc_html5_js = <<<JS
 			var ytc_player_$js_player_id;
 			ytc_player_$js_player_id = new YT.Player('ytc_player_$js_player_id', {
 				height: '$height',
@@ -565,11 +661,16 @@ function ytc_print_video($item, $instance, $y) {
 				playerVars: {
 					$js_autoplay $js_showinfo $js_controls $js_theme wmmode: 'opaque'
 				},
+				origin: '$site_domain',
 				$js_iv_load_policy $js_autoplay_mute
 			});
-		}	
-		</script>
 JS;
+
+	// prepare JS for footer
+	if ( empty($_SESSION['ytc_html5_js']) )
+		$_SESSION['ytc_html5_js'] = $ytc_html5_js;
+	else
+		$_SESSION['ytc_html5_js'] .= $ytc_html5_js;
 
 	} else { // default is object
 		$obj_url = '//'.$yt_domain.'/'.$yt_url.'?version=3';
@@ -692,7 +793,7 @@ function ytc_channel_link($instance) {
 function ytc_clean_playlist_id($playlist) {
 	if ( substr($playlist,0,4) == "http" ) {
 		// if URL provided, extract playlist ID
-		$playlist = preg_replace('/.*list=PL([A-Za-z0-9]*).*/','$1', $playlist);
+		$playlist = preg_replace('/.*list=PL([A-Za-z0-9\-\_]*).*/','$1', $playlist);
 	} else if ( substr($playlist,0,2) == 'PL' ) {
 		$playlist = substr($playlist,2);
 	}

@@ -113,9 +113,12 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.0.1 =
+= 2.1.0dev =
 * Change: iframe/HTML5 player inject with IFrame Player API https://developers.google.com/youtube/player_parameters#IFrame_Player_API
+* Change: use native WP remote file download function wp_remote_get to fetch feeds
 * Add: mute autio on autoplay if iframe/HTML5 is selected
+* Add: converter that will port pre-2.0.0 YTC widgets to 2.0.0+ version
+* Fix: playlist parser (now allowed dash and underscore in playlist ID)
 
 = 2.0.0 =
 * Fix: undefined vars notices
@@ -227,6 +230,10 @@ After upgrade please reconfigure widget. Some variables are changed and implemen
 Just try it and rate it. Only initial release is available right now.
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+
+Before you upgrade to this version, BACKUP DATABASE because experimental transition code converts YouTube Channel widgets made in versions prior to 2.0.0 to new format. You can lose all predefined YTC widgets.
 
 = 2.0.0 =
 
