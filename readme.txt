@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.7.0
 Tested up to: 3.8.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -113,6 +113,9 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.0.1 =
+* Change: iframe/HTML5 player inject with IFrame Player API https://developers.google.com/youtube/player_parameters#IFrame_Player_API
+* Add: mute autio on autoplay if iframe/HTML5 is selected
 
 = 2.0.0 =
 * Fix: undefined vars notices

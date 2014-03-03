@@ -4,20 +4,37 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.0.0
+Version: 2.0.1
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.0.0' );
+define( 'YTCVER', '2.0.1' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
 define( 'YTCTDOM', 'youtube-channel' );
 
 /* Load plugin's textdomain */
-add_action( 'init', 'youtube_channel_init' );
+add_action( 'init', 'youtube_channel_init' ); /*TODO: move inside class*/
 function youtube_channel_init() {
 	load_plugin_textdomain( YTCTDOM, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
+
+
+/* Load YTC player script */
+function ytc_enqueue_scripts() {
+	wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
+function ytc_mute_script() {
+?>
+<script type="text/javascript">
+function ytc_mute(event){
+	event.target.mute();
+}
+</script>
+<?php
+}
+add_action( 'wp_footer', 'ytc_mute_script' );
 
 /* youtube widget */
 class YouTube_Channel_Widget extends WP_Widget {
@@ -29,41 +46,43 @@ class YouTube_Channel_Widget extends WP_Widget {
 			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', YTCTDOM ) )
 		);
 	}
-
+// TODO: Form code
 	public function form($instance) {
 		// outputs the options form on admin
-		$title      = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
-		$channel    = (!empty($instance['channel'])) ? esc_attr($instance['channel']) : '';
-		$vidqty     = (!empty($instance['vidqty'])) ? esc_attr($instance['vidqty']) : 1; // number of items to show
-		$playlist   = (!empty($instance['playlist'])) ? esc_attr($instance['playlist']) : '';
-		$use_res    = (!empty($instance['use_res'])) ? esc_attr($instance['use_res']) : 0; // resource to use: channel, favorites, playlis : ''t
-		$only_pl    = (!empty($instance['only_pl'])) ? esc_attr($instance['only_pl']) : '';
-		$cache_time = (!empty($instance['cache_time'])) ? esc_attr($instance['cache_time']) : '';
-		$getrnd     = (!empty($instance['getrnd'])) ? esc_attr($instance['getrnd']) : '';
-		$maxrnd     = (!empty($instance['maxrnd'])) ? esc_attr($instance['maxrnd']) : 25; // items to fetch
+		$title         = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
+		$channel       = (!empty($instance['channel'])) ? esc_attr($instance['channel']) : '';
+		$vidqty        = (!empty($instance['vidqty'])) ? esc_attr($instance['vidqty']) : 1; // number of items to show
+		$playlist      = (!empty($instance['playlist'])) ? esc_attr($instance['playlist']) : '';
+		$use_res       = (!empty($instance['use_res'])) ? esc_attr($instance['use_res']) : 0; // resource to use: channel, favorites, playlis : ''t
+		$only_pl       = (!empty($instance['only_pl'])) ? esc_attr($instance['only_pl']) : '';
+		$cache_time    = (!empty($instance['cache_time'])) ? esc_attr($instance['cache_time']) : '';
+		$getrnd        = (!empty($instance['getrnd'])) ? esc_attr($instance['getrnd']) : '';
+		$maxrnd        = (!empty($instance['maxrnd'])) ? esc_attr($instance['maxrnd']) : 25; // items to fetch
 		
-		$goto_txt   = (!empty($instance['goto_txt'])) ? esc_attr($instance['goto_txt']) : '';
-		$showgoto   = (!empty($instance['showgoto'])) ? esc_attr($instance['showgoto']) : '';
-		$popup_goto = (!empty($instance['popup_goto'])) ? esc_attr($instance['popup_goto']) : '';
+		$goto_txt      = (!empty($instance['goto_txt'])) ? esc_attr($instance['goto_txt']) : '';
+		$showgoto      = (!empty($instance['showgoto'])) ? esc_attr($instance['showgoto']) : '';
+		$popup_goto    = (!empty($instance['popup_goto'])) ? esc_attr($instance['popup_goto']) : '';
 		
-		$showtitle  = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
-		$showvidesc = (!empty($instance['showvidesc'])) ? esc_attr($instance['showvidesc']) : '';
-		$videsclen  = (!empty($instance['videsclen'])) ? esc_attr($instance['videsclen']) : 0;
-		$descappend = (!empty($instance['descappend'])) ? esc_attr($instance['descappend']) : '&hellip;';
-		$width      = (!empty($instance['width'])) ? esc_attr($instance['width']) : 220;
-		$height     = (!empty($instance['height'])) ? esc_attr($instance['height']) : '';
-		$to_show    = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
-		$autoplay   = (!empty($instance['autoplay'])) ? esc_attr($instance['autoplay']) : '';
-		$controls   = (!empty($instance['controls'])) ? esc_attr($instance['controls']) : '';
-		$fixnoitem  = (!empty($instance['fixnoitem'])) ? esc_attr($instance['fixnoitem']) : '';
-		$ratio      = (!empty($instance['ratio'])) ? esc_attr($instance['ratio']) : '';
-		$fixyt      = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
-		$hideinfo   = (!empty($instance['hideinfo'])) ? esc_attr($instance['hideinfo']) : '';
-		$hideanno   = (!empty($instance['hideanno'])) ? esc_attr($instance['hideanno']) : '';
-		$themelight = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
-		$debugon    = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
-		$userchan   = (!empty($instance['userchan'])) ? esc_attr($instance['userchan']) : '';
-		$enhprivacy = (!empty($instance['enhprivacy'])) ? esc_attr($instance['enhprivacy']) : '';
+		$showtitle     = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
+		$showvidesc    = (!empty($instance['showvidesc'])) ? esc_attr($instance['showvidesc']) : '';
+		$videsclen     = (!empty($instance['videsclen'])) ? esc_attr($instance['videsclen']) : 0;
+		$descappend    = (!empty($instance['descappend'])) ? esc_attr($instance['descappend']) : '&hellip;';
+		$width         = (!empty($instance['width'])) ? esc_attr($instance['width']) : 220;
+		$height        = (!empty($instance['height'])) ? esc_attr($instance['height']) : '';
+		$to_show       = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
+		$autoplay      = (!empty($instance['autoplay'])) ? esc_attr($instance['autoplay']) : '';
+		$autoplay_mute = (!empty($instance['autoplay_mute'])) ? esc_attr($instance['autoplay_mute']) : '';
+
+		$controls      = (!empty($instance['controls'])) ? esc_attr($instance['controls']) : '';
+		$fixnoitem     = (!empty($instance['fixnoitem'])) ? esc_attr($instance['fixnoitem']) : '';
+		$ratio         = (!empty($instance['ratio'])) ? esc_attr($instance['ratio']) : '';
+		$fixyt         = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
+		$hideinfo      = (!empty($instance['hideinfo'])) ? esc_attr($instance['hideinfo']) : '';
+		$hideanno      = (!empty($instance['hideanno'])) ? esc_attr($instance['hideanno']) : '';
+		$themelight    = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
+		$debugon       = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
+		$userchan      = (!empty($instance['userchan'])) ? esc_attr($instance['userchan']) : '';
+		$enhprivacy    = (!empty($instance['enhprivacy'])) ? esc_attr($instance['enhprivacy']) : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title');	?>"><?php _e('Widget Title:', YTCTDOM);	?><input type="text" class="widefat" id="<?php echo $this->get_field_id('title');		?>" name="<?php echo $this->get_field_name('title');	?>" value="<?php echo $title;		?>" title="<?php _e('Title for widget', YTCTDOM); ?>" /></label>
@@ -165,7 +184,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $themelight, true ); ?> id="<?php echo $this->get_field_id( 'themelight' ); ?>" name="<?php echo $this->get_field_name( 'themelight' ); ?>" /> <label for="<?php echo $this->get_field_id( 'themelight' ); ?>"><?php _e('Use light theme (default is dark)', YTCTDOM); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $controls, true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls', YTCTDOM); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $fixyt, true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', YTCTDOM); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay, true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video or playlist', YTCTDOM); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay, true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video or playlist', YTCTDOM); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay_mute, true ); ?> id="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>" name="<?php echo $this->get_field_name( 'autoplay_mute' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>"><?php _e('Mute video on autoplay', YTCTDOM); ?></label>
 		</p>
 
 <h4><?php _e('Content Layout', YTCTDOM); ?></h4>
@@ -223,39 +243,41 @@ if ( $debugon == 'on' ) {
 
 	public function update($new_instance, $old_instance) {
 		// processes widget options to be saved
-		$instance = $old_instance;
-		$instance['title']      = strip_tags($new_instance['title']);
-		$instance['channel']    = strip_tags($new_instance['channel']);
-		$instance['vidqty']     = $new_instance['vidqty'];
-		$instance['playlist']   = strip_tags($new_instance['playlist']);
-		$instance['use_res']    = $new_instance['use_res'];
-		$instance['cache_time'] = $new_instance['cache_time'];
-		$instance['only_pl']    = $new_instance['only_pl'];
-		$instance['getrnd']     = $new_instance['getrnd'];
-		$instance['maxrnd']     = $new_instance['maxrnd'];
+		$instance                  = $old_instance;
+		$instance['title']         = strip_tags($new_instance['title']);
+		$instance['channel']       = strip_tags($new_instance['channel']);
+		$instance['vidqty']        = $new_instance['vidqty'];
+		$instance['playlist']      = strip_tags($new_instance['playlist']);
+		$instance['use_res']       = $new_instance['use_res'];
+		$instance['cache_time']    = $new_instance['cache_time'];
+		$instance['only_pl']       = $new_instance['only_pl'];
+		$instance['getrnd']        = $new_instance['getrnd'];
+		$instance['maxrnd']        = $new_instance['maxrnd'];
 		
-		$instance['goto_txt']   = strip_tags($new_instance['goto_txt']);
-		$instance['showgoto']   = $new_instance['showgoto'];
-		$instance['popup_goto'] = $new_instance['popup_goto'];
+		$instance['goto_txt']      = strip_tags($new_instance['goto_txt']);
+		$instance['showgoto']      = $new_instance['showgoto'];
+		$instance['popup_goto']    = $new_instance['popup_goto'];
 		
-		$instance['showtitle']  = $new_instance['showtitle'];
-		$instance['showvidesc'] = $new_instance['showvidesc'];
-		$instance['descappend'] = strip_tags($new_instance['descappend']);
-		$instance['videsclen']  = strip_tags($new_instance['videsclen']);
-		$instance['width']      = strip_tags($new_instance['width']);
-		$instance['height']     = strip_tags($new_instance['height']);
-		$instance['to_show']    = strip_tags($new_instance['to_show']);
-		$instance['autoplay']   = $new_instance['autoplay'];
-		$instance['controls']   = $new_instance['controls'];
-		$instance['fixnoitem']  = $new_instance['fixnoitem'];
-		$instance['ratio']      = strip_tags($new_instance['ratio']);
-		$instance['fixyt']      = $new_instance['fixyt'];
-		$instance['hideinfo']   = $new_instance['hideinfo'];
-		$instance['hideanno']   = $new_instance['hideanno'];
-		$instance['themelight'] = $new_instance['themelight'];
-		$instance['debugon']    = $new_instance['debugon'];
-		$instance['userchan']   = $new_instance['userchan'];
-		$instance['enhprivacy'] = $new_instance['enhprivacy'];
+		$instance['showtitle']     = $new_instance['showtitle'];
+		$instance['showvidesc']    = $new_instance['showvidesc'];
+		$instance['descappend']    = strip_tags($new_instance['descappend']);
+		$instance['videsclen']     = strip_tags($new_instance['videsclen']);
+		$instance['width']         = strip_tags($new_instance['width']);
+		$instance['height']        = strip_tags($new_instance['height']);
+		$instance['to_show']       = strip_tags($new_instance['to_show']);
+		$instance['autoplay']      = $new_instance['autoplay'];
+		$instance['autoplay_mute'] = $new_instance['autoplay_mute'];
+
+		$instance['controls']      = $new_instance['controls'];
+		$instance['fixnoitem']     = $new_instance['fixnoitem'];
+		$instance['ratio']         = strip_tags($new_instance['ratio']);
+		$instance['fixyt']         = $new_instance['fixyt'];
+		$instance['hideinfo']      = $new_instance['hideinfo'];
+		$instance['hideanno']      = $new_instance['hideanno'];
+		$instance['themelight']    = $new_instance['themelight'];
+		$instance['debugon']       = $new_instance['debugon'];
+		$instance['userchan']      = $new_instance['userchan'];
+		$instance['enhprivacy']    = $new_instance['enhprivacy'];
 
 		return $instance;
 	}
@@ -428,9 +450,10 @@ function ytc_print_video($item, $instance, $y) {
 
 	// get hideinfo, autoplay and controls settings
 	// where this is used?
-	$hideinfo = $instance['hideinfo'];
-	$autoplay = $instance['autoplay'];
-	$controls = $instance['controls'];
+	$hideinfo      = $instance['hideinfo'];
+	$autoplay      = $instance['autoplay'];
+	$autoplay_mute = $instance['autoplay_mute'];
+	$controls      = $instance['controls'];
 
 	// set width and height
 	$width    = $instance['width'];
@@ -510,14 +533,44 @@ function ytc_print_video($item, $instance, $y) {
 	} else if ( $to_show == "iframe" ) {
 		if ( empty($usepl) ) $yt_url = $yt_id;
 
+/*
 		$output[] = '<iframe title="YouTube video player" width="'.$width.'" height="'.$height.'" src="//'.$yt_domain.'/embed/'.$yt_url.'?wmode=opaque'; //&enablejsapi=1';
 		if ( $controls ) $output[] = "&amp;controls=0";
 		if ( $hideinfo ) $output[] = "&amp;showinfo=0";
 		if ( $autoplay ) $output[] = "&amp;autoplay=1";
+		if ( $autoplay_mute ) $output[] = "&amp;enablejsapi=1";
 		if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
 		if ( $themelight ) $output[] = "&amp;theme=light";
 
 		$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
+*/
+		$js_controls       = ( $controls ) ? "controls: 0," : '';
+		$js_showinfo       = ( $hideinfo ) ? "showinfo: 0," : '';
+		$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
+		$js_iv_load_policy = ( $hideanno ) ? "iv_load_policy: 3," : '';
+		$js_theme          = ( $themelight ) ? "theme: 'light'," : '';
+		$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
+		$js_player_id      = str_replace('-', '_', $yt_url);
+
+		$output[] = <<<JS
+		<div id="ytc_player_$js_player_id"></div>
+		<script type="text/javascript">
+		function onYouTubePlayerAPIReady() {
+			var ytc_player_$js_player_id;
+			ytc_player_$js_player_id = new YT.Player('ytc_player_$js_player_id', {
+				height: '$height',
+				width: '$width',
+				videoId: '$yt_url',
+				enablejsapi: 1,
+				playerVars: {
+					$js_autoplay $js_showinfo $js_controls $js_theme wmmode: 'opaque'
+				},
+				$js_iv_load_policy $js_autoplay_mute
+			});
+		}	
+		</script>
+JS;
+
 	} else { // default is object
 		$obj_url = '//'.$yt_domain.'/'.$yt_url.'?version=3';
 		$obj_url .= ( $controls ) ? '&amp;controls=0' : '';
