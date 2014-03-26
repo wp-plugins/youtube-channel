@@ -59,9 +59,9 @@ class YouTube_Channel_Widget extends WP_Widget {
 					}
 					unset($v['usepl'], $v['popupgoto'], $v['target']);
 
-					$v['cache_time'] = 0;
-					$v['userchan'] = 0;
-					$v['enhprivacy'] = 0;
+					$v['cache_time']    = 0;
+					$v['userchan']      = 0;
+					$v['enhprivacy']    = 0;
 					$v['autoplay_mute'] = 0;
 
 					// add old YTC widget to new set
@@ -111,40 +111,52 @@ class YouTube_Channel_Widget extends WP_Widget {
 	// TODO: Form code
 	public function form($instance) {
 		// outputs the options form on admin
+		// General Options
 		$title         = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
 		$channel       = (!empty($instance['channel'])) ? esc_attr($instance['channel']) : '';
-		$vidqty        = (!empty($instance['vidqty'])) ? esc_attr($instance['vidqty']) : 1; // number of items to show
 		$playlist      = (!empty($instance['playlist'])) ? esc_attr($instance['playlist']) : '';
+
 		$use_res       = (!empty($instance['use_res'])) ? esc_attr($instance['use_res']) : 0; // resource to use: channel, favorites, playlis : ''t
 		$only_pl       = (!empty($instance['only_pl'])) ? esc_attr($instance['only_pl']) : '';
+
 		$cache_time    = (!empty($instance['cache_time'])) ? esc_attr($instance['cache_time']) : '';
-		$getrnd        = (!empty($instance['getrnd'])) ? esc_attr($instance['getrnd']) : '';
+
 		$maxrnd        = (!empty($instance['maxrnd'])) ? esc_attr($instance['maxrnd']) : 25; // items to fetch
-		
-		$goto_txt      = (!empty($instance['goto_txt'])) ? esc_attr($instance['goto_txt']) : '';
-		$showgoto      = (!empty($instance['showgoto'])) ? esc_attr($instance['showgoto']) : '';
-		$popup_goto    = (!empty($instance['popup_goto'])) ? esc_attr($instance['popup_goto']) : '';
-		
+		$vidqty        = (!empty($instance['vidqty'])) ? esc_attr($instance['vidqty']) : 1; // number of items to show
+
+		$enhprivacy    = (!empty($instance['enhprivacy'])) ? esc_attr($instance['enhprivacy']) : '';
+		$fixnoitem     = (!empty($instance['fixnoitem'])) ? esc_attr($instance['fixnoitem']) : '';
+		$getrnd        = (!empty($instance['getrnd'])) ? esc_attr($instance['getrnd']) : '';
+
+		// Video Settings
+		$ratio         = (!empty($instance['ratio'])) ? esc_attr($instance['ratio']) : 3;
+		$width         = (!empty($instance['width'])) ? esc_attr($instance['width']) : 220;
+		// $height        = (!empty($instance['height'])) ? esc_attr($instance['height']) : '';
+
+		$to_show       = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
+		$themelight    = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
+		$controls      = (!empty($instance['controls'])) ? esc_attr($instance['controls']) : '';
+		$fixyt         = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
+		$autoplay      = (!empty($instance['autoplay'])) ? esc_attr($instance['autoplay']) : '';
+		$autoplay_mute = (!empty($instance['autoplay_mute'])) ? esc_attr($instance['autoplay_mute']) : '';
+
+		// Content Layout
 		$showtitle     = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
 		$showvidesc    = (!empty($instance['showvidesc'])) ? esc_attr($instance['showvidesc']) : '';
 		$videsclen     = (!empty($instance['videsclen'])) ? esc_attr($instance['videsclen']) : 0;
 		$descappend    = (!empty($instance['descappend'])) ? esc_attr($instance['descappend']) : '&hellip;';
-		$width         = (!empty($instance['width'])) ? esc_attr($instance['width']) : 220;
-		$height        = (!empty($instance['height'])) ? esc_attr($instance['height']) : '';
-		$to_show       = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
-		$autoplay      = (!empty($instance['autoplay'])) ? esc_attr($instance['autoplay']) : '';
-		$autoplay_mute = (!empty($instance['autoplay_mute'])) ? esc_attr($instance['autoplay_mute']) : '';
 
-		$controls      = (!empty($instance['controls'])) ? esc_attr($instance['controls']) : '';
-		$fixnoitem     = (!empty($instance['fixnoitem'])) ? esc_attr($instance['fixnoitem']) : '';
-		$ratio         = (!empty($instance['ratio'])) ? esc_attr($instance['ratio']) : '';
-		$fixyt         = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
-		$hideinfo      = (!empty($instance['hideinfo'])) ? esc_attr($instance['hideinfo']) : '';
 		$hideanno      = (!empty($instance['hideanno'])) ? esc_attr($instance['hideanno']) : '';
-		$themelight    = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
-		$debugon       = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
+		$hideinfo      = (!empty($instance['hideinfo'])) ? esc_attr($instance['hideinfo']) : '';
+
+		// Link to Channel
+		$goto_txt      = (!empty($instance['goto_txt'])) ? esc_attr($instance['goto_txt']) : '';
+		$showgoto      = (!empty($instance['showgoto'])) ? esc_attr($instance['showgoto']) : '';
+		$popup_goto    = (!empty($instance['popup_goto'])) ? esc_attr($instance['popup_goto']) : '';
 		$userchan      = (!empty($instance['userchan'])) ? esc_attr($instance['userchan']) : '';
-		$enhprivacy    = (!empty($instance['enhprivacy'])) ? esc_attr($instance['enhprivacy']) : '';
+		
+		// Debug YTC
+		$debugon       = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title');	?>"><?php _e('Widget Title:', YTCTDOM);	?><input type="text" class="widefat" id="<?php echo $this->get_field_id('title');		?>" name="<?php echo $this->get_field_name('title');	?>" value="<?php echo $title;		?>" title="<?php _e('Title for widget', YTCTDOM); ?>" /></label>
@@ -186,26 +198,67 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<select class="widefat" id="<?php echo $this->get_field_id( 'cache_time' ); ?>" name="<?php echo $this->get_field_name( 'cache_time' ); ?>">
 				
 				<option value="0"<?php selected( $cache_time, 0 ); ?>><?php _e('Do not chache', YTCTDOM); ?></option>
-				<?php $tt = 60; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('1 minute', YTCTDOM); ?></option>
-				<?php $tt = 60 * 5; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('5 minutes', YTCTDOM); ?></option>
-				<?php $tt = 60 * 15; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('15 minutes', YTCTDOM); ?></option>
-				<?php $tt = 60 * 30; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('30 minutes', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('1 hour', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 2; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('2 hours', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 5; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('5 hours', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 10; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('10 hours', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 12; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('12 hours', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 18; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('18 hours', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('1 day', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 2; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('2 days', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 3; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('3 days', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 4; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('4 days', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 5; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('5 days', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 6; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('6 days', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 7; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('1 week', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 7 * 2; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('2 weeks', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 7 * 3; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('3 weeks', YTCTDOM); ?></option>
-				<?php $tt = 60 * 60 * 24 * 7 * 4; ?><option value="<?=$tt?>"<?php selected( $cache_time, $tt ); ?>><?php _e('1 month', YTCTDOM); ?></option>
+				<?php
+				$times = array(
+					'minute' => array(
+						1  => "1 minute",
+						5  => "5 minutes",
+						15 => "15 minutes",
+						30 => "30 minutes"
+					),
+					'hour' => array(
+						1  => "1 hour",
+						2  => "2 hours",
+						5  => "5 hours",
+						10 => "10 hours",
+						12 => "12 hours",
+						18 => "18 hours"
+					),
+					'day' => array(
+						1 => "1 day",
+						2 => "2 days",
+						3 => "3 days",
+						4 => "4 days",
+						5 => "5 days",
+						6 => "6 days"
+					),
+					'week' => array(
+						1 => "1 week",
+						2 => "2 weeks",
+						3 => "3 weeks",
+						4 => "1 month"
+					)
+				);
+
+				$out = "";
+				foreach ($times as $period => $timeset)
+				{
+					switch ($period)
+					{
+						case 'minute':
+							$sc = MINUTE_IN_SECONDS;
+							break;
+						case 'hour':
+							$sc = HOUR_IN_SECONDS;
+							break;
+						case 'day':
+							$sc = DAY_IN_SECONDS;
+							break;
+						case 'week':
+							$sc = WEEK_IN_SECONDS;
+							break;
+					}
+
+					foreach ($timeset as $n => $s)
+					{
+						$sec = $sc * $n;
+						$out .='<option value="'.$sec.'" '. selected( $cache_time, $sec ).'>'.__($s, YTCTDOM).'</option>';
+						unset($sec);
+					}
+				}
+				echo $out;
+				unset($out);
+			?>
 			</select>
 		</p>
 		<p>
@@ -222,18 +275,20 @@ class YouTube_Channel_Widget extends WP_Widget {
 		</p>
 		
 <h4><?php _e('Video Settings', YTCTDOM); ?></h4>
+		<p><label for="<?php echo $this->get_field_id('ratio'); ?>"><?php _e('Aspect ratio', YTCTDOM); ?>:</label>
+			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
+				<?php /* <option value="0"<?php selected( $ratio, 0 ); ?>><?php _e('Custom (as set above)', YTCTDOM); ?></option> */ ?>
+				<option value="3"<?php selected( $ratio, 3 ); ?>>16:9</option>
+				<option value="2"<?php selected( $ratio, 2 ); ?>>16:10</option>
+				<option value="1"<?php selected( $ratio, 1 ); ?>>4:3</option>
+			</select>
+		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', YTCTDOM); ?>:</label> <input class="small-text" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="number" min="32" value="<?php echo $width; ?>" title="<?php _e('Set video width in pixels', YTCTDOM); ?>" /> px (<?php _e('default', YTCTDOM); ?> 220)
+			<?php /*
 			<br />
-			<label for="<?php echo $this->get_field_id('height'); ?>"><?php _e('Height', YTCTDOM); ?>:</label> <input class="small-text" id="<?php echo $this->get_field_id('height'); ?>" name="<?php echo $this->get_field_name('height'); ?>" type="number" min="32" value="<?php echo $height; ?>" title="<?php _e('Set video height in pixels', YTCTDOM); ?>" /> px (<?php _e('default', YTCTDOM); ?> 165)
-		</p>
-		<p><label for="<?php echo $this->get_field_id('ratio'); ?>"><?php _e('Aspect ratio (relative to width):', YTCTDOM); ?></label>
-			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
-				<option value="0"<?php selected( $ratio, 0 ); ?>><?php _e('Custom (as set above)', YTCTDOM); ?></option>
-				<option value="1"<?php selected( $ratio, 1 ); ?>>4:3</option>
-				<option value="2"<?php selected( $ratio, 2 ); ?>>16:10</option>
-				<option value="3"<?php selected( $ratio, 3 ); ?>>16:9</option>
-			</select>
+			<label for="< ?php echo $this->get_field_id('height'); ?>">< ?php _e('Height', YTCTDOM); ?>:</label> <input class="small-text" id="< ?php echo $this->get_field_id('height'); ?>" name="< ?php echo $this->get_field_name('height'); ?>" type="number" min="32" value="< ?php echo $height; ?>" title="< ?php _e('Set video height in pixels', YTCTDOM); ?>" /> px (< ?php _e('default', YTCTDOM); ?> 165)
+			*/ ?>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?', YTCTDOM); ?></label>
@@ -280,11 +335,12 @@ class YouTube_Channel_Widget extends WP_Widget {
 
 <?php
 if ( $debugon == 'on' ) {
+	global $wp_version;
 	$debug_arr = array_merge(
 		array(
 			'server' => $_SERVER["SERVER_SOFTWARE"],
-			'php'    => phpversion(),
-			'wp'     => get_bloginfo('version'),
+			'php'    => PHP_VERSION, //phpversion(),
+			'wp'     => $wp_version, // get_bloginfo('version'),
 			'ytc'    => YTCVER,
 			'url'    => get_site_url()
 		),
@@ -292,7 +348,7 @@ if ( $debugon == 'on' ) {
 ?>
 
 			<textarea name="debug" class="widefat" style="height: 100px;"><?php echo au_ytc_dbg($debug_arr); ?></textarea><br />
-			Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.
+			<small>Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.<br />Please do not remove channel and playlist ID's. If you are concerned about privacy, send this debug log to email <a href="mailto:urke.kg@gmail.com?subject=YTC%20debug%20log">urke.kg@gmail.com</a></small>
 <?php } ?>
 		</p>
 
@@ -325,7 +381,7 @@ if ( $debugon == 'on' ) {
 		$instance['descappend']    = strip_tags($new_instance['descappend']);
 		$instance['videsclen']     = strip_tags($new_instance['videsclen']);
 		$instance['width']         = strip_tags($new_instance['width']);
-		$instance['height']        = strip_tags($new_instance['height']);
+		// $instance['height']        = strip_tags($new_instance['height']);
 		$instance['to_show']       = strip_tags($new_instance['to_show']);
 		$instance['autoplay']      = $new_instance['autoplay'];
 		$instance['autoplay_mute'] = $new_instance['autoplay_mute'];
@@ -430,12 +486,13 @@ if ( $debugon == 'on' ) {
                 $response = wp_remote_get($feed_url, $wprga);
                 $json = wp_remote_retrieve_body( $response );
 			}
-adbg($feed_url);
-adbg($json);
+
 			// decode JSON data
 			$json_output = json_decode($json);
 
-			if ( !is_wp_error($json_output) ) {
+			// predefine maxitems to prevent undefined notices
+			$maxitems = 0;
+			if ( !is_wp_error($json_output) && is_object($json_output) ) {
 				// sort by date uploaded
 				$json_entry = $json_output->feed->entry;
 
@@ -456,7 +513,8 @@ adbg($json);
 			}
 
 			if ($maxitems == 0) {
-				$output[] = __( 'No items' , YTCTDOM );
+				// $output[] = __( 'No items' , YTCTDOM );
+				$output[] = __("No items", YTCTDOM).' [<a href="'.$feed_url.'" target="_blank">'.__("Check here why",YTCTDOM).'</a>]';
 			} else {
 
 				if ( $getrnd ) $rnd_used = array(); // set array for unique random item
@@ -535,7 +593,8 @@ function ytc_only_pl($instance) {
 		if ( empty($playlist) )
 			$playlist = YTCPLID;
 
-		$height = height_ratio($width, $instance['height'], $instance['ratio']);
+		$height = height_ratio($width, $instance['ratio']);
+		// $height = height_ratio($width, $instance['height'], $instance['ratio']);
 
 		$height += ($instance['fixyt']) ? 25 : 0;
 
@@ -565,9 +624,9 @@ function ytc_print_video($item, $instance, $y) {
 
 	// set width and height
 	$width    = $instance['width'];
-	if ( empty($width) )
-		$width = 220;
-	$height   = height_ratio($width, $instance['height'], $instance['ratio']);
+	if ( empty($width) ) $width = 220;
+	$height   = height_ratio($width, $instance['ratio']);
+	// $height   = height_ratio($width, $instance['height'], $instance['ratio']);
 
 	// calculate image height based on width for 4:3 thumbnail
 	$imgfixedheight = $width / 4 * 3;
@@ -734,10 +793,23 @@ JS;
 }
 
 // function to calculate height by width and ratio
-function height_ratio($width, $height=0, $ratio) {
-	if ( $width == "" )
-		$width = 220;
+function height_ratio($width=220, $ratio) {
+	// if ( $width == "" ) $width = 220;
 
+	switch ($ratio)
+	{
+		case 1:
+			$height = round(($width / 4 ) * 3);
+			break;
+		case 2:
+			$height = round(($width / 16 ) * 10);
+			break;
+		case 3:
+		default:
+			$height = round(($width / 16 ) * 9);
+	}
+
+	/*
 	if ( $ratio == 1 ) { // 4:3
 		$height = round(($width / 4 ) * 3);
 	} elseif ( $ratio == 2 ) { // 16:10
@@ -749,6 +821,7 @@ function height_ratio($width, $height=0, $ratio) {
 		if ( $height == "" || $height == 0 )
 			$height = 165;
 	}
+	*/
 	return $height;
 }
 
@@ -823,13 +896,4 @@ function ytc_json_sort_by_date($a, $b) {
 function yt_domain($instance) {
 	$yt_domain = ( !empty($instance['enhprivacy']) ) ? 'www.youtube-nocookie.com' : 'www.youtube.com';
 	return $yt_domain;
-}
-
-function adbg($i){
-    if ( is_array($i) )
-        $o = '<pre>'.print_r($i,1).'</pre>';
-    else
-        $o = $i;
-
-    apply_filters('debug', $o);
 }

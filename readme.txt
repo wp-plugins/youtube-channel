@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.7.0
 Tested up to: 3.8.1
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,8 +23,8 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to get random video from channel or playlist
 * Set custom widget title
 * Enhanced Privacy
-* Custom set of width and height of video thumbnail/embeded object (default 220x165 px)
-* Preferred aspect ratio relative to width (custom, 4:3, 16:10 and 16:9)
+* Custom width for video thumbnail/embeded object (default is 220px)
+* Preferred aspect ratio relative to width (16:9, 16:10 and 4:3)
 * Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
 * Fix height for old and new YouTube embed and Chromeless video object taken by controls
 * Custom caching timeout
@@ -33,7 +33,7 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to hide video controls
 * Option to hide video info
 * Option to show video title on top of the video
-* Option to show video description below vide (experimental)
+* Option to show video description below video
 * Option to hide annotations from video
 * Option to use light controls theme
 * Set custom text for link to channel
@@ -77,7 +77,6 @@ If you have to upgrade manually simply repeat the installation steps and re-enab
 == TODO ==
 
 * Add option to open video for thumbnail image in lightbox
-* Improve autoplay option to start playing only first video item
 
 == Frequently Asked Questions ==
 
@@ -113,10 +112,11 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.1.0dev =
+= 2.1.0 =
 * Change: iframe/HTML5 player inject with IFrame Player API https://developers.google.com/youtube/player_parameters#IFrame_Player_API
-* Change: use native WP remote file download function wp_remote_get to fetch feeds
-* Add: mute autio on autoplay if iframe/HTML5 is selected
+* Change: use native WP remote file download function wp_remote_get to fetch feeds (prevent some permission errors on some hosts)
+* Change: removed height parameter so height is calculated by aspect ratio selection - 16:9 as default
+* Add: mute audio on autoplay if iframe/HTML5 is selected
 * Add: converter that will port pre-2.0.0 YTC widgets to 2.0.0+ version
 * Fix: playlist parser (now allowed dash and underscore in playlist ID)
 
