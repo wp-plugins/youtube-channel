@@ -113,7 +113,7 @@ If you does not see your latest video in your uplaods feed (which you can access
 
 == Changelog ==
 = 2.1.0.1 =
-* Change: async loading for IFRAME type
+* Change: add back old iframe functionality, second iframe option is async loading
 
 = 2.1.0 =
 * Change: iframe/HTML5 player inject with IFrame Player API https://developers.google.com/youtube/player_parameters#IFrame_Player_API

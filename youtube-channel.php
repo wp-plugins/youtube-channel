@@ -295,6 +295,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 				<option value="thumbnail"<?php selected( $to_show, 'thumbnail' ); ?>><?php _e('Thumbnail', YTCTDOM); ?></option>
 				<option value="object"<?php selected( $to_show, 'object' ); ?>><?php _e('Flash (object)', YTCTDOM); ?></option>
 				<option value="iframe"<?php selected( $to_show, 'iframe' ); ?>><?php _e('HTML5 (iframe)', YTCTDOM); ?></option>
+				<option value="iframe2"<?php selected( $to_show, 'iframe2' ); ?>><?php _e('HTML5 (iframe) Async', YTCTDOM); ?></option>
 				<option value="chromeless"<?php selected( $to_show, 'chromeless' ); ?>><?php _e('Chromeless', YTCTDOM); ?></option>
 			</select>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $themelight, true ); ?> id="<?php echo $this->get_field_id( 'themelight' ); ?>" name="<?php echo $this->get_field_name( 'themelight' ); ?>" /> <label for="<?php echo $this->get_field_id( 'themelight' ); ?>"><?php _e('Use light theme (default is dark)', YTCTDOM); ?></label><br />
@@ -705,6 +706,18 @@ function ytc_print_video($item, $instance, $y) {
 		$output[] = ob_get_contents();
 		ob_end_clean();
 	} else if ( $to_show == "iframe" ) {
+		if ( empty($usepl) ) $yt_url = $yt_id;
+
+		$output[] = '<iframe title="YouTube video player" width="'.$width.'" height="'.$height.'" src="//'.$yt_domain.'/embed/'.$yt_url.'?wmode=opaque'; //&enablejsapi=1';
+		if ( $controls ) $output[] = "&amp;controls=0";
+		if ( $hideinfo ) $output[] = "&amp;showinfo=0";
+		if ( $autoplay ) $output[] = "&amp;autoplay=1";
+		if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
+		if ( $themelight ) $output[] = "&amp;theme=light";
+
+		$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
+	} if ( $to_show == "iframe2" ) {
+		// youtube API async
 		if ( empty($usepl) ) $yt_url = $yt_id;
 
 		$js_controls       = ( $controls ) ? "controls: 0," : '';
