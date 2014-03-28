@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.1.0
+Version: 2.1.0.1
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.1.0' );
+define( 'YTCVER', '2.1.0.1' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -23,7 +23,6 @@ class YouTube_Channel_Widget extends WP_Widget {
 			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', YTCTDOM ) )
 		);
 	}
-
 
     /**
      * Activate the plugin
@@ -368,34 +367,34 @@ if ( $debugon == 'on' ) {
 		$instance['playlist']      = strip_tags($new_instance['playlist']);
 		$instance['use_res']       = $new_instance['use_res'];
 		$instance['cache_time']    = $new_instance['cache_time'];
-		$instance['only_pl']       = $new_instance['only_pl'];
-		$instance['getrnd']        = $new_instance['getrnd'];
+		$instance['only_pl']       = (isset($new_instance['only_pl'])) ? $new_instance['only_pl'] : false;
+		$instance['getrnd']        = (isset($new_instance['getrnd'])) ? $new_instance['getrnd'] : false;
 		$instance['maxrnd']        = $new_instance['maxrnd'];
 		
 		$instance['goto_txt']      = strip_tags($new_instance['goto_txt']);
-		$instance['showgoto']      = $new_instance['showgoto'];
+		$instance['showgoto']      = (isset($new_instance['showgoto'])) ? $new_instance['showgoto'] : false;
 		$instance['popup_goto']    = $new_instance['popup_goto'];
 		
-		$instance['showtitle']     = $new_instance['showtitle'];
-		$instance['showvidesc']    = $new_instance['showvidesc'];
+		$instance['showtitle']     = (isset($new_instance['showtitle'])) ? $new_instance['showtitle'] : false;
+		$instance['showvidesc']    = (isset($new_instance['showvidesc'])) ? $new_instance['showvidesc'] : false;
 		$instance['descappend']    = strip_tags($new_instance['descappend']);
 		$instance['videsclen']     = strip_tags($new_instance['videsclen']);
 		$instance['width']         = strip_tags($new_instance['width']);
 		// $instance['height']        = strip_tags($new_instance['height']);
 		$instance['to_show']       = strip_tags($new_instance['to_show']);
-		$instance['autoplay']      = $new_instance['autoplay'];
-		$instance['autoplay_mute'] = $new_instance['autoplay_mute'];
+		$instance['autoplay']      = (isset($new_instance['autoplay'])) ? $new_instance['autoplay'] : false;
+		$instance['autoplay_mute'] = (isset($new_instance['autoplay_mute'])) ? $new_instance['autoplay_mute'] : false;
 
-		$instance['controls']      = $new_instance['controls'];
-		$instance['fixnoitem']     = $new_instance['fixnoitem'];
+		$instance['controls']      = (isset($new_instance['controls'])) ? $new_instance['controls'] : false;
+		$instance['fixnoitem']     = (isset($new_instance['fixnoitem'])) ? $new_instance['fixnoitem'] : false;
 		$instance['ratio']         = strip_tags($new_instance['ratio']);
-		$instance['fixyt']         = $new_instance['fixyt'];
-		$instance['hideinfo']      = $new_instance['hideinfo'];
-		$instance['hideanno']      = $new_instance['hideanno'];
-		$instance['themelight']    = $new_instance['themelight'];
-		$instance['debugon']       = $new_instance['debugon'];
-		$instance['userchan']      = $new_instance['userchan'];
-		$instance['enhprivacy']    = $new_instance['enhprivacy'];
+		$instance['fixyt']         = (isset($new_instance['fixyt'])) ? $new_instance['fixyt'] : '';
+		$instance['hideinfo']      = (isset($new_instance['hideinfo'])) ? $new_instance['hideinfo'] : '';
+		$instance['hideanno']      = (isset($new_instance['hideanno'])) ? $new_instance['hideanno'] : '';
+		$instance['themelight']    = (isset($new_instance['themelight'])) ? $new_instance['themelight'] : '';
+		$instance['debugon']       = (isset($new_instance['debugon'])) ? $new_instance['debugon'] : '';
+		$instance['userchan']      = (isset($new_instance['userchan'])) ? $new_instance['userchan'] : '';
+		$instance['enhprivacy']    = (isset($new_instance['enhprivacy'])) ? $new_instance['enhprivacy'] : '';
 
 		return $instance;
 	}
@@ -562,15 +561,23 @@ if( class_exists('YouTube_Channel_Widget'))
 	}
 
 	/* Load YTC player script */
-	function ytc_enqueue_scripts() {
-		wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
-	}
-	add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
+	// function ytc_enqueue_scripts() {
+		// wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
+	// }
+	// add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
 
 	function ytc_footer_js() {
+		// Print JS only if we have set YTC array
+		if ( !empty($_SESSION['ytc_html5_js']) )
+		{
 	?>
+	<!-- YouTube Channel v<?php echo YTCVER; ?> -->
 	<script type="text/javascript">
-	function onYouTubePlayerAPIReady() {
+	var tag = document.createElement('script');
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+	function onYouTubeIframeAPIReady() {
 	<?php echo $_SESSION['ytc_html5_js']; ?>
 	}
 	function ytc_mute(event){
@@ -578,9 +585,9 @@ if( class_exists('YouTube_Channel_Widget'))
 	}
 	</script>
 	<?php
+		}
 	}
 	add_action( 'wp_footer', 'ytc_footer_js' );
-
 }
 
 /* function to print standard playlist embed code */
@@ -808,20 +815,6 @@ function height_ratio($width=220, $ratio) {
 		default:
 			$height = round(($width / 16 ) * 9);
 	}
-
-	/*
-	if ( $ratio == 1 ) { // 4:3
-		$height = round(($width / 4 ) * 3);
-	} elseif ( $ratio == 2 ) { // 16:10
-		$height = round(($width / 16 ) * 10);
-	} elseif ( $ratio == 3 ) { // 16:9
-		$height = round(($width / 16 ) * 9);
-	} else { // set default if 0 or ratio not set
-		// $height = $instance['height'];
-		if ( $height == "" || $height == 0 )
-			$height = 165;
-	}
-	*/
 	return $height;
 }
 
