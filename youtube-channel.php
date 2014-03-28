@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.1.0.1
+Version: 2.1.0.2
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.1.0.1' );
+define( 'YTCVER', '2.1.0.2' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -716,7 +716,7 @@ function ytc_print_video($item, $instance, $y) {
 		if ( $themelight ) $output[] = "&amp;theme=light";
 
 		$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
-	} if ( $to_show == "iframe2" ) {
+	} else if ( $to_show == "iframe2" ) {
 		// youtube API async
 		if ( empty($usepl) ) $yt_url = $yt_id;
 
