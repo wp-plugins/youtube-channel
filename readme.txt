@@ -64,13 +64,13 @@ Code improvements and textdomain adds done by [dimadin](http://wordpress.org/ext
 [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 
 = How To Use =
-* Add New Widget *
+**Add New Widget**
 [youtube http://www.youtube.com/watch?v=Sj84cja7ieg]
 
-* Use Playlist /
+**Use Playlist**
 [youtube http://www.youtube.com/watch?v=y9zoi_Pk2kY]
 
-* How To Get Debug Info *
+**How To Get Debug Info**
 [youtube http://www.youtube.com/watch?v=6jIu2OeKB24]
 
 == Installation ==
@@ -243,6 +243,10 @@ After upgrade please reconfigure widget. Some variables are changed and implemen
 Just try it and rate it. Only initial release is available right now.
 
 == Upgrade Notice ==
+
+= 2.1.0.1 =
+
+Fixed broken IFRAME type implementation.
 
 = 2.1.0 =
 
