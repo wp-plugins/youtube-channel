@@ -3,7 +3,7 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.7.0
-Tested up to: 3.8.1
+Tested up to: 3.9beta3
 Stable tag: 2.1.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
