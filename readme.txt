@@ -264,3 +264,4 @@ We highly recommend to you made database backup before you upgrade to latest ver
 
 1. YouTube Channel widget settings
 2. YouTube Channel widget settings customized
+3. Live widget preview
