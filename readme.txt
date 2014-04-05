@@ -3,7 +3,7 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.7.0
-Tested up to: 3.9beta3
+Tested up to: 3.8.1
 Stable tag: 2.1.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -60,6 +60,7 @@ Video description for videos from playlist does nt work.
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
+For playing videos in lightbox we use [fancyBox jQuery library](http://fancyapps.com/fancybox/).
 Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
 [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 
@@ -122,6 +123,10 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.1.1 =
+* Add: open thumbnails in lightbox and stay on site, instead opening YouTube page
+* Add: play indicator for thumbnails
+
 = 2.1.0.2 =
 * Fix: remove embed object below old IFRAME implementation
 
@@ -264,4 +269,3 @@ We highly recommend to you made database backup before you upgrade to latest ver
 
 1. YouTube Channel widget settings
 2. YouTube Channel widget settings customized
-3. Live widget preview

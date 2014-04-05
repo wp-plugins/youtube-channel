@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.1.0.2
+Version: 2.1.1
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.1.0.2' );
+define( 'YTCVER', '2.1.1' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -562,10 +562,16 @@ if( class_exists('YouTube_Channel_Widget'))
 	}
 
 	/* Load YTC player script */
-	// function ytc_enqueue_scripts() {
+	function ytc_enqueue_scripts() {
 		// wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
-	// }
-	// add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
+		wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.css', __FILE__), array(), YTCVER );
+		// enqueue fancybox
+		wp_enqueue_script( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.pack.js', __FILE__), array('jquery'), YTCVER, true );
+		wp_enqueue_style( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.css', __FILE__), array(), YTCVER );
+		wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
+		wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.js', __FILE__), array(), YTCVER, true );
+	}
+	add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
 
 	function ytc_footer_js() {
 		// Print JS only if we have set YTC array
@@ -691,7 +697,10 @@ function ytc_print_video($item, $instance, $y) {
 	// print out video
 	if ( $to_show == "thumbnail" ) {
 		$title = sprintf( __( 'Watch video %1$s published on %2$s' , YTCTDOM ), $yt_title, $yt_date );
-		$output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank"><span style="width: '.$width.'px; height: '.$height.'px; overflow: hidden; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$yt_title.'" id="'.$ytc_vid.'"></span></a>';
+		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb ytc-fancybox"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+		// $output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank"><span style="width: '.$width.'px; height: '.$height.'px; overflow: hidden; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$yt_title.'" id="'.$ytc_vid.'"></span></a>';
 	} else if ( $to_show == "chromeless" ) {
 		ob_start();
 ?>

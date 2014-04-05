@@ -1,0 +1,19 @@
+.ytc_thumb {
+	display: block;
+	overflow: hidden;
+}
+.ytc_thumb>span:before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-image: url(../img/play.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	opacity: 0.6;
+	transition: 0.4s;
+}
+.ytc_thumb:hover>span:before {
+	opacity: 1;
+}
