@@ -17,6 +17,12 @@ define( 'YTCTDOM', 'youtube-channel' );
 class YouTube_Channel_Widget extends WP_Widget {
 
 	public function __construct() {
+
+        // Initialize Settings
+        // require_once(sprintf("%s/assets/settings.php", dirname(__FILE__)));
+
+		add_shortcode( 'youtube_channel', array('YouTube_Channel_Widget', 'youtube_channel_shortcode') );
+        // Initialize Widget
 		parent::__construct(
 	 		YTCTDOM,
 			__( 'Youtube Channel' , YTCTDOM ),
@@ -107,9 +113,72 @@ class YouTube_Channel_Widget extends WP_Widget {
 
     } // END public static function activate
 
+    // Helper function cache_time()
+    function cache_time($cache_time)
+    {
+		$times = array(
+			'minute' => array(
+				1  => "1 minute",
+				5  => "5 minutes",
+				15 => "15 minutes",
+				30 => "30 minutes"
+			),
+			'hour' => array(
+				1  => "1 hour",
+				2  => "2 hours",
+				5  => "5 hours",
+				10 => "10 hours",
+				12 => "12 hours",
+				18 => "18 hours"
+			),
+			'day' => array(
+				1 => "1 day",
+				2 => "2 days",
+				3 => "3 days",
+				4 => "4 days",
+				5 => "5 days",
+				6 => "6 days"
+			),
+			'week' => array(
+				1 => "1 week",
+				2 => "2 weeks",
+				3 => "3 weeks",
+				4 => "1 month"
+			)
+		);
+
+		$out = "";
+		foreach ($times as $period => $timeset)
+		{
+			switch ($period)
+			{
+				case 'minute':
+					$sc = MINUTE_IN_SECONDS;
+					break;
+				case 'hour':
+					$sc = HOUR_IN_SECONDS;
+					break;
+				case 'day':
+					$sc = DAY_IN_SECONDS;
+					break;
+				case 'week':
+					$sc = WEEK_IN_SECONDS;
+					break;
+			}
+
+			foreach ($timeset as $n => $s)
+			{
+				$sec = $sc * $n;
+				$out .='<option value="'.$sec.'" '. selected( $cache_time, $sec, 0 ).'>'.__($s, YTCTDOM).'</option>';
+				unset($sec);
+			}
+		}
+		return $out;
+    }
+
 	// TODO: Form code
 	public function form($instance) {
-		// outputs the options form on admin
+		// outputs the options form for widget settings
 		// General Options
 		$title         = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
 		$channel       = (!empty($instance['channel'])) ? esc_attr($instance['channel']) : '';
@@ -157,6 +226,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 		// Debug YTC
 		$debugon       = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
 		?>
+
 		<p>
 			<label for="<?php echo $this->get_field_id('title');	?>"><?php _e('Widget Title:', YTCTDOM);	?><input type="text" class="widefat" id="<?php echo $this->get_field_id('title');		?>" name="<?php echo $this->get_field_name('title');	?>" value="<?php echo $title;		?>" title="<?php _e('Title for widget', YTCTDOM); ?>" /></label>
 		</p>
@@ -195,69 +265,8 @@ class YouTube_Channel_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id('cache_time');	?>"><?php _e('Cache feed:', YTCTDOM); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'cache_time' ); ?>" name="<?php echo $this->get_field_name( 'cache_time' ); ?>">
-				
 				<option value="0"<?php selected( $cache_time, 0 ); ?>><?php _e('Do not chache', YTCTDOM); ?></option>
-				<?php
-				$times = array(
-					'minute' => array(
-						1  => "1 minute",
-						5  => "5 minutes",
-						15 => "15 minutes",
-						30 => "30 minutes"
-					),
-					'hour' => array(
-						1  => "1 hour",
-						2  => "2 hours",
-						5  => "5 hours",
-						10 => "10 hours",
-						12 => "12 hours",
-						18 => "18 hours"
-					),
-					'day' => array(
-						1 => "1 day",
-						2 => "2 days",
-						3 => "3 days",
-						4 => "4 days",
-						5 => "5 days",
-						6 => "6 days"
-					),
-					'week' => array(
-						1 => "1 week",
-						2 => "2 weeks",
-						3 => "3 weeks",
-						4 => "1 month"
-					)
-				);
-
-				$out = "";
-				foreach ($times as $period => $timeset)
-				{
-					switch ($period)
-					{
-						case 'minute':
-							$sc = MINUTE_IN_SECONDS;
-							break;
-						case 'hour':
-							$sc = HOUR_IN_SECONDS;
-							break;
-						case 'day':
-							$sc = DAY_IN_SECONDS;
-							break;
-						case 'week':
-							$sc = WEEK_IN_SECONDS;
-							break;
-					}
-
-					foreach ($timeset as $n => $s)
-					{
-						$sec = $sc * $n;
-						$out .='<option value="'.$sec.'" '. selected( $cache_time, $sec ).'>'.__($s, YTCTDOM).'</option>';
-						unset($sec);
-					}
-				}
-				echo $out;
-				unset($out);
-			?>
+				<?php echo self::cache_time($cache_time); ?>
 			</select>
 		</p>
 		<p>
@@ -273,7 +282,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $getrnd, true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" title="<?php _e('Get random videos of all fetched from channel or playlist', YTCTDOM); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Show random video', YTCTDOM); ?></label>
 		</p>
 		
-<h4><?php _e('Video Settings', YTCTDOM); ?></h4>
+		<h4><?php _e('Video Settings', YTCTDOM); ?></h4>
 		<p><label for="<?php echo $this->get_field_id('ratio'); ?>"><?php _e('Aspect ratio', YTCTDOM); ?>:</label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
 				<?php /* <option value="0"<?php selected( $ratio, 0 ); ?>><?php _e('Custom (as set above)', YTCTDOM); ?></option> */ ?>
@@ -284,10 +293,6 @@ class YouTube_Channel_Widget extends WP_Widget {
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', YTCTDOM); ?>:</label> <input class="small-text" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="number" min="32" value="<?php echo $width; ?>" title="<?php _e('Set video width in pixels', YTCTDOM); ?>" /> px (<?php _e('default', YTCTDOM); ?> 220)
-			<?php /*
-			<br />
-			<label for="< ?php echo $this->get_field_id('height'); ?>">< ?php _e('Height', YTCTDOM); ?>:</label> <input class="small-text" id="< ?php echo $this->get_field_id('height'); ?>" name="< ?php echo $this->get_field_name('height'); ?>" type="number" min="32" value="< ?php echo $height; ?>" title="< ?php _e('Set video height in pixels', YTCTDOM); ?>" /> px (< ?php _e('default', YTCTDOM); ?> 165)
-			*/ ?>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('to_show'); ?>"><?php _e('What to show?', YTCTDOM); ?></label>
@@ -305,7 +310,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay_mute, true ); ?> id="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>" name="<?php echo $this->get_field_name( 'autoplay_mute' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>"><?php _e('Mute video on autoplay', YTCTDOM); ?></label>
 		</p>
 
-<h4><?php _e('Content Layout', YTCTDOM); ?></h4>
+		<h4><?php _e('Content Layout', YTCTDOM); ?></h4>
 		<p>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $showtitle, true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', YTCTDOM); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $showvidesc, true ); ?> id="<?php echo $this->get_field_id( 'showvidesc' ); ?>" name="<?php echo $this->get_field_name( 'showvidesc' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showvidesc' ); ?>"><?php _e('Show video description', YTCTDOM); ?></label><br />
@@ -315,7 +320,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $hideinfo, true ); ?> id="<?php echo $this->get_field_id( 'hideinfo' ); ?>" name="<?php echo $this->get_field_name( 'hideinfo' ); ?>" /> <label for="<?php echo $this->get_field_id( 'hideinfo' ); ?>"><?php _e('Hide video info', YTCTDOM); ?></label>
 		</p>
 
-<h4><?php _e('Link to Channel', YTCTDOM); ?></h4>
+		<h4><?php _e('Link to Channel', YTCTDOM); ?></h4>
 		<p>
 			<label for="<?php echo $this->get_field_id('goto_txt'); ?>"><?php _e('Visit YouTube Channel text:', YTCTDOM); ?> <input class="widefat" id="<?php echo $this->get_field_id('goto_txt'); ?>" name="<?php echo $this->get_field_name('goto_txt'); ?>" type="text" value="<?php echo $goto_txt; ?>" title="<?php _e('Default: Visit channel %channel%. Use placeholder %channel% to insert channel name.', YTCTDOM); ?>" /></label>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $showgoto, true ); ?> id="<?php echo $this->get_field_id( 'showgoto' ); ?>" name="<?php echo $this->get_field_name( 'showgoto' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showgoto' ); ?>"><?php _e('Show link to channel', YTCTDOM); ?></label><br />
@@ -329,7 +334,7 @@ class YouTube_Channel_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $userchan, true ); ?> id="<?php echo $this->get_field_id( 'userchan' ); ?>" name="<?php echo $this->get_field_name( 'userchan' ); ?>" /> <label for="<?php echo $this->get_field_id( 'userchan' ); ?>"><?php _e('Link to channel instead to user', YTCTDOM); ?></label><br />
 		</p>
 
-<h4><?php _e('Debug YTC', YTCTDOM); ?></h4>
+		<h4><?php _e('Debug YTC', YTCTDOM); ?></h4>
 		<p>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $debugon, true ); ?> id="<?php echo $this->get_field_id( 'debugon' ); ?>" name="<?php echo $this->get_field_name( 'debugon' ); ?>" /> <label for="<?php echo $this->get_field_id( 'debugon' ); ?>">Enable debugging</label><br />
 
@@ -400,11 +405,49 @@ if ( $debugon == 'on' ) {
 		return $instance;
 	}
 
-	public function widget($args, $instance) {
-		// outputs the content of the widget
-		extract( $args );
 
-		$title   = apply_filters('widget_title', $instance['title']);
+	public static function youtube_channel_shortcode($attr)
+	{
+		if (!empty($attr)) extract( $attr );
+		$instance                  = array();
+		$instance['channel']       = (empty($channel)) ? YTCUID : $channel;
+		$instance['playlist']      = (empty($playlist)) ? YTCPLID : $playlist;
+		$instance['vidqty']        = (empty($num)) ? 1 : $num; // num: 1
+		$instance['use_res']       = (empty($res)) ? 'channel' : $res; // resource: 0 channel, 1 favorites, 2 playlist
+		$instance['cache_time']    = (empty($cache)) ? 300 : $cache; // in seconds, def 5min - settings?
+		$instance['width']         = (empty($width)) ? 220 : $width; // 220
+		$instance['to_show']       = (empty($show)) ? 'thumbnail' : $show; // thumbnail, iframe, iframe2, object, chromeless
+		$instance['only_pl']       = (empty($onlypl)) ? false : true; // use embedded playlist - false by default
+		
+		
+		$instance['maxrnd']        = 50;
+		$instance['fixnoitem']     = (empty($fix)) ? false : true; // fix noitem
+		$instance['getrnd']        = (empty($random)) ? false : true; // use embedded playlist - false by default
+		$instance['hideinfo']      = (empty($noinfo)) ? true : $noinfo; // hide info by default
+		$instance['autoplay']      = (empty($autoplay)) ? false : $autoplay; // autoplay disabled by default
+		$instance['autoplay_mute'] = (empty($mute)) ? false : $mute; // mute sound on autoplay - disabled by default
+		$instance['ratio']         = (empty($ar)) ? 3 : $ar; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
+		$instance['controls']      = (empty($controls)) ? false : $controls; // hide controls, false by default
+		$instance['hideanno']      = (empty($noanno)) ? false : $noanno; // hide annotations, false by default
+		$instance['themelight']    = (empty($themelight)) ? false : $themelight; // use light theme, dark by default
+		$instance['showtitle']     = (empty($showtitle)) ? false : $showtitle; // show video title, disabled by default
+		$instance['showvidesc']    = (empty($showdesc)) ? false : $showdesc; // show video description, disabled by default
+		$instance['videsclen']    = (empty($desclen)) ? 0 : $desclen; // cut video description, number of characters
+		
+		$instance['showgoto']      = (empty($goto)) ? false : $goto; // show goto link, disabled by default
+		$instance['goto_txt']      = (empty($goto_txt)) ? "Visit our channel" : $goto_txt; // text for goto link - use settings
+		$instance['popup_goto']    = (empty($popup_goto)) ? 0 : $popup_goto; // open channel in: 0 same window, 1 javascript new, 2 target new
+		$instance['userchan']      = (empty($userchan)) ? false : $userchan; // link to user channel instaled page
+		
+		$instance['fixyt']         = (empty($fix)) ? false : $fix; // fix youtube height, disabled by default
+
+		// return implode(self::print_ytc($instance));
+		return implode(array_values(self::print_ytc($instance)));
+	}
+
+	// print out widget
+	public static function print_ytc($instance)
+	{
 
 		// set default channel if nothing predefined
 		$channel = $instance['channel'];
@@ -419,8 +462,6 @@ if ( $debugon == 'on' ) {
 		$use_res = $instance['use_res'];
 
 		$output = array();
-		$output[] = $before_widget;
-		if ( $title ) $output[] = $before_title . $title . $after_title;
 
 		$output[] = '<div class="youtube_channel">';
 
@@ -541,10 +582,23 @@ if ( $debugon == 'on' ) {
 		$output = array_merge( $output, ytc_channel_link($instance) ); // insert link to channel on bootom of widget
 
 		$output[] = '</div><!-- .youtube_channel -->';
+
+		return $output;
+	}
+
+	// TODO: make shortcode
+	public function widget($args, $instance) {
+		// outputs the content of the widget
+		extract( $args );
+
+		$title   = apply_filters('widget_title', $instance['title']);
+		$output = array();
+		$output[] = $before_widget;
+		if ( $title ) $output[] = $before_title . $title . $after_title;
+		$output[] = implode(self::print_ytc($instance));
 		$output[] = $after_widget;
 
-		echo implode('',$output);
-
+		echo implode('',array_values($output));
 	}
 
 } // class YouTube_Channel_Widget()
@@ -654,7 +708,7 @@ function ytc_print_video($item, $instance, $y) {
 	if ( $to_show != 'thumbnail' && !$controls && $instance['fixyt'] )
 		$height += 25;
 
-	$hideanno = $instance['hideanno'];
+	$hideanno   = $instance['hideanno'];
 	$themelight = $instance['themelight'];
 	/* end of video settings */
 
