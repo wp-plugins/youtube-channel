@@ -127,6 +127,8 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Add: open thumbnails in lightbox and stay on site, instead opening YouTube page
 * Add: play indicator for thumbnails
 * Add: shortcode [youtube_channel]
+* Add: settings page for default options for shortcodes
+* Add: Help tab for shortcode parameters
 * Change: moved parts of code to helper functions
 
 = 2.1.0.2 =

@@ -12,22 +12,68 @@ define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
 define( 'YTCTDOM', 'youtube-channel' );
+define( 'YTCNAME', 'YouTube Channel' );
 
 /* youtube widget */
-class YouTube_Channel_Widget extends WP_Widget {
+class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 
 	public function __construct() {
 
-        // Initialize Settings
-        // require_once(sprintf("%s/assets/settings.php", dirname(__FILE__)));
+		// if ( is_admin() ){ // admin actions
+  			// add_action( 'admin_menu', array($this,'add_admin_menu') );
+  		// }
 
-		add_shortcode( 'youtube_channel', array('YouTube_Channel_Widget', 'youtube_channel_shortcode') );
+        // Initialize Settings
+        require_once(sprintf("%s/assets/settings.php", dirname(__FILE__)));
+
+		add_shortcode( 'youtube_channel', array($this, 'youtube_channel_shortcode') );
         // Initialize Widget
 		parent::__construct(
 	 		YTCTDOM,
 			__( 'Youtube Channel' , YTCTDOM ),
 			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', YTCTDOM ) )
 		);
+
+        $WPAU_YOUTUBE_CHANNEL_SETTINGS = new WPAU_YOUTUBE_CHANNEL_SETTINGS();
+
+	}
+
+	public static function defaults()
+	{
+		$defaults = array(
+			'channel'       => YTCUID,
+			'playlist'      => YTCPLID,
+			'use_res'       => false,
+			'only_pl'       => false,
+			'cache_time'    => 300, // 5 minutes
+			'maxrnd'        => 25,
+			'vidqty'        => 1,
+			'enhprivacy'    => false,
+			'fixnoitem'     => false,
+			'getrnd'        => false,
+			'ratio'         => 3, // 3 - 16:9, 2 - 16:10, 1 - 4:3
+			'width'         => 220,
+			'to_show'       => 'thumbnail', // thumbnail, iframe, iframe2, chromeless, object
+			'themelight'    => false,
+			'controls'      => false,
+			'fixyt'         => false,
+			'autoplay'      => false,
+			'autoplay_mute' => false,
+			
+			'showtitle'     => false,
+			'showvidesc'    => false,
+			'videsclen'     => 0,
+			'descappend'    => '&hellip;',
+			'hideanno'      => false,
+			'hideinfo'      => false,
+			
+			'goto_txt'      => 'Visit our channel',
+			'showgoto'      => false,
+			'popup_goto'    => 3, // 3 same window, 2 new window JS, 1 new window target
+			'userchan'      => false
+		);
+        $options = wp_parse_args(get_option('youtube_channel_defaults'), $defaults);
+        return $options;
 	}
 
     /**
@@ -408,39 +454,45 @@ if ( $debugon == 'on' ) {
 
 	public static function youtube_channel_shortcode($attr)
 	{
+		$defaults = WPAU_YOUTUBE_CHANNEL::defaults();
 		if (!empty($attr)) extract( $attr );
 		$instance                  = array();
-		$instance['channel']       = (empty($channel)) ? YTCUID : $channel;
-		$instance['playlist']      = (empty($playlist)) ? YTCPLID : $playlist;
-		$instance['vidqty']        = (empty($num)) ? 1 : $num; // num: 1
-		$instance['use_res']       = (empty($res)) ? 'channel' : $res; // resource: 0 channel, 1 favorites, 2 playlist
-		$instance['cache_time']    = (empty($cache)) ? 300 : $cache; // in seconds, def 5min - settings?
-		$instance['width']         = (empty($width)) ? 220 : $width; // 220
-		$instance['to_show']       = (empty($show)) ? 'thumbnail' : $show; // thumbnail, iframe, iframe2, object, chromeless
-		$instance['only_pl']       = (empty($onlypl)) ? false : true; // use embedded playlist - false by default
-		
-		
-		$instance['maxrnd']        = 50;
-		$instance['fixnoitem']     = (empty($fix)) ? false : true; // fix noitem
-		$instance['getrnd']        = (empty($random)) ? false : true; // use embedded playlist - false by default
-		$instance['hideinfo']      = (empty($noinfo)) ? true : $noinfo; // hide info by default
-		$instance['autoplay']      = (empty($autoplay)) ? false : $autoplay; // autoplay disabled by default
-		$instance['autoplay_mute'] = (empty($mute)) ? false : $mute; // mute sound on autoplay - disabled by default
-		$instance['ratio']         = (empty($ar)) ? 3 : $ar; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
-		$instance['controls']      = (empty($controls)) ? false : $controls; // hide controls, false by default
-		$instance['hideanno']      = (empty($noanno)) ? false : $noanno; // hide annotations, false by default
-		$instance['themelight']    = (empty($themelight)) ? false : $themelight; // use light theme, dark by default
-		$instance['showtitle']     = (empty($showtitle)) ? false : $showtitle; // show video title, disabled by default
-		$instance['showvidesc']    = (empty($showdesc)) ? false : $showdesc; // show video description, disabled by default
-		$instance['videsclen']    = (empty($desclen)) ? 0 : $desclen; // cut video description, number of characters
-		
-		$instance['showgoto']      = (empty($goto)) ? false : $goto; // show goto link, disabled by default
-		$instance['goto_txt']      = (empty($goto_txt)) ? "Visit our channel" : $goto_txt; // text for goto link - use settings
-		$instance['popup_goto']    = (empty($popup_goto)) ? 0 : $popup_goto; // open channel in: 0 same window, 1 javascript new, 2 target new
-		$instance['userchan']      = (empty($userchan)) ? false : $userchan; // link to user channel instaled page
-		
-		$instance['fixyt']         = (empty($fix)) ? false : $fix; // fix youtube height, disabled by default
+		$instance['channel']       = (empty($channel)) ? $defaults['channel'] : $channel;
+		$instance['playlist']      = (empty($playlist)) ? $defaults['playlist'] : $playlist;
+		$instance['use_res']       = (empty($res)) ? $defaults['use_res'] : $res; // resource: 0 channel, 1 favorites, 2 playlist
+		$instance['only_pl']       = (empty($only_pl)) ? $defaults['only_pl'] : true; // use embedded playlist - false by default
+		$instance['cache_time']    = (empty($cache)) ? $defaults['cache_time'] : $cache; // in seconds, def 5min - settings?
 
+		$instance['maxrnd']        = (empty($fetch)) ? $defaults['maxrnd'] : $fetch;
+		$instance['vidqty']        = (empty($num)) ? $defaults['vidqty'] : $num; // num: 1
+
+		$instance['fixnoitem']     = (empty($fix)) ? $defaults['fixnoitem'] : $fix; // fix noitem
+		$instance['getrnd']        = (empty($random)) ? $defaults['getrnd'] : $random; // use embedded playlist - false by default
+
+		// Video Settings
+		$instance['ratio']         = (empty($ratio)) ? $defaults['ratio'] : $ratio; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
+		$instance['width']         = (empty($width)) ? $defaults['width'] : $width; // 220
+		$instance['to_show']       = (empty($show)) ? $defaults['to_show'] : $show; // thumbnail, iframe, iframe2, object, chromeless
+		
+		$instance['themelight']    = (empty($themelight)) ? $defaults['themelight'] : $themelight; // use light theme, dark by default
+		$instance['controls']      = (empty($controls)) ? $defaults['controls'] : $controls; // hide controls, false by default
+		$instance['fixyt']         = (empty($fix_h)) ? $defaults['fixyt'] : $fix_h; // fix youtube height, disabled by default
+		$instance['autoplay']      = (empty($autoplay)) ? $defaults['autoplay'] : $autoplay; // autoplay disabled by default
+		$instance['autoplay_mute'] = (empty($mute)) ? $defaults['autoplay_mute'] : $mute; // mute sound on autoplay - disabled by default
+
+		// Content Layout
+		$instance['showtitle']     = (empty($showtitle)) ? $defaults['showtitle'] : $showtitle; // show video title, disabled by default
+		$instance['showvidesc']    = (empty($showdesc)) ? $defaults['showvidesc'] : $showdesc; // show video description, disabled by default
+		$instance['videsclen']     = (empty($desclen)) ? $defaults['videsclen'] : $desclen; // cut video description, number of characters
+		$instance['hideinfo']      = (empty($noinfo)) ? $defaults['hideinfo'] : $noinfo; // hide info by default
+		$instance['hideanno']      = (empty($noanno)) ? $defaults['hideanno'] : $noanno; // hide annotations, false by default
+
+		// Link to Channel
+		$instance['showgoto']      = (empty($goto)) ? $defaults['showgoto'] : $goto; // show goto link, disabled by default
+		$instance['goto_txt']      = (empty($goto_txt)) ? $defaults['goto_txt'] : $goto_txt; // text for goto link - use settings
+		$instance['popup_goto']    = (empty($popup)) ? $defaults['popup_goto'] : $popup; // open channel in: 0 same window, 1 javascript new, 2 target new
+		$instance['userchan']      = (empty($userchan)) ? $defaults['userchan'] : $userchan; // link to user channel instaled page
+		
 		// return implode(self::print_ytc($instance));
 		return implode(array_values(self::print_ytc($instance)));
 	}
@@ -601,12 +653,12 @@ if ( $debugon == 'on' ) {
 		echo implode('',array_values($output));
 	}
 
-} // class YouTube_Channel_Widget()
+} // class WPAU_YOUTUBE_CHANNEL()
 
-if( class_exists('YouTube_Channel_Widget'))
+if( class_exists('WPAU_YOUTUBE_CHANNEL'))
 {
     // Installation and uninstallation hooks
-    register_activation_hook(__FILE__, array('YouTube_Channel_Widget', 'activate'));
+    register_activation_hook(__FILE__, array('WPAU_YOUTUBE_CHANNEL', 'activate'));
 
 
 	/* Load plugin's textdomain */
@@ -944,7 +996,7 @@ function ytc_clean_playlist_id($playlist) {
 
 /* Register plugin's widget */
 function youtube_channel_register_widget() {
-	register_widget( 'YouTube_Channel_Widget' );
+	register_widget( 'WPAU_YOUTUBE_CHANNEL' );
 }
 add_action( 'widgets_init', 'youtube_channel_register_widget' );
 
