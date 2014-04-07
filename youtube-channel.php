@@ -72,7 +72,9 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 			'popup_goto'    => 3, // 3 same window, 2 new window JS, 1 new window target
 			'userchan'      => false
 		);
+		// ChromePhp::log(get_option('youtube_channel_defaults'));
         $options = wp_parse_args(get_option('youtube_channel_defaults'), $defaults);
+        // ChromePhp::log($options);
         return $options;
 	}
 
@@ -672,9 +674,15 @@ if( class_exists('WPAU_YOUTUBE_CHANNEL'))
 		// wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
 		wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.css', __FILE__), array(), YTCVER );
 		// enqueue fancybox
-		wp_enqueue_script( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.pack.js', __FILE__), array('jquery'), YTCVER, true );
-		wp_enqueue_style( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.css', __FILE__), array(), YTCVER );
-		wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
+		// wp_enqueue_script( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.pack.js', __FILE__), array('jquery'), YTCVER, true );
+		// wp_enqueue_style( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.css', __FILE__), array(), YTCVER );
+		// wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
+		// wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.js', __FILE__), array(), YTCVER, true );
+
+		// enqueue magnific-popup
+		wp_enqueue_script( 'magnific-popup', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), YTCVER, true );
+		wp_enqueue_style( 'magnific-popup', plugins_url('assets/lib/magnific-popup/magnific-popup.css', __FILE__), array(), YTCVER );
+		// wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
 		wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.js', __FILE__), array(), YTCVER, true );
 	}
 	add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
@@ -770,6 +778,7 @@ function ytc_print_video($item, $instance, $y) {
 	
 	$yt_thumb  = "http://img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
 	$yt_video  = $item->link[0]->href;
+	$yt_video  = preg_replace('/\&.*$/','',$yt_video);
 	$yt_title  = $item->title->{'$t'};
 	$yt_date   = $item->published->{'$t'};
 	//$yt_date = $item->get_date('j F Y | g:i a');
@@ -803,7 +812,7 @@ function ytc_print_video($item, $instance, $y) {
 	// print out video
 	if ( $to_show == "thumbnail" ) {
 		$title = sprintf( __( 'Watch video %1$s published on %2$s' , YTCTDOM ), $yt_title, $yt_date );
-		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb ytc-fancybox"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb ytc-lightbox"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 		// $output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank"><span style="width: '.$width.'px; height: '.$height.'px; overflow: hidden; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$yt_title.'" id="'.$ytc_vid.'"></span></a>';

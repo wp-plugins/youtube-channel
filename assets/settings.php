@@ -1,15 +1,16 @@
 <?php
-if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
+if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
 {
     
-    class WPAU_YOUTUBE_CHANNEL_SETTINGS
+    class WPAU_YOUTUBE_CHANNEL_SETTINGS extends WPAU_YOUTUBE_CHANNEL
     {
-        private $general_settings_key = 'general';
-        private $video_settings_key   = 'video';
-        private $content_settings_key = 'content';
-        private $link_settings_key    = 'link';
-        private $help_settings_key    = 'help';
-        private $plugin_options_key   = YTCTDOM;
+        private $general_settings_key = 'ytc_general';
+        private $video_settings_key   = 'ytc_video';
+        private $content_settings_key = 'ytc_content';
+        private $link_settings_key    = 'ytc_link';
+        private $help_settings_key    = 'ytc_help';
+        private $plugin_options_key   = 'youtube_channel_defaults';
+        private $plugin_settings_page = YTCTDOM;
         private $plugin_settings_tabs = array();
 
         /**
@@ -30,29 +31,38 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
 		} // END public function __construct
 		
         function load_settings() {
-            $this->defaults = WPAU_YOUTUBE_CHANNEL::defaults();
+            $this->defaults = $this->defaults();
         }
 
+        // validate our options
+        function plugin_options_validate($options) {
+            $options = wp_parse_args($options, get_option('youtube_channel_defaults'));
+            return wp_parse_args($options, $this->defaults);
+        }
         function register_general_settings()
         {
             $this->plugin_settings_tabs[$this->general_settings_key] = 'General';
-            register_setting($this->general_settings_key, $this->general_settings_key);
+            register_setting(
+                $this->general_settings_key, // option_group
+                $this->plugin_options_key, // option_name
+                array(&$this, 'plugin_options_validate') // callback
+            );
 
             // add general settings section
             add_settings_section(
-                'general_settings', 
-                __('General Settings','wpaust'), 
-                array(&$this, 'general_settings_section_description'), 
-                $this->general_settings_key
+                'general_settings', // id
+                __('General Settings',YTCTDOM),  // title
+                array(&$this, 'general_settings_section_description'), // callback
+                $this->general_settings_key // page
             );
             
             // add setting's fields
             add_settings_field(
-                'wpau_youtube_channel-channel', 
-                __('YouTube Channel ID',YTCTDOM), 
-                array(&$this, 'settings_field_input_text'), 
-                $this->general_settings_key, 
-                'general_settings',
+                'wpau_youtube_channel-channel', // id
+                __('YouTube Channel ID',YTCTDOM), // title
+                array(&$this, 'settings_field_input_text'), // callback
+                $this->general_settings_key, // page
+                'general_settings', // section
                 array(
                     'field'       => "youtube_channel_defaults[channel]",
                     'description' => __('Enter your YouTube channel ID (channel name, not full URL to channel)',YTCTDOM),
@@ -64,7 +74,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-playlist', 
                 __('Default Playlist ID',YTCTDOM), 
                 array(&$this, 'settings_field_input_text'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[playlist]",
@@ -77,7 +87,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-use_res', 
                 __('Resource to use',YTCTDOM), 
                 array(&$this, 'settings_field_select'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[use_res]",
@@ -95,7 +105,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-only_pl', 
                 __('Embed standard playlist',YTCTDOM), 
                 array(&$this, 'settings_field_checkbox'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[only_pl]",
@@ -109,7 +119,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-cache_time', 
                 __('Cache Timeout',YTCTDOM), 
                 array(&$this, 'settings_field_input_number'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[cache_time]",
@@ -125,7 +135,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-maxrnd', 
                 __('Fetch',YTCTDOM), 
                 array(&$this, 'settings_field_input_number'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[maxrnd]",
@@ -141,7 +151,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-vidqty', 
                 __('Show',YTCTDOM), 
                 array(&$this, 'settings_field_input_number'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[vidqty]",
@@ -157,7 +167,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-enhprivacy', 
                 __('Use Enhanced privacy',YTCTDOM), 
                 array(&$this, 'settings_field_checkbox'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[enhprivacy]",
@@ -170,7 +180,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-fixnoitem', 
                 __('Fix <em>No items</em> error/Respect playlist order',YTCTDOM), 
                 array(&$this, 'settings_field_checkbox'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[fixnoitem]",
@@ -183,7 +193,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
                 'wpau_youtube_channel-getrnd', 
                 __('Show random video',YTCTDOM), 
                 array(&$this, 'settings_field_checkbox'), 
-                $this->general_settings_key, 
+                $this->general_settings_key,
                 'general_settings',
                 array(
                     'field'       => "youtube_channel_defaults[getrnd]",
@@ -197,7 +207,11 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
         function register_video_settings()
         {
             $this->plugin_settings_tabs[$this->video_settings_key] = 'Video';
-            register_setting($this->video_settings_key, $this->video_settings_key);
+            register_setting(
+                $this->video_settings_key, 
+                $this->plugin_options_key, 
+                array(&$this, 'plugin_options_validate')
+            );
 
             // add video settings section
             add_settings_section(
@@ -330,7 +344,11 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
         function register_content_settings()
         {
             $this->plugin_settings_tabs[$this->content_settings_key] = 'Content';
-            register_setting($this->content_settings_key, $this->content_settings_key);
+            register_setting(
+                $this->content_settings_key, 
+                $this->plugin_options_key,
+                array(&$this, 'plugin_options_validate')
+            );
 
             // add content settings section
             add_settings_section(
@@ -425,7 +443,11 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
         function register_link_settings()
         {
             $this->plugin_settings_tabs[$this->link_settings_key] = 'Link to Channel';
-            register_setting($this->link_settings_key, $this->link_settings_key);
+            register_setting(
+                $this->link_settings_key, 
+                $this->plugin_options_key,
+                array(&$this, 'plugin_options_validate')
+            );
 
             // add content settings section
             add_settings_section(
@@ -508,13 +530,11 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
         } // END register_help_settings()
 
         function options_tabs() {
-            ChromePhp::log("options tabs");
             $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key;
-            // screen_icon();
             echo '<h2 class="nav-tab-wrapper">';
             foreach ( $this->plugin_settings_tabs as $tab_key => $tab_caption ) {
                 $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-                echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin_options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+                echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin_settings_page . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
             }
             echo '</h2>';
         }
@@ -616,7 +636,7 @@ if(!class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS'))
         	    __(sprintf('%s Settings',YTCNAME),YTCTDOM), 
         	    __(YTCNAME,YTCTDOM), 
         	    'manage_options', 
-        	    $this->plugin_options_key, 
+        	    $this->plugin_settings_page, 
         	    array(&$this, 'plugin_settings_page')
         	);
         } // END function add_menu()

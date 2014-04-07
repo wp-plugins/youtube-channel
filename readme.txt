@@ -19,16 +19,16 @@ Simply insert widget to sidebar, set channel name and if you wish leave all othe
 If you like this extension and you find it useful, please rate it on the right side.
 
 = Features =
-* Display latest video from YouTube channel or playlist
-* Option to get random video from channel or playlist
+* Display latest video from YouTube channel, favorites or playlist
+* Option to get random video from resources mentioned above
 * Set custom widget title
 * Enhanced Privacy
-* Custom width for video thumbnail/embeded object (default is 220px)
 * Preferred aspect ratio relative to width (16:9, 16:10 and 4:3)
-* Choose to display video thumbnail, iframe (HTML5 video), object embed (Flash video) or chromeless video
-* Fix height for old and new YouTube embed and Chromeless video object taken by controls
+* Custom width for video thumbnail/embeded object (default is 220px)
+* Choose to display video as thumbnail, HTML5 (iframe), HTML5 Asynchronous (iframe2), Flash (object) or chromeless video
 * Custom caching timeout
 * Optimized gdata feeds
+* Video in lightbox for thumbnail output
 * Option to enable autoplay video
 * Option to hide video controls
 * Option to hide video info
@@ -38,7 +38,6 @@ If you like this extension and you find it useful, please rate it on the right s
 * Option to use light controls theme
 * Set custom text for link to channel
 * Option to show link to channel
-* Option to open channel in new tab/window
 * Option to use target="_blank" instead of javascript window.open() for chanel link in new tab/window
 
 = Styling =
@@ -60,7 +59,7 @@ Video description for videos from playlist does nt work.
 
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
-For playing videos in lightbox we use [fancyBox jQuery library](http://fancyapps.com/fancybox/).
+For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
 Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
 [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 
@@ -123,11 +122,11 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.1.1 =
-* Add: open thumbnails in lightbox and stay on site, instead opening YouTube page
+= 2.2.0 =
+* Add: open thumbnails in lightbox and stay on site, instead opening YouTube page (Magnific Popup jQuery library)
 * Add: play indicator for thumbnails
 * Add: shortcode [youtube_channel]
-* Add: settings page for default options for shortcodes
+* Add: tabbed settings page for default options for shortcodes
 * Add: Help tab for shortcode parameters
 * Change: moved parts of code to helper functions
 

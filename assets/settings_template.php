@@ -8,6 +8,7 @@
 $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key;
 ?>
 <div class="wrap" id="youtube_channel_settings">
+<h2><?php _e(sprintf('%s Settings',YTCNAME),YTCTDOM); ?></h2>
     <?php $this->options_tabs(); ?>
     <form method="post" action="options.php">
     <?php wp_nonce_field( 'update-options' ); ?>
