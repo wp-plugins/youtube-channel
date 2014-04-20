@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.1.1
+Version: 2.2.0
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.1.1' );
+define( 'YTCVER', '2.2.0' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -811,11 +811,15 @@ function ytc_print_video($item, $instance, $y) {
 
 	// print out video
 	if ( $to_show == "thumbnail" ) {
+		// set proper class for responsive thumbs per selected aspect ratio
+		switch ($instance['ratio'])
+		{
+			case 1: $arclass = 'ar4_3'; break;
+			case 2: $arclass = 'ar16_10'; break;
+			default: $arclass = 'ar16_9';
+		}
 		$title = sprintf( __( 'Watch video %1$s published on %2$s' , YTCTDOM ), $yt_title, $yt_date );
-		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb ytc-lightbox"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
-		// $output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
-		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank" style="width: '.$width.'px; height: '.$height.'px" class="ytc_thumb fancybox-media"><span style="width: 100%; height: 100%; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
-		// $output[] = '<a href="'.$yt_video.'" title="'.$title.'" target="_blank"><span style="width: '.$width.'px; height: '.$height.'px; overflow: hidden; display: block; background: url('.$yt_thumb.') 50% 50% no-repeat; background-size: '.$width.'px '.$imgfixedheight.'px;" title="'.$yt_title.'" id="'.$ytc_vid.'"></span></a>';
+		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 	} else if ( $to_show == "chromeless" ) {
 		ob_start();
 ?>

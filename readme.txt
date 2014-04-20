@@ -2,9 +2,9 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.7.0
-Tested up to: 3.8.1
-Stable tag: 2.1.0.2
+Requires at least: 3.7.1
+Tested up to: 3.9
+Stable tag: 2.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -24,11 +24,11 @@ If you like this extension and you find it useful, please rate it on the right s
 * Set custom widget title
 * Enhanced Privacy
 * Preferred aspect ratio relative to width (16:9, 16:10 and 4:3)
-* Custom width for video thumbnail/embeded object (default is 220px)
+* Custom width for video embeded object (default is 220px)
 * Choose to display video as thumbnail, HTML5 (iframe), HTML5 Asynchronous (iframe2), Flash (object) or chromeless video
+* Thumbnail mode is responsive and opens video in lightbox
 * Custom caching timeout
 * Optimized gdata feeds
-* Video in lightbox for thumbnail output
 * Option to enable autoplay video
 * Option to hide video controls
 * Option to hide video info
@@ -124,6 +124,7 @@ If you does not see your latest video in your uplaods feed (which you can access
 == Changelog ==
 = 2.2.0 =
 * Add: open thumbnails in lightbox and stay on site, instead opening YouTube page (Magnific Popup jQuery library)
+* Add: make thumbnail responsive
 * Add: play indicator for thumbnails
 * Add: shortcode [youtube_channel]
 * Add: tabbed settings page for default options for shortcodes
