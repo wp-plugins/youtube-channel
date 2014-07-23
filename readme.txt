@@ -2,9 +2,9 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.7.1
-Tested up to: 3.9
-Stable tag: 2.2.0
+Requires at least: 3.8.0
+Tested up to: 4.0
+Stable tag: 2.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -57,6 +57,8 @@ You can use `style.css` from theme to style `YouTube Video` widget content.
 Controls light theme and hidden annotations does not work for chromeless object.
 Video description for videos from playlist does nt work.
 
+If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
+
 = Credits =
 Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
 For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
@@ -83,10 +85,6 @@ You can use the built in installer and upgrader, or you can install the plugin m
 4. Set channel name and save changes
 
 If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
-
-== TODO ==
-
-* Add option to open video for thumbnail image in lightbox
 
 == Frequently Asked Questions ==
 
@@ -122,6 +120,10 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.2.1 =
+* Fix: to prevent broken JSON feed, transient caching changed from plain serialized string to base64_encode
+* Add: URL parameter `ytc_force_recache` to force recache, also included on Help tab in plugin settings
+
 = 2.2.0 =
 * Add: open thumbnails in lightbox and stay on site, instead opening YouTube page (Magnific Popup jQuery library)
 * Add: make thumbnail responsive
@@ -241,6 +243,8 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Initial release
 
 == Upgrade Notice ==
+= 2.2.1 =
+Because we changed caching method, from Help tab on plugin Settings page do ReCache (read help page).
 
 = 0.1.3 =
 After upgrade check widget options.
@@ -271,5 +275,7 @@ We highly recommend to you made database backup before you upgrade to latest ver
 
 == Screenshots ==
 
-1. YouTube Channel widget settings
-2. YouTube Channel widget settings customized
+1. YouTube Channel plugin default settings
+2. YouTube Channel customized widget settings
+3. YouTube Channel in WP Customizer
+4. YouTube Channel preview

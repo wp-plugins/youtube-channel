@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.2.0
+Version: 2.2.1
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.2.0' );
+define( 'YTCVER', '2.2.1' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -399,7 +399,6 @@ if ( $debugon == 'on' ) {
 		),
 		$instance);
 ?>
-
 			<textarea name="debug" class="widefat" style="height: 100px;"><?php echo au_ytc_dbg($debug_arr); ?></textarea><br />
 			<small>Insert debug data to <a href="http://wordpress.org/support/plugin/youtube-channel" target="_support">support forum</a>.<br />Please do not remove channel and playlist ID's. If you are concerned about privacy, send this debug log to email <a href="mailto:urke.kg@gmail.com?subject=YTC%20debug%20log">urke.kg@gmail.com</a></small>
 <?php } ?>
@@ -556,6 +555,8 @@ if ( $debugon == 'on' ) {
 				// generate feed cache key for caching time
 				$cache_key = 'ytc_'.md5($feed_url).'_'.$instance['cache_time'];
 
+				if (!empty($_GET['ytc_force_recache']))
+					delete_transient($cache_key);
 				// get/set transient cache
 				if ( false === ($json = get_transient($cache_key)) ) {
 					// no cached JSON, get new
@@ -567,10 +568,10 @@ if ( $debugon == 'on' ) {
 
 					// $json = file_get_contents($feed_url,0,null,null);
 					// set decoded JSON to transient cache_key
-					set_transient($cache_key, json_decode($json), $instance['cache_time']);
+					set_transient($cache_key, base64_encode($json), $instance['cache_time']);
 				} else {
 					// we already have cached feed JSON, get it encoded
-					$json = json_encode($json);
+					$json = base64_decode($json);
 				}
 			} else {
 				// just get fresh feed if cache disabled
