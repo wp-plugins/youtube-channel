@@ -4,11 +4,11 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.8.0
 Tested up to: 4.0
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Sidebar widget to show latest video thumbnail, playable flash object or chromeless video from YouTube Channel or Playlist.
+Show video thumbnails or playable blocks of recent videos from YouTube Channel or Playlist.
 
 == Description ==
 
@@ -81,7 +81,7 @@ You can use the built in installer and upgrader, or you can install the plugin m
 
 1. You can either use the automatic plugin installer or your FTP program to upload unziped `youtube-channel` directory to your `wp-content/plugins` directory.
 2. Activate the plugin through the `Plugins` menu in WordPress
-3. Add YouTube Channel widget to your sidebar
+3. Add YouTube Channel widget to sidebar
 4. Set channel name and save changes
 
 If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
@@ -120,7 +120,11 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.2.1 =
+= 2.2.2 (2014-07-25) =
+* Add: admin notices after upgrade to prevent errors and avare users to do ReCache and prevent mixed json_decode / base64_encode strings for cached feeds
+* Change: moved ReCache part to Tools tab on settings page
+
+= 2.2.1 (2014-07-13) =
 * Fix: to prevent broken JSON feed, transient caching changed from plain serialized string to base64_encode
 * Add: URL parameter `ytc_force_recache` to force recache, also included on Help tab in plugin settings
 
@@ -243,35 +247,8 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Initial release
 
 == Upgrade Notice ==
-= 2.2.1 =
-Because we changed caching method, from Help tab on plugin Settings page do ReCache (read help page).
 
-= 0.1.3 =
-After upgrade check widget options.
-
-= 0.1.2 =
-After upgrade set option for random video from channel.
-
-= 0.1.1 =
-After upgrade please reconfigure widget. Some variables are changed and implemented new features.
-
-= 0.1.0 =
-Just try it and rate it. Only initial release is available right now.
-
-== Upgrade Notice ==
-
-= 2.1.0.2 =
-
-Fixed broken IFRAME type implementation.
-
-= 2.1.0 =
-
-Before you upgrade to this version, BACKUP DATABASE because experimental transition code converts YouTube Channel widgets made in versions prior to 2.0.0 to new format. You can lose all predefined YTC widgets.
-
-= 2.0.0 =
-
-This version introduces caching, optimized feeds, JSON, and better user experience.
-We highly recommend to you made database backup before you upgrade to latest version 2.0.0.
+Better handling of cached UNICODE content, ReCache tool to force reloading cached feeds.
 
 == Screenshots ==
 

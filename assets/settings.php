@@ -8,6 +8,7 @@ if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_S
         private $video_settings_key   = 'ytc_video';
         private $content_settings_key = 'ytc_content';
         private $link_settings_key    = 'ytc_link';
+        private $tools_settings_key   = 'ytc_tools';
         private $help_settings_key    = 'ytc_help';
         private $plugin_options_key   = 'youtube_channel_defaults';
         private $plugin_settings_page = YTCTDOM;
@@ -25,6 +26,7 @@ if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_S
             add_action('admin_init', array( &$this, 'register_video_settings' ) );
             add_action('admin_init', array( &$this, 'register_content_settings' ) );
             add_action('admin_init', array( &$this, 'register_link_settings' ) );
+            add_action('admin_init', array( &$this, 'register_tools_settings' ) );
             add_action('admin_init', array( &$this, 'register_help_settings' ) );
 
         	add_action('admin_menu', array( &$this, 'add_menu' ) );
@@ -515,6 +517,20 @@ if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_S
             );
         } // END register_link_settings()
 
+        function register_tools_settings()
+        {
+            $this->plugin_settings_tabs[$this->tools_settings_key] = 'Tools';
+            register_setting($this->help_settings_key, $this->help_settings_key);
+
+            add_settings_section(
+                'tools_settings', 
+                __('Tools',YTCTDOM), 
+                array(&$this, 'tools_settings_section'), 
+                $this->tools_settings_key
+            );
+
+        } // END register_help_settings()
+
         function register_help_settings()
         {
             $this->plugin_settings_tabs[$this->help_settings_key] = 'Help';
@@ -558,6 +574,10 @@ if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_S
         {
             // Think of this as help text for the section.
             _e('<p>Default settings for channel link at the bottom of video block. This will be used as default values for shortcode.</p>',YTCTDOM);
+        }
+        public function tools_settings_section()
+        {
+            include('settings_tools.php');
         }
         public function help_settings_section()
         {

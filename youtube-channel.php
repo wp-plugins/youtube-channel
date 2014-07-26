@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.2.1
+Version: 2.2.2
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.2.1' );
+define( 'YTCVER', '2.2.2' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -17,27 +17,44 @@ define( 'YTCNAME', 'YouTube Channel' );
 /* youtube widget */
 class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 
-	public function __construct() {
-
-		// if ( is_admin() ){ // admin actions
-  			// add_action( 'admin_menu', array($this,'add_admin_menu') );
-  		// }
-
-        // Initialize Settings
-        require_once(sprintf("%s/assets/settings.php", dirname(__FILE__)));
+	function __construct() {
 
 		add_shortcode( 'youtube_channel', array($this, 'youtube_channel_shortcode') );
-        // Initialize Widget
+		// Initialize Widget
 		parent::__construct(
-	 		YTCTDOM,
+			YTCTDOM,
 			__( 'Youtube Channel' , YTCTDOM ),
 			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', YTCTDOM ) )
 		);
 
-        $WPAU_YOUTUBE_CHANNEL_SETTINGS = new WPAU_YOUTUBE_CHANNEL_SETTINGS();
+		// update YTC version in database on request
+		if ( !empty($_GET['ytc_dismiss_update_notice']) )
+			update_option( 'ytc_version', YTCVER );
+
+		// add dashboard notice if version changed
+		$version = get_option('ytc_version','0');
+		if ( version_compare($version, YTCVER, "<") )
+			add_action( 'admin_notices', array($this, 'admin_notices') );
+
+		// Initialize Settings
+		require_once(sprintf("%s/assets/settings.php", dirname(__FILE__)));
+
+		$WPAU_YOUTUBE_CHANNEL_SETTINGS = new WPAU_YOUTUBE_CHANNEL_SETTINGS();
 
 	}
 
+	function admin_notices()
+	{
+?>
+	<div class="update-nag">
+		<p>
+		<strong><?php echo YTCNAME; ?></strong> is updated to version <strong><?php echo YTCVER; ?></strong>.
+		If you enabled caching for any YTC widget or shortcode, please <strong>ReCache</strong> feeds at <a href="options-general.php?page=youtube-channel&tab=ytc_tools">Tools</a> tab of settings page.
+		&nbsp;&nbsp;<a href="?ytc_dismiss_update_notice=1" class="button button-secondary">I did this already, dismiss notice!</a>
+		</p>
+	</div>
+<?php
+	}
 	public static function defaults()
 	{
 		$defaults = array(
@@ -72,32 +89,32 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 			'popup_goto'    => 3, // 3 same window, 2 new window JS, 1 new window target
 			'userchan'      => false
 		);
-		// ChromePhp::log(get_option('youtube_channel_defaults'));
-        $options = wp_parse_args(get_option('youtube_channel_defaults'), $defaults);
-        // ChromePhp::log($options);
-        return $options;
+
+		$options = wp_parse_args(get_option('youtube_channel_defaults'), $defaults);
+
+		return $options;
 	}
 
-    /**
-     * Activate the plugin
-     */
-    public static function activate()
-    {
-        // Transit old settings to new format
+	/**
+	 * Activate the plugin
+	 */
+	public static function activate()
+	{
+		// Transit old settings to new format
 		// get pre-2.0.0 YTC widgets, and if exist, convert to 2.0.0+ version
 		if ( $old = get_option('widget_youtube_channel_widget') ) {
-		    // if we have pre-2.0.0 YTC widgets, merge them to new version    
-
-		    // get new YTC widgets
-		    $new = get_option('widget_youtube-channel');
-
-		    // get all widget areas
+			// if we have pre-2.0.0 YTC widgets, merge them to new version    
+			
+			// get new YTC widgets
+			$new = get_option('widget_youtube-channel');
+			
+			// get all widget areas
 			$widget_areas = get_option('sidebars_widgets');
+			
+			// update options to 2.0.0+ version
+			foreach ($old as $k=>$v) {
 
-		    // update options to 2.0.0+ version
-		    foreach ($old as $k=>$v) {
-
-		    	if ( $k !== "_multiwidget" ){
+				if ( $k !== "_multiwidget" ){
 					// option for resource
 					$v['use_res'] = 0;
 					if ( $v['usepl'] == "on" ) {
@@ -140,30 +157,30 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 					if ( $ytc_widget_added == 0 )
 						array_push($widget_areas['wp_inactive_widgets'], $ytc_widget_id);
 
-		    	}
-		    	// add to inactive widgets if don't belong to any widget area
+				}
+				// add to inactive widgets if don't belong to any widget area
 
-		    } // foreach widget option
-
-		    // update widget areas set
-		    update_option('sidebars_widgets',$widget_areas);
-
-		    // update new YTC widgets
-		    update_option('widget_youtube-channel',$new);
-
-		    // remove old YTC widgets entry
-		    delete_option('widget_youtube_channel_widget');
-
-		    // clear temporary vars
-		    unset ($old,$new);
+			} // foreach widget option
+			
+			// update widget areas set
+			update_option('sidebars_widgets',$widget_areas);
+			
+			// update new YTC widgets
+			update_option('widget_youtube-channel',$new);
+			
+			// remove old YTC widgets entry
+			delete_option('widget_youtube_channel_widget');
+			
+			// clear temporary vars
+			unset ($old,$new);
 
 		} // if we have old YTC widgets
 
-    } // END public static function activate
+	} // END public static function activate
 
-    // Helper function cache_time()
-    function cache_time($cache_time)
-    {
+	// Helper function cache_time()
+	function cache_time($cache_time)
+	{
 		$times = array(
 			'minute' => array(
 				1  => "1 minute",
@@ -222,7 +239,7 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 			}
 		}
 		return $out;
-    }
+	}
 
 	// TODO: Form code
 	public function form($instance) {
@@ -557,14 +574,15 @@ if ( $debugon == 'on' ) {
 
 				if (!empty($_GET['ytc_force_recache']))
 					delete_transient($cache_key);
+
 				// get/set transient cache
 				if ( false === ($json = get_transient($cache_key)) ) {
 					// no cached JSON, get new
-                    $wprga = array(
-                        'timeout' => 2 // two seconds only
-                    );
-                    $response = wp_remote_get($feed_url, $wprga);
-                    $json = wp_remote_retrieve_body( $response );
+					$wprga = array(
+						'timeout' => 2 // two seconds only
+					);
+					$response = wp_remote_get($feed_url, $wprga);
+					$json = wp_remote_retrieve_body( $response );
 
 					// $json = file_get_contents($feed_url,0,null,null);
 					// set decoded JSON to transient cache_key
@@ -576,11 +594,11 @@ if ( $debugon == 'on' ) {
 			} else {
 				// just get fresh feed if cache disabled
 				// $json = file_get_contents($feed_url,0,null,null);
-                $wprga = array(
-                    'timeout' => 2 // two seconds only
-                );
-                $response = wp_remote_get($feed_url, $wprga);
-                $json = wp_remote_retrieve_body( $response );
+				$wprga = array(
+					'timeout' => 2 // two seconds only
+				);
+				$response = wp_remote_get($feed_url, $wprga);
+				$json = wp_remote_retrieve_body( $response );
 			}
 
 			// decode JSON data
@@ -660,9 +678,8 @@ if ( $debugon == 'on' ) {
 
 if( class_exists('WPAU_YOUTUBE_CHANNEL'))
 {
-    // Installation and uninstallation hooks
-    register_activation_hook(__FILE__, array('WPAU_YOUTUBE_CHANNEL', 'activate'));
-
+	// Installation and uninstallation hooks
+	register_activation_hook(__FILE__, array('WPAU_YOUTUBE_CHANNEL', 'activate'));
 
 	/* Load plugin's textdomain */
 	add_action( 'init', 'youtube_channel_init' ); /*TODO: move inside class*/
