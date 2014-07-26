@@ -247,8 +247,18 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Initial release
 
 == Upgrade Notice ==
-
+= 2.2.2 =
 Better handling of cached UNICODE content, ReCache tool to force reloading cached feeds.
+
+= 2.1.0.2 =
+Fixed broken IFRAME type implementation.
+
+= 2.1.0 =
+Before you upgrade to this version, BACKUP DATABASE because experimental transition code converts YouTube Channel widgets made in versions prior to 2.0.0 to new format. You can lose all predefined YTC widgets.
+
+= 2.0.0 =
+This version introduces caching, optimized feeds, JSON, and better user experience.
+We highly recommend to you made database backup before you upgrade to latest version 2.0.0.
 
 == Screenshots ==
 
