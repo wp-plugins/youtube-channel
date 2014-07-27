@@ -4,10 +4,10 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.2.2
+Version: 2.2.3
 Author URI: http://urosevic.net/
 */
-define( 'YTCVER', '2.2.2' );
+define( 'YTCVER', '2.2.3' );
 define( 'YOUTUBE_CHANNEL_URL', plugin_dir_url(__FILE__) );
 define( 'YTCPLID', 'PLEC850BE962234400' );
 define( 'YTCUID', 'urkekg' );
@@ -76,6 +76,7 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 			'fixyt'         => false,
 			'autoplay'      => false,
 			'autoplay_mute' => false,
+			'norel'         => false,
 			
 			'showtitle'     => false,
 			'showvidesc'    => false,
@@ -272,6 +273,7 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 		$fixyt         = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
 		$autoplay      = (!empty($instance['autoplay'])) ? esc_attr($instance['autoplay']) : '';
 		$autoplay_mute = (!empty($instance['autoplay_mute'])) ? esc_attr($instance['autoplay_mute']) : '';
+		$norel         = (!empty($instance['norel'])) ? esc_attr($instance['norel']) : '';
 
 		// Content Layout
 		$showtitle     = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
@@ -372,7 +374,8 @@ class WPAU_YOUTUBE_CHANNEL extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $controls, true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls', YTCTDOM); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $fixyt, true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', YTCTDOM); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay, true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video or playlist', YTCTDOM); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay_mute, true ); ?> id="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>" name="<?php echo $this->get_field_name( 'autoplay_mute' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>"><?php _e('Mute video on autoplay', YTCTDOM); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay_mute, true ); ?> id="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>" name="<?php echo $this->get_field_name( 'autoplay_mute' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>"><?php _e('Mute video on autoplay', YTCTDOM); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $norel, true ); ?> id="<?php echo $this->get_field_id( 'norel' ); ?>" name="<?php echo $this->get_field_name( 'norel' ); ?>" /> <label for="<?php echo $this->get_field_id( 'norel' ); ?>"><?php _e('Hide related videos', YTCTDOM); ?></label>
 		</p>
 
 		<h4><?php _e('Content Layout', YTCTDOM); ?></h4>
@@ -454,6 +457,7 @@ if ( $debugon == 'on' ) {
 		$instance['to_show']       = strip_tags($new_instance['to_show']);
 		$instance['autoplay']      = (isset($new_instance['autoplay'])) ? $new_instance['autoplay'] : false;
 		$instance['autoplay_mute'] = (isset($new_instance['autoplay_mute'])) ? $new_instance['autoplay_mute'] : false;
+		$instance['norel']         = (isset($new_instance['norel'])) ? $new_instance['norel'] : false;
 
 		$instance['controls']      = (isset($new_instance['controls'])) ? $new_instance['controls'] : false;
 		$instance['fixnoitem']     = (isset($new_instance['fixnoitem'])) ? $new_instance['fixnoitem'] : false;
@@ -497,6 +501,7 @@ if ( $debugon == 'on' ) {
 		$instance['fixyt']         = (empty($fix_h)) ? $defaults['fixyt'] : $fix_h; // fix youtube height, disabled by default
 		$instance['autoplay']      = (empty($autoplay)) ? $defaults['autoplay'] : $autoplay; // autoplay disabled by default
 		$instance['autoplay_mute'] = (empty($mute)) ? $defaults['autoplay_mute'] : $mute; // mute sound on autoplay - disabled by default
+		$instance['norel']         = (empty($norel)) ? $defaults['norel'] : $norel; // hide related videos
 
 		// Content Layout
 		$instance['showtitle']     = (empty($showtitle)) ? $defaults['showtitle'] : $showtitle; // show video title, disabled by default
@@ -689,18 +694,11 @@ if( class_exists('WPAU_YOUTUBE_CHANNEL'))
 
 	/* Load YTC player script */
 	function ytc_enqueue_scripts() {
-		// wp_enqueue_script( 'ytc', 'https://www.youtube.com/player_api', array(), '3.0.0', true );
 		wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.css', __FILE__), array(), YTCVER );
-		// enqueue fancybox
-		// wp_enqueue_script( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.pack.js', __FILE__), array('jquery'), YTCVER, true );
-		// wp_enqueue_style( 'fancybox', plugins_url('assets/lib/fancybox/jquery.fancybox.css', __FILE__), array(), YTCVER );
-		// wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
-		// wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.js', __FILE__), array(), YTCVER, true );
 
 		// enqueue magnific-popup
 		wp_enqueue_script( 'magnific-popup', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), YTCVER, true );
 		wp_enqueue_style( 'magnific-popup', plugins_url('assets/lib/magnific-popup/magnific-popup.css', __FILE__), array(), YTCVER );
-		// wp_enqueue_script( 'fancybox-media', plugins_url('assets/lib/fancybox/jquery.fancybox-media.js', __FILE__), array('jquery'), YTCVER, true );
 		wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.js', __FILE__), array(), YTCVER, true );
 	}
 	add_action( 'wp_enqueue_scripts', 'ytc_enqueue_scripts' );
@@ -735,9 +733,7 @@ function ytc_only_pl($instance) {
 		if ( empty($width) )
 			$width = 220;
 
-		$playlist = $instance['playlist'];
-		if ( empty($playlist) )
-			$playlist = YTCPLID;
+		$playlist = (empty($instance['playlist'])) ? YTCPLID : $instance['playlist'];
 
 		$height = height_ratio($width, $instance['ratio']);
 		// $height = height_ratio($width, $instance['height'], $instance['ratio']);
@@ -746,14 +742,14 @@ function ytc_only_pl($instance) {
 
 		$playlist = ytc_clean_playlist_id($playlist);
 
-		$autoplay = $instance['autoplay'];
-		if ( $autoplay )
-			$autoplay = '&autoplay=1';
+		$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
 		
+		$rel = (empty($instance['norel'])) ? '' : '&rel=0';
+
 		// enhanced privacy
-		$yt_domain = yt_domain($instance); //( !empty($instance['enhprivacy']) ) ? 'www.youtube-nocookie.com' : 'www.youtube.com';
+		$yt_domain = yt_domain($instance);
 		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-<iframe src="http://'.$yt_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.'" 
+<iframe src="http://'.$yt_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$rel.'" 
 width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 		return $output;
 }
@@ -767,20 +763,17 @@ function ytc_print_video($item, $instance, $y) {
 	$autoplay      = $instance['autoplay'];
 	$autoplay_mute = $instance['autoplay_mute'];
 	$controls      = $instance['controls'];
+	$norel         = $instance['norel'];
 
 	// set width and height
-	$width    = $instance['width'];
-	if ( empty($width) ) $width = 220;
-	$height   = height_ratio($width, $instance['ratio']);
-	// $height   = height_ratio($width, $instance['height'], $instance['ratio']);
+	$width  = ( empty($instance['width']) ) ? 220 : $instance['width'];
+	$height = height_ratio($width, $instance['ratio']);
 
 	// calculate image height based on width for 4:3 thumbnail
 	$imgfixedheight = $width / 4 * 3;
 
 	// which type to show
-	$to_show = $instance['to_show'];
-	if ( $to_show == "" )
-		$to_show = "object";
+	$to_show = (empty($instance['to_show'])) ? 'object' : $instance['to_show'];
 
 	// if not thumbnail, increase video height for 25px taken by video controls
 	if ( $to_show != 'thumbnail' && !$controls && $instance['fixyt'] )
@@ -797,6 +790,7 @@ function ytc_print_video($item, $instance, $y) {
 	$yt_thumb  = "http://img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
 	$yt_video  = $item->link[0]->href;
 	$yt_video  = preg_replace('/\&.*$/','',$yt_video);
+
 	$yt_title  = $item->title->{'$t'};
 	$yt_date   = $item->published->{'$t'};
 	//$yt_date = $item->get_date('j F Y | g:i a');
@@ -837,12 +831,13 @@ function ytc_print_video($item, $instance, $y) {
 			default: $arclass = 'ar16_9';
 		}
 		$title = sprintf( __( 'Watch video %1$s published on %2$s' , YTCTDOM ), $yt_title, $yt_date );
-		$output[] = '<a href="'.$yt_video.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+		$rel = ( $norel ) ? "0" : "1";
+		$output[] = '<a href="'.$yt_video.'&rel='.$rel.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 	} else if ( $to_show == "chromeless" ) {
 		ob_start();
 ?>
 	<object type="application/x-shockwave-flash" data="<?php echo YOUTUBE_CHANNEL_URL . 'chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" id="<?php echo $ytc_vid; ?>">
-		<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?><?php if ( $autoplay ) echo "&autoplay=Yes"; if ( !$controls ) echo "&youtube_controls=Yes"; if ( $hideanno ) echo "&iv_load_policy=3"; if ( $themelight ) echo "&theme=light"; ?>" />
+		<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?><?php if ( $autoplay ) echo "&autoplay=Yes"; if ( !$controls ) echo "&youtube_controls=Yes"; if ( $hideanno ) echo "&iv_load_policy=3"; if ( $themelight ) echo "&theme=light"; if ( $norel ) echo "&rel=0"; ?>" />
 		<param name="quality" value="high" />
 		<param name="wmode" value="opaque" />
 		<param name="swfversion" value="6.0.65.0" />
@@ -860,17 +855,20 @@ function ytc_print_video($item, $instance, $y) {
 		if ( $autoplay ) $output[] = "&amp;autoplay=1";
 		if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
 		if ( $themelight ) $output[] = "&amp;theme=light";
+		// disable related videos
+		if ( $norel ) $output[] = "&amp;rel=0";
 
 		$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
 	} else if ( $to_show == "iframe2" ) {
 		// youtube API async
 		if ( empty($usepl) ) $yt_url = $yt_id;
 
+		$js_rel            = ( $norel ) ? "rel: 0," : '';
 		$js_controls       = ( $controls ) ? "controls: 0," : '';
 		$js_showinfo       = ( $hideinfo ) ? "showinfo: 0," : '';
-		$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
 		$js_iv_load_policy = ( $hideanno ) ? "iv_load_policy: 3," : '';
 		$js_theme          = ( $themelight ) ? "theme: 'light'," : '';
+		$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
 		$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
 		$js_player_id      = str_replace('-', '_', $yt_url);
 
@@ -884,7 +882,7 @@ function ytc_print_video($item, $instance, $y) {
 				videoId: '$yt_url',
 				enablejsapi: 1,
 				playerVars: {
-					$js_autoplay $js_showinfo $js_controls $js_theme wmmode: 'opaque'
+					$js_autoplay $js_showinfo $js_controls $js_theme $js_rel wmmode: 'opaque'
 				},
 				origin: '$site_domain',
 				$js_iv_load_policy $js_autoplay_mute
@@ -904,6 +902,7 @@ JS;
 		$obj_url .= ( $autoplay ) ? '&amp;autoplay=1' : '';
 		$obj_url .= ( $hideanno ) ? '&amp;iv_load_policy=3' : '';
 		$obj_url .= ( $themelight ) ? '&amp;theme=light' : '';
+		$obj_url .= ( $norel ) ? '&amp;rel=0' : '';
 		ob_start();
 ?>
 <object width="<?php echo $width; ?>" height="<?php echo $height; ?>"  type="application/x-shockwave-flash" data="<?php echo $obj_url; ?>">
@@ -960,8 +959,6 @@ JS;
 
 // function to calculate height by width and ratio
 function height_ratio($width=220, $ratio) {
-	// if ( $width == "" ) $width = 220;
-
 	switch ($ratio)
 	{
 		case 1:

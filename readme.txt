@@ -120,6 +120,10 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.2.3 (2014-07-27) =
+* Add: option to disable related videos (not supported by chromeless player)
+* Enhance: added support for YouTube `rel` parameter in Magnific PopUp IFRAME module 
+
 = 2.2.2 (2014-07-25) =
 * Add: admin notices after upgrade to prevent errors and avare users to do ReCache and prevent mixed json_decode / base64_encode strings for cached feeds
 * Change: moved ReCache part to Tools tab on settings page
@@ -247,18 +251,8 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Initial release
 
 == Upgrade Notice ==
-= 2.2.2 =
+
 Better handling of cached UNICODE content, ReCache tool to force reloading cached feeds.
-
-= 2.1.0.2 =
-Fixed broken IFRAME type implementation.
-
-= 2.1.0 =
-Before you upgrade to this version, BACKUP DATABASE because experimental transition code converts YouTube Channel widgets made in versions prior to 2.0.0 to new format. You can lose all predefined YTC widgets.
-
-= 2.0.0 =
-This version introduces caching, optimized feeds, JSON, and better user experience.
-We highly recommend to you made database backup before you upgrade to latest version 2.0.0.
 
 == Screenshots ==
 
