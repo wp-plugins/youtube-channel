@@ -41,6 +41,7 @@
     <li><code>fix_h</code> <em>(bool)</em> If you did not set to hide player controls, you can set this option to <code>1</code> or <code>true</code> to fix video height taken by controls</li>
     <li><code>autoplay</code> <em>(bool)</em> Enable autoplay of first video in YTC video stack by setting this option to <code>1</code> or <code>true</code></li>
     <li><code>mute</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to mute videos set to autoplay on load</li>
+    <li><code>norel</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to hire related videos after finished playbak</li>
 </ul>
 <h3>Content Layout</h3>
 <ul>

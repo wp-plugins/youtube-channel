@@ -341,6 +341,19 @@ if(class_exists('WPAU_YOUTUBE_CHANNEL') && !class_exists('WPAU_YOUTUBE_CHANNEL_S
                     'value'       => $this->defaults['autoplay_mute'],
                 )
             );
+            add_settings_field(
+                'wpau_youtube_channel-norel', 
+                __('Hide related videos',YTCTDOM), 
+                array(&$this, 'settings_field_checkbox'), 
+                $this->video_settings_key, 
+                'video_settings',
+                array(
+                    'field'       => "youtube_channel_defaults[norel]",
+                    'description' => __('Enable this option to hide related videos after finished playback',YTCTDOM),
+                    'class'       => 'checkbox',
+                    'value'       => $this->defaults['norel'],
+                )
+            );
         } // END register_video_settings()
 
         function register_content_settings()
