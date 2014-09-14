@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.8.0
 Tested up to: 4.0
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -120,9 +120,12 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.2.3 (2014-07-27) =
+= 2.2.3 (2014-09-14) =
 * Add: option to disable related videos (not supported by chromeless player)
 * Enhance: added support for YouTube `rel` parameter in Magnific PopUp IFRAME module 
+* Minified assets
+* Add plugin icon for WordPress 4.x plugin installer
+* Update plugin banner
 
 = 2.2.2 (2014-07-25) =
 * Add: admin notices after upgrade to prevent errors and avare users to do ReCache and prevent mixed json_decode / base64_encode strings for cached feeds
