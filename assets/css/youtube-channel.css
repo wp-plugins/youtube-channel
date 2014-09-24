@@ -1,3 +1,10 @@
+.youtube_channel {
+	float: left;
+	clear: both;
+}
+.youtube_channel .ytc_video_container {
+	float: left;
+}
 .ytc_thumb {
 	display: block;
 	overflow: hidden;

@@ -2,7 +2,7 @@
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
-Requires at least: 3.8.0
+Requires at least: 3.9.0
 Tested up to: 4.0
 Stable tag: 2.2.3
 License: GPLv3
@@ -120,6 +120,17 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.4.0 (2014-09-20) =
+* Fix: false options set in shortcode had no effect to output box and default settings always used
+* Fix: enabled checkbox in global settings could not be unticked (disabled)
+* Add: fitVids for responsive videos
+* Add: option for additional YTC box class in widget and shortcode
+* Change: global settings page re-implemented with Redux Framework and requires Redux Framework Plugin
+* Change: rewrite plugin to be more OOP
+* Change: removed obsolete methods
+* Change: default box width changed from 220 to 306px
+* Change: YTC block and video pieces now floated left to enable horizontal stack
+
 = 2.2.3 (2014-09-14) =
 * Add: option to disable related videos (not supported by chromeless player)
 * Enhance: added support for YouTube `rel` parameter in Magnific PopUp IFRAME module 

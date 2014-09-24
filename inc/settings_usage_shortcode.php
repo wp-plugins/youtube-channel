@@ -1,8 +1,8 @@
 <p>You also can use shortcode <code>[youtube_channel]</code> with options listed below (all options are optional):</p>
 <h3>General Settings</h3>
 <ul>
-	<li><code>channel</code> <em>(string)</em> ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)</li>
-	<li><code>playlist</code> <em>(string)</em> ID of preferred YouTube playlist.</li>
+    <li><code>channel</code> <em>(string)</em> ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)</li>
+    <li><code>playlist</code> <em>(string)</em> ID of preferred YouTube playlist.</li>
     <li><code>res</code> <em>(int)</em> Resource to use for feed:
     <ul>
         <li>&bullet; <code>0</code> Channel</li>
