@@ -64,6 +64,8 @@ Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend
 For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
 Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
 [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
+Spanish localization by [Digital03.net](http://Digital03.net)
+Czech localization by [Ladislav Drábek](http://zholesova.cz)
 
 = How To Use =
 **Add New Widget**
