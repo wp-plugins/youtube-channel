@@ -80,20 +80,32 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		function admin_notices()
 		{
-?>
-		<div class="update-nag">
-			<p>
-			<strong><?php echo $this->plugin_name; ?></strong> is updated to version <strong><?php echo $this->plugin_version; ?></strong>.
-			If you enabled caching for any YTC widget or shortcode, please <strong>ReCache</strong> feeds at <a href="options-general.php?page=youtube-channel&tab=ytc_tools">Tools</a> tab of settings page.
-			&nbsp;&nbsp;<a href="?ytc_dismiss_update_notice=1" class="button button-secondary">I did this already, dismiss notice!</a>
-			</p>
-		</div>
-<?php
+			$previous_version = get_option('ytc_version','0');
+
+			$settings_page = "options-general.php?page=youtube-channel";
+			$msg = "";
+			switch ($previous_version)
+			{
+				case "0":
+					$msg = sprintf(__('Please review <a href="%s">global settings</a>, YTC widgets and shortcodes.', 'youtube-channel'), $settings_page);
+					break;
+				case "2.2.2":
+					$msg = sprintf(__('If you use caching for any YTC widget or shortcode, please <strong>ReCache</strong> feeds in <strong>Tools</strong> section of <a href="%s">plugin settings</a> page.', 'youtube-channel'), $settings_page);
+					break;
+				case "2.2.3":
+					$msg = sprintf(__('We switched to <em>Redux Framework</em> so please review global plugin <a href="%s">settings page</a>.', 'youtube-channel'), $settings_page);
+					break;
+			}
+			if ( !empty($msg) )
+			printf(
+				'<div class="update-nag"><p><strong>%s</strong> ' . __("updated to version", 'youtube-channel') . ' <strong>%s</strong>. '.$msg.'&nbsp;&nbsp;<a href="?ytc_dismiss_update_notice=1" class="button button-secondary">' . __("I did this already, dismiss notice!", 'youtube-channel') . '</a></p></div>',
+				$this->plugin_name,
+				$this->plugin_version);
 		} // end admin_notices
 
 		function admin_notice_redux()
 		{
-			echo '<div class="error"><p>'.sprintf("To configure global <strong>%s</strong> options, you need to install and activate <strong>%s</strong>.",$this->plugin_name, "Redux Framework Plugin") . '</p></div>';
+			echo '<div class="error"><p>'.sprintf(__("To configure global <strong>%s</strong> options, you need to install and activate <strong>%s</strong>.", 'youtube-channel'), $this->plugin_name, "Redux Framework Plugin") . '</p></div>';
 		} // admin_notice()
 		
 		function add_settings_link($links)
@@ -313,7 +325,7 @@ jQuery(document).ready(function($){
 						'popup'      => $instance['popup_goto'],
 						'userchan'   => $instance['userchan'],
 
-						'class'      => $instance['class']
+						'class'      => (!empty($instance['class'])) ? $instance['class'] : ''
 		    		),
 					$atts
 				)
@@ -434,7 +446,6 @@ jQuery(document).ready(function($){
 						$response = wp_remote_get($feed_url, $wprga);
 						$json = wp_remote_retrieve_body( $response );
 
-						// $json = file_get_contents($feed_url,0,null,null);
 						// set decoded JSON to transient cache_key
 						set_transient($cache_key, base64_encode($json), $instance['cache_time']);
 					} else {
@@ -443,7 +454,6 @@ jQuery(document).ready(function($){
 					}
 				} else {
 					// just get fresh feed if cache disabled
-					// $json = file_get_contents($feed_url,0,null,null);
 					$wprga = array(
 						'timeout' => 2 // two seconds only
 					);
@@ -473,7 +483,6 @@ jQuery(document).ready(function($){
 				}
 
 				if ($maxitems == 0) {
-					// $output[] = __( 'No items' , $this->plugin_slug );
 					$output[] = __("No items", $this->plugin_slug).' [<a href="'.$feed_url.'" target="_blank">'.__("Check here why",$this->plugin_slug).'</a>]';
 				} else {
 
@@ -535,14 +544,14 @@ jQuery(document).ready(function($){
 					$channel = 'urkekg';
 				$goto_txt = $instance['goto_txt'];
 				if ( $goto_txt == "" )
-					$goto_txt = sprintf( __( 'Visit channel %1$s' , $this->plugin_slug ), $channel );
+					$goto_txt = sprintf( __('Visit channel %1$s', 'youtube-channel'), $channel );
 				else
 					$goto_txt = str_replace('%channel%', $channel, $goto_txt);
 
 				$output[] = '<div class="ytc_link">';
 				$userchan = ( $instance['userchan'] ) ? 'channel' : 'user';
 				$goto_url = 'http://www.youtube.com/'.$userchan.'/'.$channel.'/';
-				$newtab = __("in new window/tab", "youtube-channel");
+				$newtab = __("in new window/tab", 'youtube-channel');
 				$output[] = '<p>';
 				switch ( $instance['popup_goto'] ) {
 					case 1:
@@ -639,7 +648,7 @@ jQuery(document).ready(function($){
 					case 2: $arclass = 'ar16_10'; break;
 					default: $arclass = 'ar16_9';
 				}
-				$title = sprintf( __( 'Watch video %1$s published on %2$s' , $this->plugin_slug ), $yt_title, $yt_date );
+				$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
 				$rel = ( $norel ) ? "0" : "1";
 				$output[] = '<a href="'.$yt_video.'&rel='.$rel.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 			} else if ( $to_show == "chromeless" ) {
@@ -775,7 +784,6 @@ JS;
 		$playlist = (empty($instance['playlist'])) ? $this->playlist_id : $instance['playlist'];
 
 		$height = height_ratio($width, $instance['ratio']);
-		// $height = height_ratio($width, $instance['height'], $instance['ratio']);
 
 		$height += ($instance['fixyt']) ? 25 : 0;
 
@@ -798,32 +806,32 @@ JS;
 		{
 			$times = array(
 				'minute' => array(
-					1  => "1 minute",
-					5  => "5 minutes",
-					15 => "15 minutes",
-					30 => "30 minutes"
+					1  => __("1 minute", 'youtube-channel'),
+					5  => __("5 minutes", 'youtube-channel'),
+					15 => __("15 minutes", 'youtube-channel'),
+					30 => __("30 minutes", 'youtube-channel')
 				),
 				'hour' => array(
-					1  => "1 hour",
-					2  => "2 hours",
-					5  => "5 hours",
-					10 => "10 hours",
-					12 => "12 hours",
-					18 => "18 hours"
+					1  => __("1 hour", 'youtube-channel'),
+					2  => __("2 hours", 'youtube-channel'),
+					5  => __("5 hours", 'youtube-channel'),
+					10 => __("10 hours", 'youtube-channel'),
+					12 => __("12 hours", 'youtube-channel'),
+					18 => __("18 hours", 'youtube-channel')
 				),
 				'day' => array(
-					1 => "1 day",
-					2 => "2 days",
-					3 => "3 days",
-					4 => "4 days",
-					5 => "5 days",
-					6 => "6 days"
+					1 => __("1 day", 'youtube-channel'),
+					2 => __("2 days", 'youtube-channel'),
+					3 => __("3 days", 'youtube-channel'),
+					4 => __("4 days", 'youtube-channel'),
+					5 => __("5 days", 'youtube-channel'),
+					6 => __("6 days", 'youtube-channel')
 				),
 				'week' => array(
-					1 => "1 week",
-					2 => "2 weeks",
-					3 => "3 weeks",
-					4 => "1 month"
+					1 => __("1 week", 'youtube-channel'),
+					2 => __("2 weeks", 'youtube-channel'),
+					3 => __("3 weeks", 'youtube-channel'),
+					4 => __("1 month", 'youtube-channel')
 				)
 			);
 

@@ -120,7 +120,7 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.4.0 (2014-09-20) =
+= 2.4.0 (2014-09-26) =
 * Fix: false options set in shortcode had no effect to output box and default settings always used
 * Fix: enabled checkbox in global settings could not be unticked (disabled)
 * Add: fitVids for responsive videos
@@ -130,6 +130,8 @@ If you does not see your latest video in your uplaods feed (which you can access
 * Change: removed obsolete methods
 * Change: default box width changed from 220 to 306px
 * Change: YTC block and video pieces now floated left to enable horizontal stack
+* Change: update localization support
+* Change: updated Serbian localization
 
 = 2.2.3 (2014-09-14) =
 * Add: option to disable related videos (not supported by chromeless player)

@@ -12,16 +12,12 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 		public $args = array();
 		public $sections = array();
-		// public $theme;
 		public $ReduxFramework;
 
 		public function __construct( ) {
 
 			// Set the default arguments
 			$this->setArguments();
-
-			// Set a few help tabs so you can see how it's done
-			// $this->setHelpTabs();
 
 			// Create the sections and fields
 			$this->setSections();
@@ -55,78 +51,78 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 			// ACTUAL DECLARATION OF SECTIONS
 
 			$this->sections[] = array(
-				'title'  => __('General', 'ppc'),
+				'title'  => __('General', 'youtube-channel'),
 				'icon'   => 'el-icon-home',
 				'fields' => array(
 					array(
 						'id'      => 'channel',
 						'type'    => 'text',
-						'title'   => __('YouTube Channel ID', 'ppc'),
-						'desc'    => __('Enter your YouTube channel ID (channel name, not full URL to channel)', 'ppc'),
+						'title'   => __('YouTube Channel ID', 'youtube-channel'),
+						'desc'    => __('Enter your YouTube channel ID (channel name, not full URL to channel)', 'youtube-channel'),
 						'default' => $WPAU_YOUTUBE_CHANNEL->channel_id
 					),
 					array(
 						'id'      => 'playlist',
 						'type'    => 'text',
-						'title'   => __('Default Playlist ID', 'ppc'),
-						'desc'    => __('Enter default playlist ID (not playlist name)', 'ppc'),
+						'title'   => __('Default Playlist ID', 'youtube-channel'),
+						'desc'    => __('Enter default playlist ID (not playlist name)', 'youtube-channel'),
 						'default' => $WPAU_YOUTUBE_CHANNEL->playlist_id
 					),
 					array(
 						'id'      => 'use_res',
 						'type'    => 'select',
-						'title'   => __('Resource to use', 'ppc'),
-						'desc'    => __('What to use as resource for feeds', 'ppc'),
+						'title'   => __('Resource to use', 'youtube-channel'),
+						'desc'    => __('What to use as resource for feeds', 'youtube-channel'),
 						'options' => array(
-							'0' => __('Channel', 'ppc'),
-							'1' => __('Favorites', 'ppc'),
-							'2' => __('Playlist', 'ppc'),
+							'0' => __('Channel', 'youtube-channel'),
+							'1' => __('Favorites', 'youtube-channel'),
+							'2' => __('Playlist', 'youtube-channel'),
 						),
 						'default' => '0'
 					),
                     array(
                         'id'        => 'only_pl',
                         'type'      => 'checkbox',
-                        'title'     => __('Embed standard playlist', 'ppc'),
-                        'desc'      => __('Enable this option to embed whole playlist instead single video from playlist when you chose playlist as resource', 'ppc'),
+                        'title'     => __('Embed standard playlist', 'youtube-channel'),
+                        'desc'      => __('Enable this option to embed whole playlist instead single video from playlist when you chose playlist as resource', 'youtube-channel'),
                         'default'   => '0'// 1 = on | 0 = off
                     ),
 					array(
 						'id'      => 'cache_time',
 						'type'    => 'select',
-						'title'   => __('Cache Timeout', 'ppc'),
-						'desc' => __('Define caching timeout for YouTube feeds, in seconds', 'ppc'),
+						'title'   => __('Cache Timeout', 'youtube-channel'),
+						'desc'    => __('Define caching timeout for YouTube feeds, in seconds', 'youtube-channel'),
 
 						'options' => array(
-							'0'       => __('Do not chache', 'ppc'),
-							'60'      => __('1 minute', 'ppc'),
-							'300'     => __('5 minutes', 'ppc'),
-							'900'     => __('15 minutes', 'ppc'),
-							'1800'    => __('30 minutes', 'ppc'),
-							'3600'    => __('1 hour', 'ppc'),
-							'7200'    => __('2 hours', 'ppc'),
-							'18000'   => __('5 hours', 'ppc'),
-							'36000'   => __('10 hours', 'ppc'),
-							'43200'   => __('12 hours', 'ppc'),
-							'64800'   => __('18 hours', 'ppc'),
-							'86400'   => __('1 day', 'ppc'),
-							'172800'  => __('2 days', 'ppc'),
-							'259200'  => __('3 days', 'ppc'),
-							'345600'  => __('4 days', 'ppc'),
-							'432000'  => __('5 days', 'ppc'),
-							'518400'  => __('6 days', 'ppc'),
-							'604800'  => __('1 week', 'ppc'),
-							'1209600' => __('2 weeks', 'ppc'),
-							'1814400' => __('3 weeks', 'ppc'),
-							'2419200' => __('1 month', 'ppc')
+							'0'       => __('Do not chache', 'youtube-channel'),
+							'60'      => __('1 minute', 'youtube-channel'),
+							'300'     => __('5 minutes', 'youtube-channel'),
+							'900'     => __('15 minutes', 'youtube-channel'),
+							'1800'    => __('30 minutes', 'youtube-channel'),
+							'3600'    => __('1 hour', 'youtube-channel'),
+							'7200'    => __('2 hours', 'youtube-channel'),
+							'18000'   => __('5 hours', 'youtube-channel'),
+							'36000'   => __('10 hours', 'youtube-channel'),
+							'43200'   => __('12 hours', 'youtube-channel'),
+							'64800'   => __('18 hours', 'youtube-channel'),
+							'86400'   => __('1 day', 'youtube-channel'),
+							'172800'  => __('2 days', 'youtube-channel'),
+							'259200'  => __('3 days', 'youtube-channel'),
+							'345600'  => __('4 days', 'youtube-channel'),
+							'432000'  => __('5 days', 'youtube-channel'),
+							'518400'  => __('6 days', 'youtube-channel'),
+							'604800'  => __('1 week', 'youtube-channel'),
+							'1209600' => __('2 weeks', 'youtube-channel'),
+							'1814400' => __('3 weeks', 'youtube-channel'),
+							'2419200' => __('1 month', 'youtube-channel')
 						),
 						'default' => '0'
 					),
 					array(
 						'id'      =>'maxrnd',
 						'type'    => 'spinner',
-						'title'   => __('Fetch', 'ppc'), 
-						'desc' => __('Number of videos that will be used for random pick (min 2, max 50, default 25)', 'ppc'),
+						'title'   => __('Fetch', 'youtube-channel'), 
+						'desc'    => __('Number of videos that will be used for random pick (min 2, max 50, default 25)', 'youtube-channel'),
 						'default' => 25,
 						'min'     => 2,
 						'max'     => 50,
@@ -135,8 +131,8 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 					array(
 						'id'      =>'vidqty',
 						'type'    => 'spinner',
-						'title'   => __('Show', 'ppc'), 
-						'desc' => __('Number of videos to display', 'ppc'),
+						'title'   => __('Show', 'youtube-channel'), 
+						'desc'    => __('Number of videos to display', 'youtube-channel'),
 						'default' => 1,
 						'min'     => 1,
 						'max'     => 50,
@@ -145,22 +141,22 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 					array(
 						'id'       => 'enhprivacy',
 						'type'     => 'checkbox',
-						'title'    => __('Use Enhanced privacy', 'ppc'), 
-						'desc'     => __(sprintf('Enable this option to protect your visitors <a href="%s" target="_blank">privacy</a>.', 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'), 'ppc'),
+						'title'    => __('Use Enhanced privacy', 'youtube-channel'), 
+						'desc'     => sprintf(__('Enable this option to protect your visitors <a href="%s" target="_blank">privacy</a>.', 'youtube-channel'), 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'fixnoitem',
 						'type'     => 'checkbox',
-						'title'    => __('Fix <em>No items</em> error/Respect playlist order', 'ppc'), 
-						'desc'     => __('Enable this option if you get error No Item', 'ppc'),
+						'title'    => __('Fix <em>No items</em> error/Respect playlist order', 'youtube-channel'), 
+						'desc'     => __('Enable this option if you get error No Item', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'getrnd',
 						'type'     => 'checkbox',
-						'title'    => __('Show random video', 'ppc'), 
-						'desc'     => __('Get random videos of all fetched from channel or playlist', 'ppc'),
+						'title'    => __('Show random video', 'youtube-channel'), 
+						'desc'     => __('Get random videos of all fetched from channel or playlist', 'youtube-channel'),
 						'default'  => 0
 					),
 
@@ -169,27 +165,27 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-youtube',
-				'title'  => __('Video', 'ppc'),
+				'title'  => __('Video', 'youtube-channel'),
 				'fields' => array(
 
 					array(
 						'id'      => 'ratio',
 						'type'    => 'select',
-						'title'   => __('Aspect Ratio', 'ppc'),
-						'desc'    => __('Select aspect ratio for displayed video', 'ppc'),
+						'title'   => __('Aspect Ratio', 'youtube-channel'),
+						'desc'    => __('Select aspect ratio for displayed video', 'youtube-channel'),
 						
 						'options' => array(
-							'3' => __('16:9', 'ppc'),
-							'2' => __('16:10', 'ppc'),
-							'1' => __('4:3', 'ppc')
+							'3' => __('16:9', 'youtube-channel'),
+							'2' => __('16:10', 'youtube-channel'),
+							'1' => __('4:3', 'youtube-channel')
 						),
 						'default' => '3'
 					),
 					array(
 						'id'      => 'width',
 						'type'    => 'spinner',
-						'title'   => __('Video Width', 'ppc'), 
-						'desc'    => __('Set default width for displayed video, in pixels', 'ppc'), 
+						'title'   => __('Video Width', 'youtube-channel'), 
+						'desc'    => __('Set default width for displayed video, in pixels', 'youtube-channel'), 
 						'default' => 306,
 						'min'     => 50,
 						'max'     => 1980,
@@ -198,58 +194,58 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 					array(
 						'id'      => 'to_show',
 						'type'    => 'select',
-						'title'   => __('What to show?', 'ppc'),
-						'desc'    => __('Set what will be shown by default', 'ppc'),
+						'title'   => __('What to show?', 'youtube-channel'),
+						'desc'    => __('Set what will be shown by default', 'youtube-channel'),
 						
 						'options' => array(
-							'thumbnail'  => __('Thumbnail', 'ppc'),
-							'object'     => __('Flash (object)', 'ppc'),
-							'iframe'     => __('HTML5 (iframe)', 'ppc'),
-							'iframe2'    => __('HTML5 (iframe) Async', 'ppc'),
-							'chromeless' => __('Chromeless', 'ppc')
+							'thumbnail'  => __('Thumbnail', 'youtube-channel'),
+							'object'     => __('Flash (object)', 'youtube-channel'),
+							'iframe'     => __('HTML5 (iframe)', 'youtube-channel'),
+							'iframe2'    => __('HTML5 (iframe) Async', 'youtube-channel'),
+							'chromeless' => __('Chromeless', 'youtube-channel')
 						),
 						'default' => 'thumbnail'
 					),
 					array(
 						'id'       => 'themelight',
 						'type'     => 'checkbox',
-						'title'    => __('Use light theme', 'ppc'), 
-						'desc'     => __('Enable this option to use light theme for playback controls instead dark', 'ppc'),
+						'title'    => __('Use light theme', 'youtube-channel'), 
+						'desc'     => __('Enable this option to use light theme for playback controls instead dark', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'controls',
 						'type'     => 'checkbox',
-						'title'    => __('Hide player controls', 'ppc'), 
-						'desc'     => __('Enable this option to hide playback controls', 'ppc'),
+						'title'    => __('Hide player controls', 'youtube-channel'), 
+						'desc'     => __('Enable this option to hide playback controls', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'fixyt',
 						'type'     => 'checkbox',
-						'title'    => __('Fix video height', 'ppc'), 
-						'desc'     => __('Enable this option to fix video height when playback controls are not hidden', 'ppc'),
+						'title'    => __('Fix video height', 'youtube-channel'), 
+						'desc'     => __('Enable this option to fix video height when playback controls are not hidden', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'autoplay',
 						'type'     => 'checkbox',
-						'title'    => __('Autoplay video or playlist', 'ppc'), 
-						'desc'     => __('Enable this option to start video playback right after block is rendered', 'ppc'),
+						'title'    => __('Autoplay video or playlist', 'youtube-channel'), 
+						'desc'     => __('Enable this option to start video playback right after block is rendered', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'autoplay_mute',
 						'type'     => 'checkbox',
-						'title'    => __('Mute video on autoplay', 'ppc'), 
-						'desc'     => __('Enable this option to mute video when start autoplay', 'ppc'),
+						'title'    => __('Mute video on autoplay', 'youtube-channel'), 
+						'desc'     => __('Enable this option to mute video when start autoplay', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'norel',
 						'type'     => 'checkbox',
-						'title'    => __('Hide related videos', 'ppc'), 
-						'desc'     => __('Enable this option to hide related videos after finished playback', 'ppc'),
+						'title'    => __('Hide related videos', 'youtube-channel'), 
+						'desc'     => __('Enable this option to hide related videos after finished playback', 'youtube-channel'),
 						'default'  => 0
 					),
 
@@ -258,28 +254,28 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-view-mode',
-				'title'  => __('Content', 'ppc'),
+				'title'  => __('Content', 'youtube-channel'),
 				'fields' => array(
 
 					array(
 						'id'       => 'showtitle',
 						'type'     => 'checkbox',
-						'title'    => __('Show video title', 'ppc'), 
-						'desc'     => __('Enable this option to display title of video', 'ppc'),
+						'title'    => __('Show video title', 'youtube-channel'), 
+						'desc'     => __('Enable this option to display title of video', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'showvidesc',
 						'type'     => 'checkbox',
-						'title'    => __('Show video description', 'ppc'), 
-						'desc'     => __('Enable this option to display description for video', 'ppc'),
+						'title'    => __('Show video description', 'youtube-channel'), 
+						'desc'     => __('Enable this option to display description for video', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'      =>'videsclen',
 						'type'    => 'spinner',
-						'title'   => __('Description length', 'ppc'), 
-						'desc'    => __('Enter length for video description in characters (0 for full length)', 'ppc'), 
+						'title'   => __('Description length', 'youtube-channel'), 
+						'desc'    => __('Enter length for video description in characters (0 for full length)', 'youtube-channel'), 
 						'default' => 0,
 						'min'     => 0,
 						'max'     => 2500,
@@ -288,22 +284,22 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 					array(
 						'id'      => 'descappend',
 						'type'    => 'text',
-						'title'   => __('Et cetera string', 'ppc'), 
-						'desc'    => __('Indicator for shortened video description (default: …)', 'ppc'),
-						'default' => __('...', 'ppc')
+						'title'   => __('Et cetera string', 'youtube-channel'), 
+						'desc'    => __('Indicator for shortened video description (default: …)', 'youtube-channel'),
+						'default' => __('...', 'youtube-channel')
 					),
 					array(
 						'id'       => 'hideanno',
 						'type'     => 'checkbox',
-						'title'    => __('Hide annotations from video', 'ppc'), 
-						'desc'     => __('Enable this option to hide video annotations (custom text set by uploader over video during playback)', 'ppc'),
+						'title'    => __('Hide annotations from video', 'youtube-channel'), 
+						'desc'     => __('Enable this option to hide video annotations (custom text set by uploader over video during playback)', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'       => 'hideinfo',
 						'type'     => 'checkbox',
-						'title'    => __('Hide video info', 'ppc'), 
-						'desc'     => __('Enable this option to hide informations about video before play start (video title and uploader in overlay)', 'ppc'),
+						'title'    => __('Hide video info', 'youtube-channel'), 
+						'desc'     => __('Enable this option to hide informations about video before play start (video title and uploader in overlay)', 'youtube-channel'),
 						'default'  => 0
 					),
 
@@ -312,41 +308,41 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-link',
-				'title'  => __('Link to Channel', 'ppc'),
+				'title'  => __('Link to Channel', 'youtube-channel'),
 				'fields' => array(
 
 					array(
 						'id'      => 'goto_txt',
 						'type'    => 'text',
-						'title'   => __('Visit YouTube Channel text', 'ppc'), 
-						'desc'    => __('Use placeholder %channel% to insert channel name', 'ppc'),
-						'default' => __('Visit my channel %channel%', 'ppc')
+						'title'   => __('Visit YouTube Channel text', 'youtube-channel'), 
+						'desc'    => __('Use placeholder %channel% to insert channel name', 'youtube-channel'),
+						'default' => __('Visit my channel %channel%', 'youtube-channel')
 					),
 					array(
 						'id'       => 'showgoto',
 						'type'     => 'checkbox',
-						'title'    => __('Show link to channel', 'ppc'), 
-						'desc'     => __('Enable this option to show customized link to channel at the bottom of YTC block', 'ppc'),
+						'title'    => __('Show link to channel', 'youtube-channel'), 
+						'desc'     => __('Enable this option to show customized link to channel at the bottom of YTC block', 'youtube-channel'),
 						'default'  => 0
 					),
 					array(
 						'id'      => 'popup_goto',
 						'type'    => 'select',
-						'title'   => __('Open YouTube channel page', 'ppc'),
-						'desc'    => __('Set what will be shown by default', 'ppc'),
+						'title'   => __('Open YouTube channel page', 'youtube-channel'),
+						'desc'    => __('Set what will be shown by default', 'youtube-channel'),
 						
 						'options' => array(
-							'0' => __('in same window', 'ppc'),
-							'1' => __('in new window (JavaScript)', 'ppc'),
-							'2' => __('in new window (Target)', 'ppc')
+							'0' => __('in same window', 'youtube-channel'),
+							'1' => __('in new window (JavaScript)', 'youtube-channel'),
+							'2' => __('in new window (Target)', 'youtube-channel')
 						),
 						'default' => '0'
 					),
 					array(
 						'id'       => 'userchan',
 						'type'     => 'checkbox',
-						'title'    => __('Link to channel instead to user', 'ppc'), 
-						'desc'     => __('Enable this option if link to your channel have <code>/channel/</code> instead <code>/user/</code> part in URL', 'ppc'),
+						'title'    => __('Link to channel instead to user', 'youtube-channel'), 
+						'desc'     => __('Enable this option if link to your channel have <code>/channel/</code> instead <code>/user/</code> part in URL', 'youtube-channel'),
 						'default'  => 0
 					),
 
@@ -355,12 +351,12 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-magic',
-				'title'  => __('Tools', 'ppc'),
+				'title'  => __('Tools', 'youtube-channel'),
 				'fields' => array(
                     array(
                         'id'        => 'recache',
                         'type'      => 'raw',
-                        'markdown'  => true,
+                        'markdown'  => false,
                         'content'   => file_get_contents(dirname(__FILE__) . '/settings_tools.php')
                     ),
 				)
@@ -372,7 +368,7 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-question-sign',
-				'title'  => __('Usage', 'ppc'),
+				'title'  => __('Usage', 'youtube-channel'),
 				'fields' => array(
 					array(
 						'id'      => 'implementation',
@@ -393,7 +389,7 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 
 			$this->sections[] = array(
 				'icon'   => 'el-icon-group',
-				'title'  => __('Support', 'ppc'),
+				'title'  => __('Support', 'youtube-channel'),
 				'fields' => array(
 					array(
 						'id' => 'support',
@@ -401,17 +397,8 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 						// 'raw_html' => true,
 						'content' => file_get_contents(dirname(__FILE__) . '/settings_support.php')
 					),
-
-					array(
-						'id'      => 'moretxt',
-						'type'    => 'text',
-						'title'   => __('test', 'ppc'), 
-						'desc'    => __('test', 'ppc'),
-						'default' => $WPAU_YOUTUBE_CHANNEL->plugin_name
-					),
 				)
 			);
-
 
 		}	
 
@@ -432,8 +419,8 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 				'display_version'		=> $WPAU_YOUTUBE_CHANNEL->plugin_version, // Version that appears at the top of your panel
 				'menu_type'          	=> 'submenu', //Specify if the admin menu should appear or not. Options: menu or submenu (Under appearance only)
 				'allow_sub_menu'     	=> true, // Show the sections below the admin menu item or not
-				'menu_title'			=> __( $WPAU_YOUTUBE_CHANNEL->plugin_name, 'ppc' ),
-	            'page'		 	 		=> __( $WPAU_YOUTUBE_CHANNEL->plugin_name.' Options', 'ppc' ),
+				'menu_title'			=> __( $WPAU_YOUTUBE_CHANNEL->plugin_name, $WPAU_YOUTUBE_CHANNEL->plugin_slug ),
+	            'page'		 	 		=> __( $WPAU_YOUTUBE_CHANNEL->plugin_name.' Options', $WPAU_YOUTUBE_CHANNEL->plugin_slug ),
 	            'google_api_key'   	 	=> '', // Must be defined to add google fonts to the typography module
 	            'global_variable'    	=> '', // Set a different name for your global variable other than the opt_name
 	            'dev_mode'           	=> false, // Show the time the page took to load, etc
@@ -506,57 +493,11 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 				} else {
 					$v = str_replace("-", "_", $this->args['opt_name']);
 				}
-				$this->args['intro_text'] = __('<p>Easy embed playable videos from YouTube.</p><p>Here you can set default options that will be used as defaults for new widgets, and for shortcode.</p>', 'ppc' );
-			} else {
-				// $this->args['intro_text'] = __('<p>This text is displayed above the options panel. It isn\'t required, but more info is always better! The intro_text field accepts all HTML.</p>', 'ppc');
+				$this->args['intro_text'] = __('<p>Easy embed playable videos from YouTube.</p><p>Here you can set default options that will be used as defaults for new widgets, and for shortcode.</p>', 'youtube-channel' );
 			}
-
-			// Add content after the form.
-			// $this->args['footer_text'] = sprintf( __('<p>Developed by <a href="%s">Aleksandar Urosevic</a></p>', 'ppc'), "http://urosevic.net/");
 
 		}
 	}
     global $reduxConfig;
     $reduxConfig = new Redux_Framework_YouTube_Channel();
 }
-
-/** 
-
-	Custom function for the callback referenced above
-
- */
-if ( !function_exists( 'redux_my_custom_field' ) ):
-	function redux_my_custom_field($field, $value) {
-	    print_r($field);
-	    print_r($value);
-	}
-endif;
-
-/**
- 
-	Custom function for the callback validation referenced above
-
-**/
-if ( !function_exists( 'redux_validate_callback_function' ) ):
-	function redux_validate_callback_function($field, $value, $existing_value) {
-	    $error = false;
-	    $value =  'just testing';
-	    /*
-	    do your validation
-	    
-	    if(something) {
-	        $value = $value;
-	    } elseif(something else) {
-	        $error = true;
-	        $value = $existing_value;
-	        $field['msg'] = 'your custom error message';
-	    }
-	    */
-	    
-	    $return['value'] = $value;
-	    if($error == true) {
-	        $return['error'] = $field;
-	    }
-	    return $return;
-	}
-endif;
