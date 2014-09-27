@@ -60,12 +60,13 @@ Video description for videos from playlist does nt work.
 If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
 
 = Credits =
-Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
-For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
-Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
-[Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
-Spanish localization by [Digital03.net](http://Digital03.net)
-Czech localization by [Ladislav Drábek](http://zholesova.cz)
+
+* Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
+* For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
+* Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
+* [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
+* Czech localization by [Ladislav Drábek](http://zholesova.cz)
+* Spanish localization by [Diego Riaño](http://Digital03.net)
 
 = How To Use =
 **Add New Widget**
