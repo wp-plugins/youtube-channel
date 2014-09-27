@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: YouTube Channel v2.2.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-26 23:02+0100\n"
-"PO-Revision-Date: 2014-09-26 23:13+0100\n"
+"PO-Revision-Date: 2014-09-26 23:44+0100\n"
 "Last-Translator: Digital03.net <info@digital03.net>\n"
 "Language-Team: Digital03.net <info@digital03.net>\n"
 "Language: es_ES\n"
@@ -21,9 +21,8 @@ msgstr ""
 
 # @ youtube-channel
 #: inc/config.20140926.php:58 inc/config.php:54
-#, fuzzy
 msgid "General"
-msgstr "Configuraciones generales"
+msgstr "General"
 
 # @ youtube-channel
 #: inc/config.20140926.php:64 inc/config.php:60
@@ -106,83 +105,83 @@ msgstr "No chachear"
 
 #: inc/config.20140926.php:102 inc/config.php:98 youtube-channel.php:809
 msgid "1 minute"
-msgstr ""
+msgstr "1 minuto"
 
 #: inc/config.20140926.php:103 inc/config.php:99 youtube-channel.php:810
 msgid "5 minutes"
-msgstr ""
+msgstr "5 minutos"
 
 #: inc/config.20140926.php:104 inc/config.php:100 youtube-channel.php:811
 msgid "15 minutes"
-msgstr ""
+msgstr "15 minutos"
 
 #: inc/config.20140926.php:105 inc/config.php:101 youtube-channel.php:812
 msgid "30 minutes"
-msgstr ""
+msgstr "30 minutos"
 
 #: inc/config.20140926.php:106 inc/config.php:102 youtube-channel.php:815
 msgid "1 hour"
-msgstr ""
+msgstr "1 hora"
 
 #: inc/config.20140926.php:107 inc/config.php:103 youtube-channel.php:816
 msgid "2 hours"
-msgstr ""
+msgstr "2 horas"
 
 #: inc/config.20140926.php:108 inc/config.php:104 youtube-channel.php:817
 msgid "5 hours"
-msgstr ""
+msgstr "5 horas"
 
 #: inc/config.20140926.php:109 inc/config.php:105 youtube-channel.php:818
 msgid "10 hours"
-msgstr ""
+msgstr "10 horas"
 
 #: inc/config.20140926.php:110 inc/config.php:106 youtube-channel.php:819
 msgid "12 hours"
-msgstr ""
+msgstr "12 horas"
 
 #: inc/config.20140926.php:111 inc/config.php:107 youtube-channel.php:820
 msgid "18 hours"
-msgstr ""
+msgstr "18 horas"
 
 #: inc/config.20140926.php:112 inc/config.php:108 youtube-channel.php:823
 msgid "1 day"
-msgstr ""
+msgstr "1 día"
 
 #: inc/config.20140926.php:113 inc/config.php:109 youtube-channel.php:824
 msgid "2 days"
-msgstr ""
+msgstr "2 días"
 
 #: inc/config.20140926.php:114 inc/config.php:110 youtube-channel.php:825
 msgid "3 days"
-msgstr ""
+msgstr "3 días"
 
 #: inc/config.20140926.php:115 inc/config.php:111 youtube-channel.php:826
 msgid "4 days"
-msgstr ""
+msgstr "4 días"
 
 #: inc/config.20140926.php:116 inc/config.php:112 youtube-channel.php:827
 msgid "5 days"
-msgstr ""
+msgstr "5 días"
 
 #: inc/config.20140926.php:117 inc/config.php:113 youtube-channel.php:828
 msgid "6 days"
-msgstr ""
+msgstr "6 días"
 
 #: inc/config.20140926.php:118 inc/config.php:114 youtube-channel.php:831
 msgid "1 week"
-msgstr ""
+msgstr "1 semana"
 
 #: inc/config.20140926.php:119 inc/config.php:115 youtube-channel.php:832
 msgid "2 weeks"
-msgstr ""
+msgstr "2 semanas"
 
 #: inc/config.20140926.php:120 inc/config.php:116 youtube-channel.php:833
 msgid "3 weeks"
-msgstr ""
+msgstr "3 semanas"
 
 #: inc/config.20140926.php:121 inc/config.php:117 youtube-channel.php:834
 msgid "1 month"
-msgstr ""
+msgstr "1 mes"
 
 # @ youtube-channel
 #: inc/config.20140926.php:128 inc/config.php:124 inc/widget.php:130
@@ -237,9 +236,8 @@ msgstr ""
 
 # @ wpaust
 #: inc/config.20140926.php:172 inc/config.php:168
-#, fuzzy
 msgid "Video"
-msgstr "Anchura del  vídeo"
+msgstr "Vídeo"
 
 # @ youtube-channel
 #: inc/config.20140926.php:178 inc/config.php:174
@@ -386,9 +384,8 @@ msgstr ""
 
 # @ youtube-channel
 #: inc/config.20140926.php:261 inc/config.php:257
-#, fuzzy
 msgid "Content"
-msgstr "Diseño de contenido"
+msgstr "Contenido"
 
 # @ youtube-channel
 #: inc/config.20140926.php:267 inc/config.php:263 inc/widget.php:172
@@ -429,11 +426,11 @@ msgstr "Cadena para etcétera"
 
 #: inc/config.20140926.php:292 inc/config.php:288
 msgid "Indicator for shortened video description (default: …)"
-msgstr ""
+msgstr "Indicador para acortar las descripciones del vídeo (por defecto: ...)"
 
 #: inc/config.20140926.php:293 inc/config.php:289
 msgid "..."
-msgstr ""
+msgstr "..."
 
 # @ youtube-channel
 #: inc/config.20140926.php:298 inc/config.php:294 inc/widget.php:176
@@ -480,9 +477,8 @@ msgstr "Usa el código %channel% para insertar el nombre del canal"
 
 # @ youtube-channel
 #: inc/config.20140926.php:323 inc/config.php:319
-#, fuzzy
 msgid "Visit my channel %channel%"
-msgstr "Visitar canal %1$s"
+msgstr "Visita mi canal %channel%"
 
 # @ youtube-channel
 #: inc/config.20140926.php:328 inc/config.php:324 inc/widget.php:183
@@ -539,33 +535,34 @@ msgstr "Herramientas"
 
 #: inc/config.20140926.php:375 inc/config.php:371
 msgid "Usage"
-msgstr ""
+msgstr "Usar"
 
 #: inc/config.20140926.php:396 inc/config.php:392
 msgid "Support"
-msgstr ""
+msgstr "Soporte"
 
 #: inc/config.20140926.php:427 inc/config.php:423
 msgid " Options"
-msgstr ""
+msgstr " Opciones"
 
 # @ youtube-channel
 #: inc/config.20140926.php:500 inc/config.php:496
-#, fuzzy
 msgid ""
 "<p>Easy embed playable videos from YouTube.</p><p>Here you can set default "
 "options that will be used as defaults for new widgets, and for shortcode.</p>"
 msgstr ""
-"<p>Opciones por defecto para YouTube Channel. Serán usados como valores por "
-"defecto para los shortcode.</p>"
+"<p>Incrusta fácilmente vídeos de Youtube</p><p>Aquí puedes cambiar las "
+"configuraciones por defecto que serán usadas en widgets y shortcodes.</p>"
 
 # @ youtube-channel
 #: inc/config.php:145
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Enable this option to protect your visitors <a href=\"%s\" target=\"_blank"
 "\">privacy</a>."
-msgstr "Activa esta opción para proteger la privacidad de tus visitantes"
+msgstr ""
+"Activa esta opción para proteger la <a href=\"%s\" target=\"_blank"
+"\">privacidad</a> de tus visitantes"
 
 # @ youtube-channel
 #: inc/widget.php:11
@@ -581,9 +578,8 @@ msgstr ""
 
 # @ youtube-channel
 #: inc/widget.php:85
-#, fuzzy
 msgid "Widget Title"
-msgstr "Título de widget"
+msgstr "Título del widget"
 
 # @ youtube-channel
 #: inc/widget.php:85
@@ -592,17 +588,18 @@ msgstr "Título del widget"
 
 #: inc/widget.php:88
 msgid "Custom CSS Class"
-msgstr ""
+msgstr "Clases CSS personalizadas"
 
 #: inc/widget.php:88
 msgid "Enter custom class for YTC block, if you wish to target block styling"
 msgstr ""
+"Introduce las clases personalizadas para el bloque YTC si quieres "
+"personalizarlo"
 
 # @ youtube-channel
 #: inc/widget.php:91
-#, fuzzy
 msgid "Channel ID"
-msgstr "ID del canal:"
+msgstr "ID del canal"
 
 # @ youtube-channel
 #: inc/widget.php:91
@@ -611,9 +608,8 @@ msgstr "Nombre del Canal de Youtube (no la URL del canal)"
 
 # @ youtube-channel
 #: inc/widget.php:94
-#, fuzzy
 msgid "Playlist ID"
-msgstr "ID lista de reproducción:"
+msgstr "ID lista de reproducción"
 
 # @ youtube-channel
 #: inc/widget.php:94
@@ -631,13 +627,12 @@ msgstr ""
 
 # @ youtube-channel
 #: inc/widget.php:123
-#, fuzzy
 msgid "Cache feed"
-msgstr "Chaché feed:"
+msgstr "Caché feed"
 
 #: inc/widget.php:130 inc/widget.php:132
 msgid "video(s)"
-msgstr ""
+msgstr "vídeo(s)"
 
 # @ youtube-channel
 #: inc/widget.php:135
@@ -720,7 +715,7 @@ msgstr "YTC modo Debug"
 
 #: inc/widget.php:196
 msgid "Enable debugging"
-msgstr ""
+msgstr "Activar modo debug"
 
 #: inc/widget.php:212
 #, php-format
@@ -729,12 +724,18 @@ msgid ""
 "<br />Please do not remove channel and playlist ID`s. If you are concerned "
 "about privacy, send this debug log to email %s"
 msgstr ""
+"Envía los datos de debug a través del <a href=\"%s\" target=\"_support"
+"\">foro de soporte</a>.<br /> Por favor, no borres el canal y los ID de "
+"lista de reproducción. Si tienes algún problema con la privacidad, envía "
+"esta info de debug al email %s"
 
 #: youtube-channel.php:90
 #, php-format
 msgid ""
 "Please review <a href=\"%s\">global settings</a>, YTC widgets and shortcodes."
 msgstr ""
+"Por favor, revisa las <a href=\"%s\">opciones generales</a>, widgets YTC y "
+"shortcodes"
 
 #: youtube-channel.php:93
 #, php-format
@@ -743,6 +744,10 @@ msgid ""
 "strong> feeds in <strong>Tools</strong> section of <a href=\"%s\">plugin "
 "settings</a> page."
 msgstr ""
+"Si estás usando el cacheo para cualquier widget o shortcode de YTC, por "
+"favor <strong>actualiza el caché</strong> de los feeds en la sección "
+"<strong>Herramientas</strong>, en la página de las <a href=\"%s\">opciones "
+"del plugin</a>. "
 
 #: youtube-channel.php:96
 #, php-format
@@ -750,14 +755,16 @@ msgid ""
 "We switched to <em>Redux Framework</em> so please review global plugin <a "
 "href=\"%s\">settings page</a>."
 msgstr ""
+"Hemos actualizado al <em>Framework Redux</em> asi que por favor revisa la "
+"configuración global del plugin en la <a href=\"%s\">página de opciones</a>."
 
 #: youtube-channel.php:101
 msgid "updated to version"
-msgstr ""
+msgstr "actualizar a la versión"
 
 #: youtube-channel.php:101
 msgid "I did this already, dismiss notice!"
-msgstr ""
+msgstr "Ya lo he hecho, desactiva la notificación!"
 
 #: youtube-channel.php:108
 #, php-format
@@ -765,12 +772,13 @@ msgid ""
 "To configure global <strong>%s</strong> options, you need to install and "
 "activate <strong>%s</strong>."
 msgstr ""
+"Para configurar la opción global <strong>%s</strong>, necesitas instalar y "
+"activar <strong>%s</strong>."
 
 # @ youtube-channel
 #: youtube-channel.php:113
-#, fuzzy
 msgid "Settings"
-msgstr "Configuración del vídeo"
+msgstr "Configuración"
 
 # @ youtube-channel
 #: youtube-channel.php:486
