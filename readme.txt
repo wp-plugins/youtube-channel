@@ -123,6 +123,10 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.4.0.2 (2014-10-01) =
+* Fix: light theme not applicable to embedded playlist
+* Add: explanation that `What to embed` have no effect for embedded playlist (HTML5 always used)
+
 = 2.4.0.1 (2014-10-01) =
 * Fix: fatal error - broken execution for embedded playlist with enhanced privacy
 * Add: button to discard warning notice for Redux Framework

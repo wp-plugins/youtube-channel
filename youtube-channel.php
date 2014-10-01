@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.0.1
+Version: 2.4.0.2
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.0.1";
+		public $plugin_version = "2.4.0.2";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -786,6 +786,7 @@ JS;
 
 		/* function to print standard playlist embed code */
 		function ytc_only_pl($instance) {
+
 		$width = $instance['width'];
 		if ( empty($width) )
 			$width = 306;
@@ -799,13 +800,15 @@ JS;
 		$playlist = $this->clean_playlist_id($playlist);
 
 		$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
-		
+
+		$theme = (empty($instance['themelight'])) ? '' : '&theme=light'	;
+
 		$rel = (empty($instance['norel'])) ? '' : '&rel=0';
 
 		// enhanced privacy
 		$youtube_domain = $this->youtube_domain($instance);
 		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-		<iframe src="http://'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$rel.'" 
+		<iframe src="http://'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$rel.'" 
 		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 			return $output;
 		} // end function ytc_only_pl

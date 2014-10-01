@@ -101,7 +101,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 				<option value="2"<?php selected( $use_res, 2 ); ?>><?php _e('Playlist', 'youtube-channel'); ?></option>
 			</select>
 			<br />
-			<label style="display: none" for="<?php echo $this->get_field_id( 'only_pl' ); ?>" id="<?php echo $this->get_field_id( 'only_pl' ); ?>_label"><input class="checkbox" type="checkbox" <?php checked( (bool) $only_pl, true );	?> id="<?php echo $this->get_field_id( 'only_pl' );	?>" name="<?php echo $this->get_field_name( 'only_pl' );	?>" title="<?php _e('Enable this option to embed YouTube playlist widget instead single video from playlist', 'youtube-channel'); ?>" /> <?php _e('Embed standard playlist', 'youtube-channel'); ?></label>
+			<label style="display: none" for="<?php echo $this->get_field_id( 'only_pl' ); ?>" id="<?php echo $this->get_field_id( 'only_pl' ); ?>_label"><input class="checkbox" type="checkbox" <?php checked( (bool) $only_pl, true );	?> id="<?php echo $this->get_field_id( 'only_pl' );	?>" name="<?php echo $this->get_field_name( 'only_pl' );	?>" title="<?php _e('Enable this option to embed YouTube playlist instead single video from playlist.', 'youtube-channel'); ?>" /> <?php _e('Embed standard playlist<br /><small>(Please note <em>What to show?</em> have no effect for embedded playlist)</small>', 'youtube-channel'); ?></label>
 		</p>
 <?php $onlypl_js_fn = str_replace('-','_',$this->get_field_id( 'only_pl' )); ?>
 <script type="text/javascript">
