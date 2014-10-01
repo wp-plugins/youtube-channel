@@ -493,7 +493,9 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 				} else {
 					$v = str_replace("-", "_", $this->args['opt_name']);
 				}
-				$this->args['intro_text'] = __('<p>Easy embed playable videos from YouTube.</p><p>Here you can set default options that will be used as defaults for new widgets, and for shortcode.</p>', 'youtube-channel' );
+				$this->args['intro_text'] = '<p style="float:right;"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6" target="_blank" title="Donate via PayPal - The safer, easier way to pay online!"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" style="width:147px;height:47px;border:0" alt="PayPal - The safer, easier way to pay online!"></a></p>';
+				$this->args['intro_text'] .= __('<p>Easy embed playable videos from YouTube.</p><p>Here you can set default options that will be used as defaults for new widgets, and for shortcode.</p>', 'youtube-channel' );
+				$this->args['intro_text'] .='<p>&nbsp;</p>';
 			}
 
 		}

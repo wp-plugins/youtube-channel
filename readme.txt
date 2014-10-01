@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.9.0
 Tested up to: 4.0
-Stable tag: 2.2.3
+Stable tag: 2.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,18 +123,20 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.4.0 (2014-09-26) =
-* Fix: false options set in shortcode had no effect to output box and default settings always used
-* Fix: enabled checkbox in global settings could not be unticked (disabled)
-* Add: fitVids for responsive videos
-* Add: option for additional YTC box class in widget and shortcode
-* Change: global settings page re-implemented with Redux Framework and requires Redux Framework Plugin
-* Change: rewrite plugin to be more OOP
-* Change: removed obsolete methods
-* Change: default box width changed from 220 to 306px
-* Change: YTC block and video pieces now floated left to enable horizontal stack
-* Change: update localization support
-* Change: updated Serbian localization
+= 2.4.0 (2014-10-01) =
+* Fix: false options set in shortcode had no effect to output box and default settings always used [20140924]
+* Fix: enabled checkbox in global settings could not be unticked (disabled) [20140924]
+* Fix: prevent array_slice notice if channel have no uploaded videos [20141001]
+* Add: fitVids for responsive videos [20140924]
+* Add: option for additional YTC box class in widget and shortcode [20140924]
+* Change: global settings page re-implemented with Redux Framework and requires Redux Framework Plugin [20140924]
+* Change: rewrite plugin to be more OOP [20140924]
+* Change: removed obsolete methods [20140924]
+* Change: default box width changed from 220 to 306px [20140924]
+* Change: YTC block and video pieces now floated left to enable horizontal stack [20140924]
+* Change: update localization support [20140926]
+* Change: updated Serbian localization [20140926]
+* Change: removed PayPal donation button from widget and moved to plugin Settings page [20141001]
 
 = 2.2.3 (2014-09-14) =
 * Add: option to disable related videos (not supported by chromeless player)

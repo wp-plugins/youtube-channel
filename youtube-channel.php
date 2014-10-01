@@ -466,7 +466,7 @@ jQuery(document).ready(function($){
 
 				// predefine maxitems to prevent undefined notices
 				$maxitems = 0;
-				if ( !is_wp_error($json_output) && is_object($json_output) ) {
+				if ( !is_wp_error($json_output) && is_object($json_output) && !empty($json_output->feed->entry) ) {
 					// sort by date uploaded
 					$json_entry = $json_output->feed->entry;
 
