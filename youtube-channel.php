@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.0";
+		public $plugin_version = "2.4.0.1";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
