@@ -123,6 +123,9 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
+= 2.4.0.1 (2014-10-01) =
+* Add: button to discard warning notice for Redux Framework
+
 = 2.4.0 (2014-10-01) =
 * Fix: false options set in shortcode had no effect to output box and default settings always used [20140924]
 * Fix: enabled checkbox in global settings could not be unticked (disabled) [20140924]

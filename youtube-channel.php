@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.0
+Version: 2.4.0.1
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -48,6 +48,10 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			if ( !empty($_GET['ytc_dismiss_update_notice']) )
 				update_option( 'ytc_version', $this->plugin_version );
 
+			// Update Redux notice
+			if ( !empty($_GET['ytc_ignore_redux']) )
+				update_option( 'ytc_no_redux_notice', true);
+
 			// add dashboard notice if version changed
 			$version = get_option('ytc_version','0');
 			if ( version_compare($version, $this->plugin_version, "<") )
@@ -73,7 +77,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				}
 			} else {
 				// Add admin notice for Redux Framework
-				add_action( 'admin_notices', array($this,'admin_notice_redux') );
+				if ( !get_option('ytc_no_redux_notice', 0) )
+					add_action( 'admin_notices', array($this,'admin_notice_redux') );
 			}
 
 		} // settings_init()
@@ -105,7 +110,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		function admin_notice_redux()
 		{
-			echo '<div class="error"><p>'.sprintf(__("To configure global <strong>%s</strong> options, you need to install and activate <strong>%s</strong>.", 'youtube-channel'), $this->plugin_name, "Redux Framework Plugin") . '</p></div>';
+			$ignoreredux = ' <a href="?ytc_ignore_redux=1" class="button primary">'.__("Dismiss this notice", 'youtube-channel') . '</a>';
+			echo '<div class="error"><p>'.sprintf(__("To configure global <strong>%s</strong> options, you need to install and activate <strong>%s</strong>.", 'youtube-channel'), $this->plugin_name, "Redux Framework Plugin") . $ignoreredux . '</p></div>';
 		} // admin_notice()
 		
 		function add_settings_link($links)
