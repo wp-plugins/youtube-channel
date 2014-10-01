@@ -251,7 +251,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.min.css', __FILE__), array(), $this->plugin_version );
 
 			// enqueue fitVid
-			wp_enqueue_script( 'fitvid', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
+			// wp_enqueue_script( 'fitvid', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
 
 			// enqueue magnific-popup
 			wp_enqueue_script( 'magnific-popup', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
@@ -279,6 +279,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			</script>
 			<?php
 			}
+/*
+ // @TODO sort out fitVid and Async
 		?>
 <script>
 jQuery(document).ready(function($){
@@ -286,6 +288,7 @@ jQuery(document).ready(function($){
 });
 </script>
 		<?php
+*/
 		} // end fucntion footer_scripts
 
 		public function shortcode($atts)
@@ -404,7 +407,7 @@ jQuery(document).ready(function($){
 			$output[] = '<div class="youtube_channel '.$class.'">';
 
 			if ( $instance['only_pl'] && $use_res == 2 ) { // print standard playlist
-				$output = array_merge($output, ytc_only_pl($instance));
+				$output = array_merge($output, self::ytc_only_pl($instance));
 			} else { // channel or playlist single videos
 			
 				// get max items for random video
@@ -789,7 +792,7 @@ JS;
 
 		$playlist = (empty($instance['playlist'])) ? $this->playlist_id : $instance['playlist'];
 
-		$height = height_ratio($width, $instance['ratio']);
+		$height = self::height_ratio($width, $instance['ratio']);
 
 		$height += ($instance['fixyt']) ? 25 : 0;
 

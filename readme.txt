@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.9.0
 Tested up to: 4.0
-Stable tag: 2.4.0
+Stable tag: 2.4.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,6 +124,7 @@ If you does not see your latest video in your uplaods feed (which you can access
 
 == Changelog ==
 = 2.4.0.1 (2014-10-01) =
+* Fix: fatal error - broken execution for embedded playlist with enhanced privacy
 * Add: button to discard warning notice for Redux Framework
 
 = 2.4.0 (2014-10-01) =
