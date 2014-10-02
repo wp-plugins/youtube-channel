@@ -1,6 +1,16 @@
+
 .youtube_channel {
 	float: left;
 	clear: both;
+}
+.widget_youtube-channel:after,
+.youtube_channel:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
 }
 .youtube_channel .ytc_video_container {
 	float: left;

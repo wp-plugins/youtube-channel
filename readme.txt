@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
 Requires at least: 3.9.0
 Tested up to: 4.0
-Stable tag: 2.4.0.1
+Stable tag: 2.4.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,9 +123,10 @@ Video feed for YTC has been retreived with standard youtube feed [uploads by spe
 If you does not see your latest video in your uplaods feed (which you can access at https://gdata.youtube.com/feeds/api/users/YOUR_YT_USERID/uploads by replacing YOUR_YT_USERID with your real youtube user ID), then YTC will not see it too.
 
 == Changelog ==
-= 2.4.0.2 (2014-10-01) =
-* Fix: light theme not applicable to embedded playlist
-* Add: explanation that `What to embed` have no effect for embedded playlist (HTML5 always used)
+= 2.4.0.2 (2014-10-02) =
+* Fix: light theme not applicable to embedded playlist [2014-10-01]
+* Fix: add clearfix after YTC widget to prevent jumping out of widget block on bad styled themes [2014-10-02]
+* Add: explanation that `What to embed` have no effect for embedded playlist (HTML5 always used) [2014-10-01]
 
 = 2.4.0.1 (2014-10-01) =
 * Fix: fatal error - broken execution for embedded playlist with enhanced privacy
