@@ -53,6 +53,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		// Video Settings
 		$ratio         = (!empty($instance['ratio'])) ? esc_attr($instance['ratio']) : 3;
 		$width         = (!empty($instance['width'])) ? esc_attr($instance['width']) : 306;
+		$responsive    = (!empty($instance['responsive'])) ? esc_attr($instance['responsive']) : 0;
 
 		$to_show       = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
 		$themelight    = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
@@ -65,6 +66,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		// Content Layout
 		$showtitle     = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
 		$showvidesc    = (!empty($instance['showvidesc'])) ? esc_attr($instance['showvidesc']) : '';
+		$modestbranding    = (!empty($instance['modestbranding'])) ? esc_attr($instance['modestbranding']) : '';
 		$videsclen     = (!empty($instance['videsclen'])) ? esc_attr($instance['videsclen']) : 0;
 		$descappend    = (!empty($instance['descappend'])) ? esc_attr($instance['descappend']) : '&hellip;';
 
@@ -122,7 +124,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id('cache_time');	?>"><?php _e('Cache feed', 'youtube-channel'); ?>:</label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'cache_time' ); ?>" name="<?php echo $this->get_field_name( 'cache_time' ); ?>">
-				<option value="0"<?php selected( $cache_time, 0 ); ?>><?php _e('Do not chache', 'youtube-channel'); ?></option>
+				<option value="0"<?php selected( $cache_time, 0 ); ?>><?php _e('Do not cache', 'youtube-channel'); ?></option>
 				<?php echo $WPAU_YOUTUBE_CHANNEL->cache_time($cache_time); ?>
 			</select>
 		</p>
@@ -145,7 +147,8 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 				<option value="3"<?php selected( $ratio, 3 ); ?>>16:9</option>
 				<option value="2"<?php selected( $ratio, 2 ); ?>>16:10</option>
 				<option value="1"<?php selected( $ratio, 1 ); ?>>4:3</option>
-			</select>
+			</select><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $responsive, true ); ?> id="<?php echo $this->get_field_id( 'responsive' ); ?>" name="<?php echo $this->get_field_name( 'responsive' ); ?>" /> <label for="<?php echo $this->get_field_id( 'responsive' ); ?>"><?php _e('Responsive video (distribute one full width video per row)', 'youtube-channel'); ?></label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('width'); ?>"><?php _e('Width', 'youtube-channel'); ?>:</label> <input class="small-text" id="<?php echo $this->get_field_id('width'); ?>" name="<?php echo $this->get_field_name('width'); ?>" type="number" min="32" value="<?php echo $width; ?>" title="<?php _e('Set video width in pixels', 'youtube-channel'); ?>" /> px (<?php _e('default', 'youtube-channel'); ?> 306)
@@ -164,7 +167,8 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $fixyt, true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay, true ); ?> id="<?php echo $this->get_field_id( 'autoplay' ); ?>" name="<?php echo $this->get_field_name( 'autoplay' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay' ); ?>"><?php _e('Autoplay video or playlist', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $autoplay_mute, true ); ?> id="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>" name="<?php echo $this->get_field_name( 'autoplay_mute' ); ?>" /> <label for="<?php echo $this->get_field_id( 'autoplay_mute' ); ?>"><?php _e('Mute video on autoplay', 'youtube-channel'); ?></label><br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $norel, true ); ?> id="<?php echo $this->get_field_id( 'norel' ); ?>" name="<?php echo $this->get_field_name( 'norel' ); ?>" /> <label for="<?php echo $this->get_field_id( 'norel' ); ?>"><?php _e('Hide related videos', 'youtube-channel'); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $norel, true ); ?> id="<?php echo $this->get_field_id( 'norel' ); ?>" name="<?php echo $this->get_field_name( 'norel' ); ?>" /> <label for="<?php echo $this->get_field_id( 'norel' ); ?>"><?php _e('Hide related videos', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $modestbranding, true ); ?> id="<?php echo $this->get_field_id( 'modestbranding' ); ?>" name="<?php echo $this->get_field_name( 'modestbranding' ); ?>" /> <label for="<?php echo $this->get_field_id( 'modestbranding' ); ?>"><?php _e('Hide YT Logo (does not work for all videos)', 'youtube-channel'); ?></label><br />
 		</p>
 
 		<h4><?php _e('Content Layout', 'youtube-channel'); ?></h4>
@@ -239,11 +243,13 @@ if ( $debugon == 'on' ) {
 		$instance['descappend']    = strip_tags($new_instance['descappend']);
 		$instance['videsclen']     = strip_tags($new_instance['videsclen']);
 		$instance['width']         = strip_tags($new_instance['width']);
+		$instance['responsive']    = (isset($new_instance['responsive'])) ? $new_instance['responsive'] : '';
 
 		$instance['to_show']       = strip_tags($new_instance['to_show']);
 		$instance['autoplay']      = (isset($new_instance['autoplay'])) ? $new_instance['autoplay'] : false;
 		$instance['autoplay_mute'] = (isset($new_instance['autoplay_mute'])) ? $new_instance['autoplay_mute'] : false;
 		$instance['norel']         = (isset($new_instance['norel'])) ? $new_instance['norel'] : false;
+		$instance['modestbranding']= (isset($new_instance['modestbranding'])) ? $new_instance['modestbranding'] : false;
 
 		$instance['controls']      = (isset($new_instance['controls'])) ? $new_instance['controls'] : false;
 		$instance['fixnoitem']     = (isset($new_instance['fixnoitem'])) ? $new_instance['fixnoitem'] : false;

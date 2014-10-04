@@ -182,6 +182,13 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 						'default' => '3'
 					),
 					array(
+						'id'       => 'responsive',
+						'type'     => 'checkbox',
+						'title'    => __('Make responsive', 'youtube-channel'), 
+						'desc'     => __('Enable this option to make all YTC videos responsive. Please note, this option will set all videos full width relative to parent container, and disable more than one video per row.', 'youtube-channel'),
+						'default'  => 0
+					),
+					array(
 						'id'      => 'width',
 						'type'    => 'spinner',
 						'title'   => __('Video Width', 'youtube-channel'), 
@@ -246,6 +253,13 @@ if ( !class_exists( "Redux_Framework_YouTube_Channel" ) ) {
 						'type'     => 'checkbox',
 						'title'    => __('Hide related videos', 'youtube-channel'), 
 						'desc'     => __('Enable this option to hide related videos after finished playback', 'youtube-channel'),
+						'default'  => 0
+					),
+					array(
+						'id'       => 'modestbranding',
+						'type'     => 'checkbox',
+						'title'    => __('Hide YT Logo', 'youtube-channel'), 
+						'desc'     => __('Enable this option to hide YouTube logo from playback control bar. Does not work for all videos.', 'youtube-channel'),
 						'default'  => 0
 					),
 

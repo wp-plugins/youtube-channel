@@ -26,6 +26,7 @@
         <li>&bullet; <code>2</code> 16:10 (computer screen)</li>
         <li>&bullet; <code>1</code> 4:3</li>
     </ul></li>
+    <li><code>responsive</code> <em>(bool)</em> Distribute one full width video per row.</li>
     <li><code>width</code> <em>(int)</em> Width of thumbnail and video in pixels.</li>
     <li><code>show</code> <em>(string)</em> Object that will be used to represent video. We have couple predefined options:
     <ul>
@@ -42,6 +43,7 @@
     <li><code>autoplay</code> <em>(bool)</em> Enable autoplay of first video in YTC video stack by setting this option to <code>1</code> or <code>true</code></li>
     <li><code>mute</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to mute videos set to autoplay on load</li>
     <li><code>norel</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to hire related videos after finished playbak</li>
+    <li><code>nobrand</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to hire YouTube logo from playback control bar</li>
 </ul>
 <h3>Content Layout</h3>
 <ul>

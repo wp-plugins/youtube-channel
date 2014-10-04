@@ -3,6 +3,9 @@
 	float: left;
 	clear: both;
 }
+.youtube_channel.responsive {
+	width:100%;
+}
 .widget_youtube-channel:after,
 .youtube_channel:after {
 	visibility: hidden;
@@ -14,6 +17,9 @@
 }
 .youtube_channel .ytc_video_container {
 	float: left;
+}
+.youtube_channel.responsive .ytc_video_container {
+	width:100%!important;
 }
 .ytc_thumb {
 	display: block;

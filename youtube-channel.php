@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.0.2
+Version: 2.4.0.3
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.0.2";
+		public $plugin_version = "2.4.0.3";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -125,37 +125,39 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		{
 
 			$init = array(
-				'channel'       => $this->channel_id,
-				'playlist'      => $this->playlist_id,
-				'use_res'       => false,
-				'only_pl'       => false,
-				'cache_time'    => 300, // 5 minutes
-				'maxrnd'        => 25,
-				'vidqty'        => 1,
-				'enhprivacy'    => false,
-				'fixnoitem'     => false,
-				'getrnd'        => false,
-				'ratio'         => 3, // 3 - 16:9, 2 - 16:10, 1 - 4:3
-				'width'         => 306,
-				'to_show'       => 'thumbnail', // thumbnail, iframe, iframe2, chromeless, object
-				'themelight'    => false,
-				'controls'      => false,
-				'fixyt'         => false,
-				'autoplay'      => false,
-				'autoplay_mute' => false,
-				'norel'         => false,
+				'channel'        => $this->channel_id,
+				'playlist'       => $this->playlist_id,
+				'use_res'        => false,
+				'only_pl'        => false,
+				'cache_time'     => 300, // 5 minutes
+				'maxrnd'         => 25,
+				'vidqty'         => 1,
+				'enhprivacy'     => false,
+				'fixnoitem'      => false,
+				'getrnd'         => false,
+				'ratio'          => 3, // 3 - 16:9, 2 - 16:10, 1 - 4:3
+				'width'          => 306,
+				'responsive'     => true,
+				'to_show'        => 'thumbnail', // thumbnail, iframe, iframe2, chromeless, object
+				'themelight'     => false,
+				'controls'       => false,
+				'fixyt'          => false,
+				'autoplay'       => false,
+				'autoplay_mute'  => false,
+				'norel'          => false,
 				
-				'showtitle'     => false,
-				'showvidesc'    => false,
-				'videsclen'     => 0,
-				'descappend'    => '&hellip;',
-				'hideanno'      => false,
-				'hideinfo'      => false,
+				'showtitle'      => false,
+				'showvidesc'     => false,
+				'videsclen'      => 0,
+				'descappend'     => '&hellip;',
+				'modestbranding' => false,
+				'hideanno'       => false,
+				'hideinfo'       => false,
 				
-				'goto_txt'      => 'Visit our channel',
-				'showgoto'      => false,
-				'popup_goto'    => 3, // 3 same window, 2 new window JS, 1 new window target
-				'userchan'      => false
+				'goto_txt'       => 'Visit our channel',
+				'showgoto'       => false,
+				'popup_goto'     => 3, // 3 same window, 2 new window JS, 1 new window target
+				'userchan'       => false
 			);
 			$defaults = get_option($this->plugin_option, $init);
 			
@@ -250,8 +252,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		function enqueue_scripts() {
 			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.min.css', __FILE__), array(), $this->plugin_version );
 
-			// enqueue fitVid
-			// wp_enqueue_script( 'fitvid', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
+			// enqueue fitVids
+			wp_enqueue_script( 'fitvids', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
 
 			// enqueue magnific-popup
 			wp_enqueue_script( 'magnific-popup', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
@@ -263,33 +265,24 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			// Print JS only if we have set YTC array
 			if ( !empty($_SESSION['ytc_html5_js']) )
 			{
-			?>
-			<!-- YouTube Channel v<?php echo $this->plugin_version; ?> -->
-			<script type="text/javascript">
-			var tag = document.createElement('script');
-			tag.src = "https://www.youtube.com/iframe_api";
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-			function onYouTubeIframeAPIReady() {
-			<?php echo $_SESSION['ytc_html5_js']; ?>
-			}
-			function ytc_mute(event){
-				event.target.mute();
-			}
-			</script>
-			<?php
-			}
-/*
- // @TODO sort out fitVid and Async
-		?>
-<script>
-jQuery(document).ready(function($){
-	$(window).on('load', function() { $(".ytc_video_container").fitVids(); });
-});
+?>
+<!-- YouTube Channel v<?php echo $this->plugin_version; ?> -->
+<script type="text/javascript">
+var tag = document.createElement('script');
+tag.src = "//www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function onYouTubeIframeAPIReady() {
+<?php echo $_SESSION['ytc_html5_js']; ?>
+}
+function ytc_mute(event){
+	event.target.mute();
+}
 </script>
-		<?php
-*/
-		} // end fucntion footer_scripts
+<?php
+			}
+
+		} // eof footer_scripts
 
 		public function shortcode($atts)
 		{
@@ -314,6 +307,8 @@ jQuery(document).ready(function($){
 						
 						'ratio'      => $instance['ratio'],
 						'width'      => $instance['width'],
+						'responsive' => (!empty($instance['responsive'])) ? $instance['responsive'] : '0',
+
 						'show'       => $instance['to_show'],
 						
 						'themelight' => $instance['themelight'],
@@ -325,6 +320,7 @@ jQuery(document).ready(function($){
 						
 						'showtitle'  => $instance['showtitle'],
 						'showdesc'   => $instance['showvidesc'],
+						'nobrand'    => (!empty($instance['modestbranding'])) ? $instance['modestbranding'] : '0',
 						'desclen'    => $instance['videsclen'],
 						'noinfo'     => $instance['hideinfo'],
 						'noanno'     => $instance['hideanno'],
@@ -356,6 +352,7 @@ jQuery(document).ready(function($){
 			// Video Settings
 			$instance['ratio']         = $ratio; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
 			$instance['width']         = $width; // 306
+			$instance['responsive']    = $responsive; // enable responsivenes?
 			$instance['to_show']       = $show; // thumbnail, iframe, iframe2, object, chromeless
 			
 			$instance['themelight']    = $themelight; // use light theme, dark by default
@@ -368,6 +365,7 @@ jQuery(document).ready(function($){
 			// Content Layout
 			$instance['showtitle']     = $showtitle; // show video title, disabled by default
 			$instance['showvidesc']    = $showdesc; // show video description, disabled by default
+			$instance['modestbranding']= $nobrand; // hide YT logo
 			$instance['videsclen']     = $desclen; // cut video description, number of characters
 			$instance['hideinfo']      = $noinfo; // hide info by default
 			$instance['hideanno']      = $noanno; // hide annotations, false by default
@@ -401,6 +399,8 @@ jQuery(document).ready(function($){
 			$use_res = $instance['use_res'];
 
 			$class = $instance['class'] ? $instance['class'] : 'default';
+
+			if ( !empty($instance['responsive']) ) $class .= ' responsive';
 
 			$output = array();
 
@@ -559,7 +559,7 @@ jQuery(document).ready(function($){
 
 				$output[] = '<div class="ytc_link">';
 				$userchan = ( $instance['userchan'] ) ? 'channel' : 'user';
-				$goto_url = 'http://www.youtube.com/'.$userchan.'/'.$channel.'/';
+				$goto_url = '//www.youtube.com/'.$userchan.'/'.$channel.'/';
 				$newtab = __("in new window/tab", 'youtube-channel');
 				$output[] = '<p>';
 				switch ( $instance['popup_goto'] ) {
@@ -591,6 +591,7 @@ jQuery(document).ready(function($){
 			$controls      = $instance['controls'];
 			$norel         = $instance['norel'];
 			$class         = $instance['class'];
+			$modestbranding = $instance['modestbranding'];
 
 			// set width and height
 			$width  = ( empty($instance['width']) ) ? 306 : $instance['width'];
@@ -614,7 +615,7 @@ jQuery(document).ready(function($){
 			$yt_id     = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
 			$yt_url    = "v/$yt_id";
 			
-			$yt_thumb  = "http://img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
+			$yt_thumb  = "//img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
 			$yt_video  = $item->link[0]->href;
 			$yt_video  = preg_replace('/\&.*$/','',$yt_video);
 
@@ -664,7 +665,15 @@ jQuery(document).ready(function($){
 				ob_start();
 		?>
 			<object type="application/x-shockwave-flash" data="<?php echo $this->plugin_url . 'chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" id="<?php echo $ytc_vid; ?>">
-				<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php echo $height; ?><?php if ( $autoplay ) echo "&autoplay=Yes"; if ( !$controls ) echo "&youtube_controls=Yes"; if ( $hideanno ) echo "&iv_load_policy=3"; if ( $themelight ) echo "&theme=light"; if ( $norel ) echo "&rel=0"; ?>" />
+				<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php
+				 echo $height;
+				 if ( $autoplay ) echo "&autoplay=Yes";
+				 if ( !$controls ) echo "&youtube_controls=Yes";
+				 if ( $hideanno ) echo "&iv_load_policy=3";
+				 if ( $themelight ) echo "&theme=light";
+				 if ( $modestbranding ) echo "&modestbranding=1";
+				 if ( $norel ) echo "&rel=0";
+				 ?>" />
 				<param name="quality" value="high" />
 				<param name="wmode" value="opaque" />
 				<param name="swfversion" value="6.0.65.0" />
@@ -682,6 +691,7 @@ jQuery(document).ready(function($){
 				if ( $autoplay ) $output[] = "&amp;autoplay=1";
 				if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
 				if ( $themelight ) $output[] = "&amp;theme=light";
+				if ( $modestbranding ) $output[] = "&amp;modestbranding=1";
 				// disable related videos
 				if ( $norel ) $output[] = "&amp;rel=0";
 
@@ -696,6 +706,7 @@ jQuery(document).ready(function($){
 				$js_iv_load_policy = ( $hideanno ) ? "iv_load_policy: 3," : '';
 				$js_theme          = ( $themelight ) ? "theme: 'light'," : '';
 				$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
+				$js_modestbranding = ( $modestbranding ) ? "modestbranding: 1," : '';
 				$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
 				$js_player_id      = str_replace('-', '_', $yt_url);
 
@@ -709,7 +720,7 @@ jQuery(document).ready(function($){
 						videoId: '$yt_url',
 						enablejsapi: 1,
 						playerVars: {
-							$js_autoplay $js_showinfo $js_controls $js_theme $js_rel wmmode: 'opaque'
+							$js_autoplay $js_showinfo $js_controls $js_theme $js_rel $js_modestbranding wmmode: 'opaque'
 						},
 						origin: '$site_domain',
 						$js_iv_load_policy $js_autoplay_mute
@@ -729,6 +740,7 @@ JS;
 				$obj_url .= ( $autoplay ) ? '&amp;autoplay=1' : '';
 				$obj_url .= ( $hideanno ) ? '&amp;iv_load_policy=3' : '';
 				$obj_url .= ( $themelight ) ? '&amp;theme=light' : '';
+				$obj_url .= ( $modestbranding ) ? '&amp;modestbranding=1' : '';
 				$obj_url .= ( $norel ) ? '&amp;rel=0' : '';
 				ob_start();
 		?>
@@ -795,20 +807,22 @@ JS;
 
 		$height = self::height_ratio($width, $instance['ratio']);
 
-		$height += ($instance['fixyt']) ? 25 : 0;
+		$height += ($instance['fixyt']) ? 54 : 0;
 
 		$playlist = $this->clean_playlist_id($playlist);
 
 		$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
 
-		$theme = (empty($instance['themelight'])) ? '' : '&theme=light'	;
+		$theme = (empty($instance['themelight'])) ? '' : '&theme=light';
+
+		$modestbranding = (empty($instance['modestbranding'])) ? '' : '&modestbranding=1';
 
 		$rel = (empty($instance['norel'])) ? '' : '&rel=0';
 
 		// enhanced privacy
 		$youtube_domain = $this->youtube_domain($instance);
 		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-		<iframe src="http://'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$rel.'" 
+		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel.'" 
 		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 			return $output;
 		} // end function ytc_only_pl
