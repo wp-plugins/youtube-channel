@@ -98,7 +98,11 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 					$msg = sprintf(__('If you use caching for any YTC widget or shortcode, please <strong>ReCache</strong> feeds in <strong>Tools</strong> section of <a href="%s">plugin settings</a> page.', 'youtube-channel'), $settings_page);
 					break;
 				case "2.2.3":
-					$msg = sprintf(__('We switched to <em>Redux Framework</em> so please review global plugin <a href="%s">settings page</a>.', 'youtube-channel'), $settings_page);
+					if (class_exists( "ReduxFramework" )){
+						$msg = sprintf(__('We switched to <em>Redux Framework</em> so please review global plugin <a href="%s">settings page</a>.', 'youtube-channel'), $settings_page);
+					} else {
+						$msg = __('We switched to <em>Redux Framework</em> so please install and activate dependency and then review global YouTube Channel plugin settings.', 'youtube-channel');
+					}
 					break;
 			}
 			if ( !empty($msg) )

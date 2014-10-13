@@ -124,8 +124,9 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
 == Changelog ==
-= 2.4.0.3 (2014-10-04) =
+= 2.4.0.3 (2014-10-13) =
 * Fix: Typo in widget `Do not chache` [2014-10-03]
+* Fix: Broken link in Notification to settings page powered by Redux while Redux not installed and active [2014-10-13]
 * Change: Remove protocol from links and leave browser to decide should get resource from HTTP or HTTPS (depends on website protocol) [2014-10-03]
 * Change: Add height addition for `Fix height taken by controls` for embedded playlist and count control above video [2014-10-03]
 * Add: ModestBranding (remove YouTube logo from player control bar) [2014-10-03]
