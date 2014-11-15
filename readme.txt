@@ -1,10 +1,10 @@
 === YouTube Channel ===
 Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
-Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5
+Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
-Tested up to: 4.0
-Stable tag: 2.4.0.2
+Tested up to: 4.1
+Stable tag: 2.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,7 +21,7 @@ If you like this extension and you find it useful, please rate it on the right s
 = Features =
 * Display latest videos from YouTube channel, favorites or playlist
 * Option to get random video from resources mentioned above
-* Responsive (one full width video per row) or video wall
+* Responsive (one full width video per row) or non responsive (video wall)
 * Preferred aspect ratio relative to width (16:9, 16:10 and 4:3)
 * Custom width for video embeded object (default is 306px)
 * Enhanced Privacy
@@ -35,7 +35,7 @@ If you like this extension and you find it useful, please rate it on the right s
 = Styling =
 You can use `style.css` from theme to style `YouTube Video` widget content.
 
-* `.youtube_channel` - main widget wrapper class
+* `.youtube_channel` - main widget wrapper class (non-responsive block have additional class `default`, responsive block have additional class `responsive`)
 * `.ytc_title` - class of video title abowe thumbnail/video object
 * `.ytc_video_container` - class of container for single item
 * `.ytc_video_1`, `.ytc_video_2`, ... - class of container for single item with ordering number of item in widget
@@ -45,12 +45,13 @@ You can use `style.css` from theme to style `YouTube Video` widget content.
 * `.ytc_description` - class for video description text
 * `.ytc_link` - class of container for link to channel
 
-= Issues =
+= Known Issues =
 
 * Controls light theme and hidden annotations does not work for chromeless object.
 * Video description for videos from playlist does not work.
 * Removing YouTube logo from playback control bar does not work for all videos
 * Async HTML5 video does not work for 2nd same video on same page (two YTC blocks set to Async HTML5)
+* Chromeless video could not be used as responsive player
 
 If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
 
@@ -69,9 +70,6 @@ If WordFence or other malware scan tool detect YouTube Channel fule youtube-chan
 
 **Use Playlist**
 [youtube http://www.youtube.com/watch?v=y9zoi_Pk2kY]
-
-**How To Get Debug Info**
-[youtube http://www.youtube.com/watch?v=6jIu2OeKB24]
 
 == Installation ==
 
@@ -124,11 +122,13 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
 == Changelog ==
-= 2.4.0.3 (2014-10-13) =
+= 2.4.1 (2014-11-15) =
 * Fix: Typo in widget `Do not chache` [2014-10-03]
-* Fix: Broken link in Notification to settings page powered by Redux while Redux not installed and active [2014-10-13]
+* Fix: do not show global settings notice with link to settings page if not Redux Framerowk is active [2014-11-15]
+* Fix: Plugin name on Support tab in global plugin settings. [2014-11-15]
 * Change: Remove protocol from links and leave browser to decide should get resource from HTTP or HTTPS (depends on website protocol) [2014-10-03]
 * Change: Add height addition for `Fix height taken by controls` for embedded playlist and count control above video [2014-10-03]
+* Change: Move debug log from widget to downloadable dynamic JSON [2014-11-15]
 * Add: ModestBranding (remove YouTube logo from player control bar) [2014-10-03]
 * Add: Responsive (make video optionally responsive) [2014-10-04]
 
@@ -291,7 +291,7 @@ Also, even when hidding logo works for your video, on hover or when video is pau
 
 == Upgrade Notice ==
 
-Better handling of cached UNICODE content, ReCache tool to force reloading cached feeds.
+Responsive, bug fixes, support for WordPress 4.1
 
 == Screenshots ==
 

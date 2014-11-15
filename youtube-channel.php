@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.0.3
+Version: 2.4.1
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.0.3";
+		public $plugin_version = "2.4.1";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -27,6 +27,11 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		function __construct()
 		{
+
+			// debug JSON
+			if (!empty($_GET['ytc_debug_json_for']))
+				$this->generate_debug_json();
+
 			$this->plugin_url = plugin_dir_url(__FILE__);
 			load_plugin_textdomain( $this->plugin_slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -105,7 +110,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 					}
 					break;
 			}
-			if ( !empty($msg) )
+			if ( !empty($msg) && class_exists( "ReduxFramework" ) )
 			printf(
 				'<div class="update-nag"><p><strong>%s</strong> ' . __("updated to version", 'youtube-channel') . ' <strong>%s</strong>. '.$msg.'&nbsp;&nbsp;<a href="?ytc_dismiss_update_notice=1" class="button button-secondary">' . __("I did this already, dismiss notice!", 'youtube-channel') . '</a></p></div>',
 				$this->plugin_name,
@@ -668,7 +673,7 @@ function ytc_mute(event){
 			} else if ( $to_show == "chromeless" ) {
 				ob_start();
 		?>
-			<object type="application/x-shockwave-flash" data="<?php echo $this->plugin_url . 'chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" id="<?php echo $ytc_vid; ?>">
+			<object type="application/x-shockwave-flash" data="<?php echo $this->plugin_url . 'inc/chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" id="<?php echo $ytc_vid; ?>">
 				<param name="flashVars" value="video_source=<?php echo $yt_id; ?>&video_width=<?php echo $width; ?>&video_height=<?php
 				 echo $height;
 				 if ( $autoplay ) echo "&autoplay=Yes";
@@ -909,6 +914,52 @@ JS;
 			return $playlist;
 		} // end function clean_playlist_id
 
+		function generate_debug_json()
+		{
+			global $wp_version;
+
+			// get Redux Framework version (if active)
+			$redux = ( class_exists( "ReduxFramework" ) ) ? ReduxFramework::$_version : 'N/A';
+			
+			// get widget ID from parameter
+			$for = $_GET['ytc_debug_json_for'];
+
+			// prepare option name and widget ID
+			$option_name = "widget_".substr($for,0,strrpos($for,"-"));
+			$widget_id = substr($for,strrpos($for,"-")+1);
+
+			// get YTC widgets options
+			$widget_options = get_option($option_name);
+
+			if (!is_array($widget_options[$widget_id]))
+				return;
+			
+			// prepare debug data with settings of current widget
+			$data = array_merge(
+				array(
+					'date'      => date("r"),
+					'server'    => $_SERVER["SERVER_SOFTWARE"],
+					'php'       => PHP_VERSION,
+					'wp'        => $wp_version,
+					'ytc'       => $this->plugin_version,
+					'redux'     => $redux,
+					'url'       => get_site_url(),
+					'widget_id' => $for
+				),
+				$widget_options[$widget_id]
+			);
+
+			// return JSON file
+			header('Content-disposition: attachment; filename='.$for.'.json');
+			header('Content-Type: application/json');
+			echo json_encode($data);
+
+			// destroy vars
+			unset($data,$widget_options,$widget_id,$option_name,$for,$redux);
+
+			// exit now, because we need only debug data in JSON file, not settings or any other page
+			exit;
+		}
 	} // end class
 } // end class check
 

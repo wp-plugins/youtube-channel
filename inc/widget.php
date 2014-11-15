@@ -195,26 +195,8 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $userchan, true ); ?> id="<?php echo $this->get_field_id( 'userchan' ); ?>" name="<?php echo $this->get_field_name( 'userchan' ); ?>" /> <label for="<?php echo $this->get_field_id( 'userchan' ); ?>"><?php _e('Link to channel instead to user', 'youtube-channel'); ?></label><br />
 		</p>
 
-		<h4><?php _e('Debug YTC', 'youtube-channel'); ?></h4>
-		<p>
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $debugon, true ); ?> id="<?php echo $this->get_field_id( 'debugon' ); ?>" name="<?php echo $this->get_field_name( 'debugon' ); ?>" /> <label for="<?php echo $this->get_field_id( 'debugon' ); ?>"><?php _e('Enable debugging', 'youtube-channel'); ?></label><br />
-
-<?php
-if ( $debugon == 'on' ) {
-	global $wp_version;
-	$debug_arr = array_merge(
-		array(
-			'server' => $_SERVER["SERVER_SOFTWARE"],
-			'php'    => PHP_VERSION,
-			'wp'     => $wp_version,
-			'ytc'    => $WPAU_YOUTUBE_CHANNEL->plugin_version,
-			'url'    => get_site_url()
-		),
-		$instance);
-?>
-			<textarea name="debug" class="widefat" style="height: 100px;"><?php echo $this->debug_string($debug_arr); ?></textarea><br />
-			<small><?php printf(__('Insert debug data to <a href="%s" target="_support">support forum</a>.<br />Please do not remove channel and playlist ID`s. If you are concerned about privacy, send this debug log to email %s', 'youtube-channel'), 'http://wordpress.org/support/plugin/youtube-channel', '<a href="mailto:urke.kg@gmail.com?subject=YTC%20debug%20log">urke.kg@gmail.com</a>'); ?></small>
-<?php } ?>
+		<h4><?php _e('Does not work? Contact support!', 'youtube-channel'); ?></h4>
+		<p><small><a href="?ytc_debug_json_for=<?php echo $this->id; ?>" target="_blank"><?php _e('Get JSON file', 'youtube-channel'); ?></a> <?php printf(__('and send it to %s or to <a href="%s" target="_support">support forum</a>.', 'youtube-channel'), '<a href="mailto:urke.kg@gmail.com?subject=YTC%20debug%20log%20for%20'.get_home_url().'">urke.kg@gmail.com</a>', 'http://wordpress.org/support/plugin/youtube-channel'); ?></small>
 		</p>
 
 <?php
