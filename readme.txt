@@ -94,6 +94,10 @@ Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings 
 
 Since version 1.3.1 you can also paste full YouTube playlist URL and ID will be automaticaly extracted.
 
+= How to fix error `Invalid value for parameter: username` =
+
+Double check YouTube Channel ID which you set in widget/settings. Channel ID (username) should not contain spaces.
+
 = How to force embeding 320p video with better audio quality? =
 
 YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead. So, you could not force 720p in tiny YTC.
