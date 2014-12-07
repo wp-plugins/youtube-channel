@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.1
+Version: 2.4.1.1
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.1";
+		public $plugin_version = "2.4.1.1";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -122,12 +122,12 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$ignoreredux = ' <a href="?ytc_ignore_redux=1" class="button primary">'.__("Dismiss this notice", 'youtube-channel') . '</a>';
 			echo '<div class="error"><p>'.sprintf(__("To configure global <strong>%s</strong> options, you need to install and activate <strong>%s</strong>.", 'youtube-channel'), $this->plugin_name, "Redux Framework Plugin") . $ignoreredux . '</p></div>';
 		} // admin_notice()
-		
+
 		function add_settings_link($links)
 		{
-			$settings_link = '<a href="options-general.php?page='.$this->plugin_slug.'">'.__('Settings').'</a>'; 
-			array_unshift( $links, $settings_link ); 
-			return $links; 
+			$settings_link = '<a href="options-general.php?page='.$this->plugin_slug.'">'.__('Settings').'</a>';
+			array_unshift( $links, $settings_link );
+			return $links;
 		} // add_settings_link()
 
 		public function defaults()
@@ -154,7 +154,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'autoplay'       => false,
 				'autoplay_mute'  => false,
 				'norel'          => false,
-				
+
 				'showtitle'      => false,
 				'showvidesc'     => false,
 				'videsclen'      => 0,
@@ -162,14 +162,14 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'modestbranding' => false,
 				'hideanno'       => false,
 				'hideinfo'       => false,
-				
+
 				'goto_txt'       => 'Visit our channel',
 				'showgoto'       => false,
 				'popup_goto'     => 3, // 3 same window, 2 new window JS, 1 new window target
 				'userchan'       => false
 			);
 			$defaults = get_option($this->plugin_option, $init);
-			
+
 			// $options = wp_parse_args(get_option('youtube_channel_defaults'), $defaults);
 			// return $options;
 			return $defaults;
@@ -183,14 +183,14 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			// Transit old settings to new format
 			// get pre-2.0.0 YTC widgets, and if exist, convert to 2.0.0+ version
 			if ( $old = get_option('widget_youtube_channel_widget') ) {
-				// if we have pre-2.0.0 YTC widgets, merge them to new version    
-				
+				// if we have pre-2.0.0 YTC widgets, merge them to new version
+
 				// get new YTC widgets
 				$new = get_option('widget_youtube-channel');
-				
+
 				// get all widget areas
 				$widget_areas = get_option('sidebars_widgets');
-				
+
 				// update options to 2.0.0+ version
 				foreach ($old as $k=>$v) {
 
@@ -223,7 +223,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 							$ytc_widget_id = "youtube-channel-".end(array_keys($new));
 						} else {
 							// set as current widget ID
-							$new[$k] = $v;						
+							$new[$k] = $v;
 							$ytc_widget_id = "youtube-channel-$k";
 						}
 
@@ -241,16 +241,16 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 					// add to inactive widgets if don't belong to any widget area
 
 				} // foreach widget option
-				
+
 				// update widget areas set
 				update_option('sidebars_widgets',$widget_areas);
-				
+
 				// update new YTC widgets
 				update_option('widget_youtube-channel',$new);
-				
+
 				// remove old YTC widgets entry
 				delete_option('widget_youtube_channel_widget');
-				
+
 				// clear temporary vars
 				unset ($old,$new);
 
@@ -307,33 +307,33 @@ function ytc_mute(event){
 						'res'        => $instance['use_res'],
 						'only_pl'    => $instance['only_pl'],
 						'cache'      => $instance['cache_time'],
-						
+
 						'fetch'      => $instance['maxrnd'],
 						'num'        => $instance['vidqty'],
-						
+
 						'fix'        => $instance['fixnoitem'],
 						'random'     => $instance['getrnd'],
-						
+
 						'ratio'      => $instance['ratio'],
 						'width'      => $instance['width'],
 						'responsive' => (!empty($instance['responsive'])) ? $instance['responsive'] : '0',
 
 						'show'       => $instance['to_show'],
-						
+
 						'themelight' => $instance['themelight'],
 						'controls'   => $instance['controls'],
 						'fix_h'      => $instance['fixyt'],
 						'autoplay'   => $instance['autoplay'],
 						'mute'       => $instance['autoplay_mute'],
 						'norel'      => $instance['norel'],
-						
+
 						'showtitle'  => $instance['showtitle'],
 						'showdesc'   => $instance['showvidesc'],
 						'nobrand'    => (!empty($instance['modestbranding'])) ? $instance['modestbranding'] : '0',
 						'desclen'    => $instance['videsclen'],
 						'noinfo'     => $instance['hideinfo'],
 						'noanno'     => $instance['hideanno'],
-						
+
 						'goto'       => $instance['showgoto'],
 						'goto_txt'   => $instance['goto_txt'],
 						'popup'      => $instance['popup_goto'],
@@ -363,7 +363,7 @@ function ytc_mute(event){
 			$instance['width']         = $width; // 306
 			$instance['responsive']    = $responsive; // enable responsivenes?
 			$instance['to_show']       = $show; // thumbnail, iframe, iframe2, object, chromeless
-			
+
 			$instance['themelight']    = $themelight; // use light theme, dark by default
 			$instance['controls']      = $controls; // hide controls, false by default
 			$instance['fixyt']         = $fix_h; // fix youtube height, disabled by default
@@ -418,7 +418,7 @@ function ytc_mute(event){
 			if ( $instance['only_pl'] && $use_res == 2 ) { // print standard playlist
 				$output = array_merge($output, self::ytc_only_pl($instance));
 			} else { // channel or playlist single videos
-			
+
 				// get max items for random video
 				$maxrnd = $instance['maxrnd'];
 				if ( $maxrnd < 1 ) { $maxrnd = 10; } // default 10
@@ -430,7 +430,7 @@ function ytc_mute(event){
 
 				if ( !$instance['fixnoitem'] && $use_res != 1 )
 					$feed_attr .= '&orderby=published';
-					
+
 				$getrnd = $instance['getrnd'];
 				if ( $getrnd ) $feed_attr .= '&max-results='.$maxrnd;
 
@@ -517,7 +517,7 @@ function ytc_mute(event){
 						} else {
 							$item = $items[$y-1];
 						}
-						
+
 						// print single video block
 						$output = array_merge( $output, $this->ytc_print_video($item, $instance, $y) );
 					}
@@ -533,7 +533,7 @@ function ytc_mute(event){
 		}
 
 		// --- HELPER FUNCTIONS ---
-		
+
 		// function to calculate height by width and ratio
 		function height_ratio($width=306, $ratio) {
 			switch ($ratio)
@@ -623,7 +623,7 @@ function ytc_mute(event){
 			$yt_id     = $item->link[0]->href;
 			$yt_id     = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
 			$yt_url    = "v/$yt_id";
-			
+
 			$yt_thumb  = "//img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
 			$yt_video  = $item->link[0]->href;
 			$yt_video  = preg_replace('/\&.*$/','',$yt_video);
@@ -631,7 +631,7 @@ function ytc_mute(event){
 			$yt_title  = $item->title->{'$t'};
 			$yt_date   = $item->published->{'$t'};
 			//$yt_date = $item->get_date('j F Y | g:i a');
-		 
+
 			switch ($y) {
 				case 1:
 					$vnumclass = 'first';
@@ -651,7 +651,7 @@ function ytc_mute(event){
 			// show video title?
 			if ( $instance['showtitle'] )
 				$output[] = '<h3 class="ytc_title">'.$yt_title.'</h3>';
-				
+
 			// define object ID
 			$ytc_vid = 'ytc_' . $yt_id;
 
@@ -668,8 +668,8 @@ function ytc_mute(event){
 					default: $arclass = 'ar16_9';
 				}
 				$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
-				$rel = ( $norel ) ? "0" : "1";
-				$output[] = '<a href="'.$yt_video.'&rel='.$rel.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+				$rel = ( $norel ) ? '&rel=0' : '';
+				$output[] = '<a href="'.$yt_video.$rel.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 			} else if ( $to_show == "chromeless" ) {
 				ob_start();
 		?>
@@ -687,7 +687,7 @@ function ytc_mute(event){
 				<param name="wmode" value="opaque" />
 				<param name="swfversion" value="6.0.65.0" />
 				<param name="movie" value="<?php echo $this->plugin_url . 'chromeless.swf'; ?>" />
-			</object>	
+			</object>
 		<?php
 				$output[] = ob_get_contents();
 				ob_end_clean();
@@ -791,7 +791,7 @@ JS;
 							$etcetera = $instance['descappend'];
 						} else {
 							$etcetera = '&hellip;';
-						}			
+						}
 					}
 				} else {
 					$video_description = $videsc[1];
@@ -831,7 +831,7 @@ JS;
 		// enhanced privacy
 		$youtube_domain = $this->youtube_domain($instance);
 		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel.'" 
+		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel.'"
 		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 			return $output;
 		} // end function ytc_only_pl
@@ -920,7 +920,7 @@ JS;
 
 			// get Redux Framework version (if active)
 			$redux = ( class_exists( "ReduxFramework" ) ) ? ReduxFramework::$_version : 'N/A';
-			
+
 			// get widget ID from parameter
 			$for = $_GET['ytc_debug_json_for'];
 
@@ -933,7 +933,7 @@ JS;
 
 			if (!is_array($widget_options[$widget_id]))
 				return;
-			
+
 			// prepare debug data with settings of current widget
 			$data = array_merge(
 				array(
