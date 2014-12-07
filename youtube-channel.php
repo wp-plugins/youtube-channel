@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.1.1
+Version: 2.4.1.2
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.1.1";
+		public $plugin_version = "2.4.1.2";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -265,8 +265,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			wp_enqueue_script( 'fitvids', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
 
 			// enqueue magnific-popup
-			wp_enqueue_script( 'magnific-popup', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
-			wp_enqueue_style( 'magnific-popup', plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__), array(), $this->plugin_version );
+			wp_enqueue_script( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), $this->plugin_version, true );
+			wp_enqueue_style( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__), array(), $this->plugin_version );
 			wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.min.js', __FILE__), array(), $this->plugin_version, true );
 		} // end function enqueue_scripts
 
@@ -668,8 +668,12 @@ function ytc_mute(event){
 					default: $arclass = 'ar16_9';
 				}
 				$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
-				$rel = ( $norel ) ? '&rel=0' : '';
-				$output[] = '<a href="'.$yt_video.$rel.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+				$p = '';
+				if ( $norel ) $p .= '&rel=0';
+				if ( $modestbranding ) $p .= "&modestbranding=1";
+				if ( $controls ) $p .= "&controls=0";
+				// if ( $themelight ) $p .= "&theme=light";
+				$output[] = '<a href="'.$yt_video.$p.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 			} else if ( $to_show == "chromeless" ) {
 				ob_start();
 		?>
