@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.1
-Stable tag: 2.4.1.2
+Stable tag: 2.4.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,6 +127,9 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
 == Changelog ==
+
+= 2.4.1.3 (2014-12-10) =
+* Fix: previous release broke opening lightbox for thumbnails and load YouTube website.
 
 = 2.4.1.2 (2014-12-07) =
 * Add: Add support for hidden controls and YouTube logo in Thumbnail mode.

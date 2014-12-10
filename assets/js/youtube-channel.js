@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 	$('.ytc-lightbox')
-		.magnificPopup({
+		.magnificPopupAU({
 			disableOn: 700,
 			type: 'iframe',
 			mainClass: 'mfp-fade',
