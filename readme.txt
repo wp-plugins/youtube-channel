@@ -128,8 +128,9 @@ Also, even when hidding logo works for your video, on hover or when video is pau
 
 == Changelog ==
 
-= 2.4.1.4 (2014-12-30) =
-* Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
+= 2.4.1.4 (2015-02-09) =
+* (2015-02-09) Fix: strip whitespace from the beginngine/end of channel and playlist ID
+* (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
 
 = 2.4.1.3 (2014-12-10) =
 * Fix: previous release broke opening lightbox for thumbnails and load YouTube website.

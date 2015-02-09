@@ -396,12 +396,12 @@ function ytc_mute(event){
 		{
 
 			// set default channel if nothing predefined
-			$channel = $instance['channel'];
-			if ( $channel == "" ) $channel = $this->channel_id;
+			$channel = trim($instance['channel']);
+			if ( $channel == "" ) $channel = trim($this->channel_id);
 
 			// set playlist id
-			$playlist = $instance['playlist'];
-			if ( $playlist == "" ) $playlist = $this->playlist_id;
+			$playlist = trim($instance['playlist']);
+			if ( $playlist == "" ) $playlist = trim($this->playlist_id);
 
 			// trim PL in front of playlist ID
 			$playlist = preg_replace('/^PL/', '', $playlist);
