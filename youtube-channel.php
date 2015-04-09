@@ -49,19 +49,26 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			add_shortcode( 'youtube_channel', array($this, 'shortcode') );
 			add_shortcode( 'ytc', array($this, 'shortcode') );
 
-			// Update YTC version in database on request
-			if ( !empty($_GET['ytc_dismiss_update_notice']) )
-				update_option( 'ytc_version', $this->plugin_version );
+			if ( is_admin() ) {
+				// Update YTC version in database on request
+				if ( !empty($_GET['ytc_dismiss_update_notice']) )
+					update_option( 'ytc_version', $this->plugin_version );
 
-			// Update Redux notice
-			if ( !empty($_GET['ytc_ignore_redux']) )
-				update_option( 'ytc_no_redux_notice', true);
+				// Update Redux notice
+				if ( !empty($_GET['ytc_ignore_redux']) )
+					update_option( 'ytc_no_redux_notice', true);
 
-			// add dashboard notice if version changed
-			$version = get_option('ytc_version','0');
-			if ( version_compare($version, $this->plugin_version, "<") )
-				add_action( 'admin_notices', array($this, 'admin_notices') );
+				// add dashboard notice if version changed
+				$version = get_option('ytc_version','0');
+				if ( version_compare($version, $this->plugin_version, "<") )
+					add_action( 'admin_notices', array($this, 'admin_notices') );
 
+				// add dashboard notice if old PHP
+				if ( version_compare(PHP_VERSION, "5.3.29", "<") )
+					add_action( 'admin_notices', array($this, 'admin_notices_old_php') );
+			}
+
+			// enqueue scripts
 			add_action( 'wp_enqueue_scripts', array($this, 'enqueue_scripts') );
 			add_action( 'wp_footer', array($this, 'footer_scripts') );
 
@@ -116,6 +123,11 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				$this->plugin_name,
 				$this->plugin_version);
 		} // end admin_notices
+
+		function admin_notices_old_php()
+		{
+			echo '<div class="error"><p>Your WordPress running on server with PHP version '.PHP_VERSION.'. YouTube Channel plugin requires at least PHP 5.3.29 so if you experience any issue, we can`t help.</p></div>';
+		} // END admin_notices_old_php()
 
 		function admin_notice_redux()
 		{

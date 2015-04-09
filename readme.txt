@@ -3,8 +3,8 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
-Tested up to: 4.1
-Stable tag: 2.4.1.3
+Tested up to: 4.2
+Stable tag: 2.4.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,7 +32,12 @@ If you like this extension and you find it useful, please rate it on the right s
 * Optional video autoplay with optional muted audio
 * Show customized link to channel below videos
 
+= Notice =
+
+For fully functional plugin you need to have PHP 5.3.29 or newer! If you experience issues on older PHP, we can't help you as we don't have access to such old development platform.
+
 = Styling =
+
 You can use `style.css` from theme to style `YouTube Video` widget content.
 
 * `.youtube_channel` - main widget wrapper class (non-responsive block have additional class `default`, responsive block have additional class `responsive`)
@@ -128,7 +133,9 @@ Also, even when hidding logo works for your video, on hover or when video is pau
 
 == Changelog ==
 
-= 2.4.1.4 (2015-02-09) =
+= 2.4.1.4 (2015-04-09) =
+* (2015-04-09) Add: Notification about old PHP if lower than 5.3.29
+* Change: Run admin functions only in dashboard
 * (2015-02-09) Fix: strip whitespace from the beginngine/end of channel and playlist ID
 * (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
 
