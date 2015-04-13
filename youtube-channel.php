@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.1.4
+Version: 2.4.1.5
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.1.4";
+		public $plugin_version = "2.4.1.5";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -58,14 +58,19 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				if ( !empty($_GET['ytc_ignore_redux']) )
 					update_option( 'ytc_no_redux_notice', true);
 
+				// Dismiss Old PHP notice
+				if ( !empty($_GET['ytc_dismiss_old_php_notice']) )
+					update_option( 'ytc_old_php_notice', true);
+
+				// add dashboard notice if old PHP
+				if ( version_compare(PHP_VERSION, "5.3", "<") && ! get_option('ytc_old_php_notice') )
+					add_action( 'admin_notices', array($this, 'admin_notices_old_php') );
+
 				// add dashboard notice if version changed
 				$version = get_option('ytc_version','0');
 				if ( version_compare($version, $this->plugin_version, "<") )
 					add_action( 'admin_notices', array($this, 'admin_notices') );
 
-				// add dashboard notice if old PHP
-				if ( version_compare(PHP_VERSION, "5.3.29", "<") )
-					add_action( 'admin_notices', array($this, 'admin_notices_old_php') );
 			}
 
 			// enqueue scripts
@@ -126,7 +131,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		function admin_notices_old_php()
 		{
-			echo '<div class="error"><p>Your WordPress running on server with PHP version '.PHP_VERSION.'. YouTube Channel plugin requires at least PHP 5.3.29 so if you experience any issue, we can`t help.</p></div>';
+			$btn = '<a href="?ytc_dismiss_old_php_notice=1">' . __("I got it! Dismiss this notice.", 'youtube-channel') . '</a>';
+			echo '<div class="error"><p>Your WordPress running on server with PHP version '.PHP_VERSION.'. YouTube Channel plugin requires at least PHP 5.3.x so if you experience any issue, we can`t help. '.$btn.'</p></div>';
 		} // END admin_notices_old_php()
 
 		function admin_notice_redux()
