@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.1.5
+Version: 2.4.1.7
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.1.5";
+		public $plugin_version = "2.4.1.7";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -443,6 +443,8 @@ function ytc_mute(event){
 				elseif ( $maxrnd > 50 ) { $maxrnd = 50; } // max 50
 
 				$feed_attr = '?alt=json';
+				$feed_attr .= '&v=2&start-index=2';
+
 				// select fields
 				$feed_attr .= "&fields=entry(published,title,link,content)";
 
@@ -668,7 +670,15 @@ function ytc_mute(event){
 					break;
 			}
 
-			$output[] = '<div class="ytc_video_container ytc_video_'.$y.' ytc_video_'.$vnumclass.'" style="width:'.$width.'px">';
+			// set proper class for responsive thumbs per selected aspect ratio
+			switch ($instance['ratio'])
+			{
+				case 1: $arclass = 'ar4_3'; break;
+				case 2: $arclass = 'ar16_10'; break;
+				default: $arclass = 'ar16_9';
+			}
+
+			$output[] = '<div class="ytc_video_container ytc_video_'.$y.' ytc_video_'.$vnumclass.' '.$arclass.'" style="width:'.$width.'px">';
 
 			// show video title?
 			if ( $instance['showtitle'] )
@@ -680,15 +690,9 @@ function ytc_mute(event){
 			// enhanced privacy
 			$youtube_domain = $this->youtube_domain($instance);
 
+
 			// print out video
 			if ( $to_show == "thumbnail" ) {
-				// set proper class for responsive thumbs per selected aspect ratio
-				switch ($instance['ratio'])
-				{
-					case 1: $arclass = 'ar4_3'; break;
-					case 2: $arclass = 'ar16_10'; break;
-					default: $arclass = 'ar16_9';
-				}
 				$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
 				$p = '';
 				if ( $norel ) $p .= '&rel=0';
@@ -841,7 +845,6 @@ JS;
 		$playlist = (empty($instance['playlist'])) ? $this->playlist_id : $instance['playlist'];
 
 		$height = self::height_ratio($width, $instance['ratio']);
-
 		$height += ($instance['fixyt']) ? 54 : 0;
 
 		$playlist = $this->clean_playlist_id($playlist);
@@ -854,10 +857,22 @@ JS;
 
 		$rel = (empty($instance['norel'])) ? '' : '&rel=0';
 
+		$controls = (empty($instance['controls']) ) ? '' : '&controls=0';
+		$hideinfo = (empty($instance['hideinfo']) ) ? '' : '&showinfo=0';
+		$hideanno = (empty($instance['hideanno']) ) ? '' : '&iv_load_policy=3';
+
+		// set proper class for responsive thumbs per selected aspect ratio
+		switch ($instance['ratio'])
+		{
+			case 1: $arclass = 'ar4_3'; break;
+			case 2: $arclass = 'ar16_10'; break;
+			default: $arclass = 'ar16_9';
+		}
+
 		// enhanced privacy
 		$youtube_domain = $this->youtube_domain($instance);
-		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel.'"
+		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single '.$arclass.'">
+		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel. $controls.$hideinfo.$hideanno.'"
 		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 			return $output;
 		} // end function ytc_only_pl

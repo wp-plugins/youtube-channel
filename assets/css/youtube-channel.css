@@ -73,3 +73,27 @@ padding-bottom: 62.5%;
 .ytc_thumb.ar4_3>span:before {
 padding-bottom: 75%;
 }
+
+/* responsive iframe */
+.youtube_channel.responsive .ytc_video_container.ar16_9 {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	height: 0;
+}
+.youtube_channel.responsive .ytc_video_container.ar16_10 {
+	position: relative;
+	padding-bottom: 62.5%; /* 16:10 */
+	height: 0;
+}
+.youtube_channel.responsive .ytc_video_container.ar4_3 {
+	position: relative;
+	padding-bottom: 75%; /* 4:3; */
+	height: 0;
+}
+.youtube_channel.responsive .ytc_video_container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}

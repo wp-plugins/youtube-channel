@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2
-Stable tag: 2.4.1.5
+Stable tag: 2.4.1.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -132,6 +132,13 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
 == Changelog ==
+
+= 2.4.1.7 (2015-04-20) =
+* Quick Fix: strip 1st video from feed that provides notice "YouTube is upgrading to a newer version, which is not supported by this device or app." (more on www.youtube.com/devicesupport) until we finish YouTube Channel 3.0.0 (on the way)
+
+= 2.4.1.6 (2015-04-15) =
+* Fix: missing responsive support for embedded playlist, iframe and iframe2
+* Fix: missing support to hide playback controls, info and annotations for embedded playlist
 
 = 2.4.1.5 (2015-04-13) =
 * Change: Add dismiss link for Old PHP notice and lower suggested PHP version to 5.3.x
