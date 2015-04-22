@@ -56,6 +56,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$responsive    = (!empty($instance['responsive'])) ? esc_attr($instance['responsive']) : 0;
 
 		$to_show       = (!empty($instance['to_show'])) ? esc_attr($instance['to_show']) : '';
+		$no_thumb_title       = (!empty($instance['no_thumb_title'])) ? esc_attr($instance['no_thumb_title']) : 0;
 		$themelight    = (!empty($instance['themelight'])) ? esc_attr($instance['themelight']) : '';
 		$controls      = (!empty($instance['controls'])) ? esc_attr($instance['controls']) : '';
 		$fixyt         = (!empty($instance['fixyt'])) ? esc_attr($instance['fixyt']) : '';
@@ -78,7 +79,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$showgoto      = (!empty($instance['showgoto'])) ? esc_attr($instance['showgoto']) : '';
 		$popup_goto    = (!empty($instance['popup_goto'])) ? esc_attr($instance['popup_goto']) : '';
 		$userchan      = (!empty($instance['userchan'])) ? esc_attr($instance['userchan']) : '';
-		
+
 		// Debug YTC
 		$debugon       = (!empty($instance['debugon'])) ? esc_attr($instance['debugon']) : '';
 		?>
@@ -140,7 +141,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 			<br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $getrnd, true ); ?> id="<?php echo $this->get_field_id( 'getrnd' ); ?>" name="<?php echo $this->get_field_name( 'getrnd' ); ?>" title="<?php _e('Get random videos of all fetched from channel or playlist', 'youtube-channel'); ?>" /> <label for="<?php echo $this->get_field_id( 'getrnd' ); ?>"><?php _e('Show random video', 'youtube-channel'); ?></label>
 		</p>
-		
+
 		<h4><?php _e('Video Settings', 'youtube-channel'); ?></h4>
 		<p><label for="<?php echo $this->get_field_id('ratio'); ?>"><?php _e('Aspect ratio', 'youtube-channel'); ?>:</label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'ratio' ); ?>" name="<?php echo $this->get_field_name( 'ratio' ); ?>">
@@ -162,6 +163,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 				<option value="iframe2"<?php selected( $to_show, 'iframe2' ); ?>><?php _e('HTML5 (iframe) Async', 'youtube-channel'); ?></option>
 				<option value="chromeless"<?php selected( $to_show, 'chromeless' ); ?>><?php _e('Chromeless', 'youtube-channel'); ?></option>
 			</select>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $no_thumb_title, true ); ?> id="<?php echo $this->get_field_id( 'no_thumb_title' ); ?>" name="<?php echo $this->get_field_name( 'no_thumb_title' ); ?>" /> <label for="<?php echo $this->get_field_id( 'no_thumb_title' ); ?>"><?php _e('Hide thumbnail tooltip', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $themelight, true ); ?> id="<?php echo $this->get_field_id( 'themelight' ); ?>" name="<?php echo $this->get_field_name( 'themelight' ); ?>" /> <label for="<?php echo $this->get_field_id( 'themelight' ); ?>"><?php _e('Use light theme (default is dark)', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $controls, true ); ?> id="<?php echo $this->get_field_id( 'controls' ); ?>" name="<?php echo $this->get_field_name( 'controls' ); ?>" /> <label for="<?php echo $this->get_field_id( 'controls' ); ?>"><?php _e('Hide player controls', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $fixyt, true ); ?> id="<?php echo $this->get_field_id( 'fixyt' ); ?>" name="<?php echo $this->get_field_name( 'fixyt' ); ?>" /> <label for="<?php echo $this->get_field_id( 'fixyt' ); ?>"><?php _e('Fix height taken by controls', 'youtube-channel'); ?></label><br />
@@ -215,11 +217,11 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['only_pl']       = (isset($new_instance['only_pl'])) ? $new_instance['only_pl'] : false;
 		$instance['getrnd']        = (isset($new_instance['getrnd'])) ? $new_instance['getrnd'] : false;
 		$instance['maxrnd']        = $new_instance['maxrnd'];
-		
+
 		$instance['goto_txt']      = strip_tags($new_instance['goto_txt']);
 		$instance['showgoto']      = (isset($new_instance['showgoto'])) ? $new_instance['showgoto'] : false;
 		$instance['popup_goto']    = $new_instance['popup_goto'];
-		
+
 		$instance['showtitle']     = (isset($new_instance['showtitle'])) ? $new_instance['showtitle'] : false;
 		$instance['showvidesc']    = (isset($new_instance['showvidesc'])) ? $new_instance['showvidesc'] : false;
 		$instance['descappend']    = strip_tags($new_instance['descappend']);
@@ -228,6 +230,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['responsive']    = (isset($new_instance['responsive'])) ? $new_instance['responsive'] : '';
 
 		$instance['to_show']       = strip_tags($new_instance['to_show']);
+		$instance['no_thumb_title'] = (isset($new_instance['no_thumb_title'])) ? $new_instance['no_thumb_title'] : false;
 		$instance['autoplay']      = (isset($new_instance['autoplay'])) ? $new_instance['autoplay'] : false;
 		$instance['autoplay_mute'] = (isset($new_instance['autoplay_mute'])) ? $new_instance['autoplay_mute'] : false;
 		$instance['norel']         = (isset($new_instance['norel'])) ? $new_instance['norel'] : false;

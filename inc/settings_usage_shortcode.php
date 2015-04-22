@@ -1,6 +1,7 @@
 <p>You also can use shortcode <code>[youtube_channel]</code> with options listed below (all options are optional):</p>
 <h3>General Settings</h3>
 <ul>
+    <li><code>class</code> <em>(string)</em> Set custom class if you wish to target special styling for specific YTC block</li>
     <li><code>channel</code> <em>(string)</em> ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)</li>
     <li><code>playlist</code> <em>(string)</em> ID of preferred YouTube playlist.</li>
     <li><code>res</code> <em>(int)</em> Resource to use for feed:
@@ -37,6 +38,7 @@
         <li>&bullet; <code>chromeless</code> Chromeless solution (also not good for Apple devices)</li>
     </ul></li>
 
+    <li><code>no_thumb_title</code> <em>(bool)</em> By default YouTube thumbnail will have tooltip with info about video title and date of publishing. By setting this option to <code>1</code> or <code>true</code> you can hide tooltip</li>
     <li><code>themelight</code> <em>(bool)</em> By default YouTube have dark play controls theme. By setting this option to <code>1</code> or <code>true</code> you can get light theme in player (HTML5 and Flash)</li>
     <li><code>controls</code> <em>(bool)</em> Set this option to <code>1</code> or <code>true</code> to hide playback controls.</li>
     <li><code>fix_h</code> <em>(bool)</em> If you did not set to hide player controls, you can set this option to <code>1</code> or <code>true</code> to fix video height taken by controls</li>

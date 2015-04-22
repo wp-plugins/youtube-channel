@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2
-Stable tag: 2.4.1.7
+Stable tag: 2.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,6 +19,7 @@ Simply insert widget to sidebar, set channel name and if you wish leave all othe
 If you like this extension and you find it useful, please rate it on the right side.
 
 = Features =
+
 * Display latest videos from YouTube channel, favorites or playlist
 * Option to get random video from resources mentioned above
 * Responsive (one full width video per row) or non responsive (video wall)
@@ -57,9 +58,8 @@ You can use `style.css` from theme to style `YouTube Video` widget content.
 * Removing YouTube logo from playback control bar does not work for all videos
 * Async HTML5 video does not work for 2nd same video on same page (two YTC blocks set to Async HTML5)
 * Chromeless video could not be used as responsive player
-* Thumbnail and opening video in lightbox does not work with `Responz` theme by `Thenify.me` if you wish to hide related videos, because this theme uses original `Magnific Popup` library that does not support `rel` parameter.
 
-If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
+If WordFence or other malware scan tool detect YouTube Channel file youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
 
 = Credits =
 
@@ -69,6 +69,7 @@ If WordFence or other malware scan tool detect YouTube Channel fule youtube-chan
 * [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 * Czech localization by [Ladislav Drábek](http://zholesova.cz)
 * Spanish localization by [Diego Riaño](http://Digital03.net)
+* Danish localisation by [GSAdev v. Georg Adamsen](http://www.gsadev.dk)
 
 = How To Use =
 **Add New Widget**
@@ -76,6 +77,64 @@ If WordFence or other malware scan tool detect YouTube Channel fule youtube-chan
 
 **Use Playlist**
 [youtube http://www.youtube.com/watch?v=y9zoi_Pk2kY]
+
+= Shortcode =
+
+Along to Widget, you can add YouTube Channel block inline by using shortcode `[youtube_channel]`. Default plugin parameters will be used for shortcode, but you can customize all parameters per shortcode.
+
+**General Settings**
+
+* `class` (string) Set custom class if you wish to target special styling for specific YTC block
+* `channel` (string) ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)
+* `playlist` (string) ID of preferred YouTube playlist.
+* `res` (int) Resource to use for feed:
+  * `0` Channel
+  * `1` Favorites (for defined channel)
+  * `2` Playlist
+* `only_pl` (bool) If you set to use Playlist as resource, you can embed youtube playlist block instead single video from playlist. Simply set this option to true (1 or true)
+* `cache` (int) Period in seconds for caching feed. You can disable caching by setting this option to 0, but if you have a lot of visits, consider at least short caching (couple minutes).
+* `fetch` (int) Number of videos that will be used as stack for random pick (min 2, max 50)
+* `num` (int) Number of videos to display per YTC block.
+* `fix` (bool) Option to fix No Items error, and also to respect order of videos in feed or playlist.
+* `random` (bool) Option to randomize videos on every page load.
+
+**Video Settings**
+
+* `ratio` (int) Set preferred aspect ratio for thumbnail and video. You can use:
+  * `3` 16:9 (widescreen)
+  * `2` 16:10 (computer screen) **deprecated**
+  * `1` 4:3
+* `responsive` (bool) Distribute one full width video per row.
+* `width` (int) Width of thumbnail and video in pixels.
+* `show` (string) Object that will be used to represent video. We have couple predefined options:
+  * `thumbnail` Thumbnail will be used and video will be loaded in lightbox.
+  * `iframe` HTML5 (iframe)
+  * `iframe2` HTML5 (iframe) with asynchronous loading - recommended
+  * `object` Flash object (not so good for Apple devices) **deprecated**
+  * `chromeless` Chromeless solution (also not good for Apple devices) **deprecated**
+* `no_thumb_title` (bool) By default YouTube thumbnail will have tooltip with info about video title and date of publishing. By setting this option to 1 or true you can hide tooltip
+* `themelight` (bool) By default YouTube have dark play controls theme. By setting this option to 1 or true you can get light theme in player (HTML5 and Flash)
+* `controls` (bool) Set this option to 1 or true to hide playback controls.
+* `fix_h` (bool) If you did not set to hide player controls, you can set this option to 1 or true to fix video height taken by controls
+* `autoplay` (bool) Enable autoplay of first video in YTC video stack by setting this option to 1 or true
+* `mute` (bool) Set this option to 1 or true to mute videos set to autoplay on load
+* `norel` (bool) Set this option to 1 or true to hire related videos after finished playbak
+* `nobrand` (bool) Set this option to 1 or true to hire YouTube logo from playback control bar
+
+**Content Layout**
+
+* `showtitle` (bool)
+* `showdesc` (bool)
+* `desclen` (int)
+* `noinfo` (bool)
+* `noanno` (bool)
+
+**Link to Channel**
+
+* `goto` (bool)
+* `goto_txt` (string)
+* `popup` (int)
+* `userchan` (bool)
 
 == Installation ==
 
@@ -132,6 +191,13 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
 == Changelog ==
+= 2.4.2 (2015-04-22) =
+* Fix: Broken layout introduced by missing responsive for embedded playlist, iframe and iframe2
+* Fix: Replace amp's with HTML entity in thumbnail link
+* Add: Option to disable thumbnail tooltips (shortcode parameter no_thumb_title)
+* Add: List of Shortcode attributes to README file
+* Add: Danis localisation by GSAdev v. Georg Adamsen
+* Micro optimizations
 
 = 2.4.1.7 (2015-04-20) =
 * Quick Fix: strip 1st video from feed that provides notice "YouTube is upgrading to a newer version, which is not supported by this device or app." (more on www.youtube.com/devicesupport) until we finish YouTube Channel 3.0.0 (on the way)
@@ -337,3 +403,19 @@ Responsive, bug fixes, support for WordPress 4.1
 2. YouTube Channel customized widget settings
 3. YouTube Channel in WP Customizer
 4. YouTube Channel preview
+
+== Other Notes ==
+
+Version 2.4.2 is latest feature release that will use YouTube API v2 and Redux Framework. We'll release micro releases only with bugfixes.
+
+We hope that until end of May 2015 we'll finish version 3.0.0. Please note, you'll need to create your own Google API Key and add it in `wp-config.php` to be able to use YouTube Channel v3.0.0.
+
+= Main differences we'll introduce in v3.0.0 =
+
+* Google YouTube API v3
+* WP Settings API (back to the roots to reduce 3rd party requirements - Redux Framework)
+* Available types to show: Thumbnail (default), HTML5 (iframe) and HTML5 (iframe) Asynchronous (FLASH and Chromeless object has been deprecated and removed)
+* Available resources: Channel, Favourites, Liked Videos or Playlist
+* Available aspect ratios: 16:9 (as default fallback) or 4:3 (16:10 has been deprecated and removed)
+* Links to channel below video blocks will be: Vanity customized name, Channel ID or Legacy username
+* No more problems with `No items`

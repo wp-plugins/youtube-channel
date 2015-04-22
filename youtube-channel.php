@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.1.7
+Version: 2.4.2
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.1.7";
+		public $plugin_version = "2.4.2";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -166,6 +166,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'width'          => 306,
 				'responsive'     => true,
 				'to_show'        => 'thumbnail', // thumbnail, iframe, iframe2, chromeless, object
+				'no_thumb_title' => 0, // disable tooltip for thumbnails
 				'themelight'     => false,
 				'controls'       => false,
 				'fixyt'          => false,
@@ -337,6 +338,7 @@ function ytc_mute(event){
 						'responsive' => (!empty($instance['responsive'])) ? $instance['responsive'] : '0',
 
 						'show'       => $instance['to_show'],
+						'no_thumb_title'       => (!empty($instance['no_thumb_title'])) ? $instance['no_thumb_title'] : '0',
 
 						'themelight' => $instance['themelight'],
 						'controls'   => $instance['controls'],
@@ -358,7 +360,7 @@ function ytc_mute(event){
 						'userchan'   => $instance['userchan'],
 
 						'class'      => (!empty($instance['class'])) ? $instance['class'] : ''
-		    		),
+					),
 					$atts
 				)
 			);
@@ -381,6 +383,7 @@ function ytc_mute(event){
 			$instance['width']         = $width; // 306
 			$instance['responsive']    = $responsive; // enable responsivenes?
 			$instance['to_show']       = $show; // thumbnail, iframe, iframe2, object, chromeless
+			$instance['no_thumb_title'] = $no_thumb_title; // hide thumbnail tooltip
 
 			$instance['themelight']    = $themelight; // use light theme, dark by default
 			$instance['controls']      = $controls; // hide controls, false by default
@@ -407,7 +410,7 @@ function ytc_mute(event){
 			$instance['class']         = $class; // custom additional class for container
 
 			return implode(array_values($this->output($instance)));
-		}
+		} // END function shortcode()
 
 		// print out widget
 		public function output($instance)
@@ -580,9 +583,9 @@ function ytc_mute(event){
 			// initialize array
 			$output = array();
 			// do we need to show goto link?
-			if ( $instance['showgoto'] ) {
+			if ( ! empty($instance['showgoto']) ) {
 				$channel = $instance['channel'];
-				if ( !$channel )
+				if ( ! $channel )
 					$channel = 'urkekg';
 				$goto_txt = $instance['goto_txt'];
 				if ( $goto_txt == "" )
@@ -618,12 +621,12 @@ function ytc_mute(event){
 
 			// get hideinfo, autoplay and controls settings
 			// where this is used?
-			$hideinfo      = $instance['hideinfo'];
-			$autoplay      = $instance['autoplay'];
-			$autoplay_mute = $instance['autoplay_mute'];
-			$controls      = $instance['controls'];
-			$norel         = $instance['norel'];
-			$class         = $instance['class'];
+			$hideinfo       = $instance['hideinfo'];
+			$autoplay       = $instance['autoplay'];
+			$autoplay_mute  = $instance['autoplay_mute'];
+			$controls       = $instance['controls'];
+			$norel          = $instance['norel'];
+			$class          = $instance['class'];
 			$modestbranding = $instance['modestbranding'];
 
 			// set width and height
@@ -678,29 +681,39 @@ function ytc_mute(event){
 				default: $arclass = 'ar16_9';
 			}
 
-			$output[] = '<div class="ytc_video_container ytc_video_'.$y.' ytc_video_'.$vnumclass.' '.$arclass.'" style="width:'.$width.'px">';
+			// open container
+			$output[] = "<div class=\"ytc_video_container ytc_video_${y} ytc_video_${vnumclass} ${arclass}\" style=\"width:${width}px\">";
 
 			// show video title?
-			if ( $instance['showtitle'] )
-				$output[] = '<h3 class="ytc_title">'.$yt_title.'</h3>';
+			if ( ! empty( $instance['showtitle']) )
+				$output[] = "<h3 class=\"ytc_title\">$yt_title</h3>";
 
 			// define object ID
-			$ytc_vid = 'ytc_' . $yt_id;
+			$ytc_vid = "ytc_${yt_id}";
 
 			// enhanced privacy
 			$youtube_domain = $this->youtube_domain($instance);
 
-
 			// print out video
 			if ( $to_show == "thumbnail" ) {
-				$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
+
+				// Do we need tooltip for thumbnail?
+				if ( empty($instance['no_thumb_title']) )
+					$title = sprintf( __('Watch video %1$s published on %2$s', 'youtube-channel' ), $yt_title, $yt_date );
+
 				$p = '';
-				if ( $norel ) $p .= '&rel=0';
-				if ( $modestbranding ) $p .= "&modestbranding=1";
-				if ( $controls ) $p .= "&controls=0";
-				// if ( $themelight ) $p .= "&theme=light";
-				$output[] = '<a href="'.$yt_video.$p.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
+				if ( $norel ) $p .= '&amp;rel=0';
+				if ( $modestbranding ) $p .= "&amp;modestbranding=1";
+				if ( $controls ) $p .= "&amp;controls=0";
+
+				// Do we need thumbnail w/ or w/o tooltip
+				if ( empty($instance['no_thumb_title']) ) {
+					$output[] = "<a href=\"${yt_video}${p}\" title=\"$yt_title\" class=\"ytc_thumb ytc-lightbox $arclass\"><span style=\"background-image: url($yt_thumb);\" title=\"$title\" id=\"$ytc_vid\"></span></a>";
+				} else {
+					$output[] = "<a href=\"${yt_video}${p}\" class=\"ytc_thumb ytc-lightbox $arclass\"><span style=\"background-image: url($yt_thumb);\" id=\"$ytc_vid\"></span></a>";
+				}
 			} else if ( $to_show == "chromeless" ) {
+				// This should be removed
 				ob_start();
 		?>
 			<object type="application/x-shockwave-flash" data="<?php echo $this->plugin_url . 'inc/chromeless.swf'; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" id="<?php echo $ytc_vid; ?>">
@@ -724,7 +737,11 @@ function ytc_mute(event){
 			} else if ( $to_show == "iframe" ) {
 				if ( empty($usepl) ) $yt_url = $yt_id;
 
-				$output[] = '<iframe title="YouTube video player" width="'.$width.'" height="'.$height.'" src="//'.$youtube_domain.'/embed/'.$yt_url.'?wmode=opaque'; //&enablejsapi=1';
+				// Start wrapper for responsive item
+				if ( $instance['responsive'] ) $output[] = '<div class="fluid-width-video-wrapper">';
+
+				// Prepare item
+				$output[] = "<iframe title=\"YouTube video player\" width=\"$width\" height=\"$height\" src=\"//${youtube_domain}/embed/${yt_url}?wmode=opaque";
 				if ( $controls ) $output[] = "&amp;controls=0";
 				if ( $hideinfo ) $output[] = "&amp;showinfo=0";
 				if ( $autoplay ) $output[] = "&amp;autoplay=1";
@@ -734,8 +751,13 @@ function ytc_mute(event){
 				// disable related videos
 				if ( $norel ) $output[] = "&amp;rel=0";
 
-				$output[] = '" style="border: 0;" allowfullscreen id="'.$ytc_vid.'"></iframe>';
+				$output[] = "\" style=\"border: 0;\" allowfullscreen id=\"$ytc_vid\"></iframe>";
+
+				// Close wrapper for responsive item
+				if ( $instance['responsive'] ) $output[] = '</div>';
+
 			} else if ( $to_show == "iframe2" ) {
+
 				// youtube API async
 				if ( empty($usepl) ) $yt_url = $yt_id;
 
@@ -749,7 +771,16 @@ function ytc_mute(event){
 				$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
 				$js_player_id      = str_replace('-', '_', $yt_url);
 
-				$output[] = '<div id="ytc_player_'.$js_player_id.'"></div>';
+				// Start wrapper for responsive item
+				if ( $instance['responsive'] ) $output[] = '<div class="fluid-width-video-wrapper">';
+
+				// Start item
+				$output[] = "<div id=\"ytc_player_${js_player_id}\"></div>";
+
+				// Close wrapper for responsive item
+				if ( $instance['responsive'] ) $output[] = '</div>';
+
+				// Prepare JS for async
 				$site_domain = $_SERVER['HTTP_HOST'];
 				$ytc_html5_js = <<<JS
 					var ytc_player_$js_player_id;
@@ -773,6 +804,8 @@ JS;
 				$_SESSION['ytc_html5_js'] .= $ytc_html5_js;
 
 			} else { // default is object
+
+				// This will be deprecated since next release 3.0.0 and iframe will be default fallback
 				$obj_url = '//'.$youtube_domain.'/'.$yt_url.'?version=3';
 				$obj_url .= ( $controls ) ? '&amp;controls=0' : '';
 				$obj_url .= ( $hideinfo ) ? '&amp;showinfo=0' : '';
@@ -827,13 +860,13 @@ JS;
 					$video_description = $videsc[1];
 					$etcetera = '';
 				}
-				if (!empty($video_description))
-					$output[] = '<p class="ytc_description">' .$video_description.$etcetera. '</p>';
+				if ( ! empty($video_description) )
+					$output[] = "<p class=\"ytc_description\">${video_description}${etcetera}</p>";
 			}
 			$output[] = '</div><!-- .ytc_video_container -->';
 
 			return $output;
-		} // end function ytc_print_video
+		} // END function ytc_print_video()
 
 		/* function to print standard playlist embed code */
 		function ytc_only_pl($instance) {
@@ -871,9 +904,22 @@ JS;
 
 		// enhanced privacy
 		$youtube_domain = $this->youtube_domain($instance);
-		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single '.$arclass.'">
-		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel. $controls.$hideinfo.$hideanno.'"
-		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
+
+		// Open element
+		$output[] = "<div class=\"ytc_video_container ytc_video_1 ytc_video_single $arclass\">";
+
+		// Start wrapper for responsive item
+		if ( $instance['responsive'] ) $output[] = '<div class="fluid-width-video-wrapper">';
+
+		// Prepare item
+		$output[] = "<iframe src=\"//$youtube_domain/embed/videoseries?list=PL${playlist}${autoplay}${theme}${modestbranding}${rel}${controls}${hideinfo}${hideanno}\" width=\"$width\" height=\"$height\" frameborder=\"0\"></iframe>";
+
+		// Close wrapper for responsive item
+		if ( $instance['responsive'] ) $output[] = '</div>';
+
+		// Close element
+		$output[] = '</div>'; // close .ytc_video_container
+
 			return $output;
 		} // end function ytc_only_pl
 
