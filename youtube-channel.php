@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail, iframe (HTML5 video), object (Flash video) or chromeless video from YouTube Channel or Playlist.
 Author: Aleksandar Urošević
-Version: 2.4.2
+Version: 2.4.2.1
 Author URI: http://urosevic.net/
 */
 // @TODO make FitViedo optional
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		public $plugin_version = "2.4.2";
+		public $plugin_version = "2.4.2.1";
 		public $plugin_name    = "YouTube Channel";
 		public $plugin_slug    = "youtube-channel";
 		public $plugin_option  = "youtube_channel_defaults";
@@ -434,7 +434,7 @@ function ytc_mute(event){
 
 			$output = array();
 
-			$output[] = '<div class="youtube_channel '.$class.'">';
+			$output[] = "<div class=\"youtube_channel ${class}\">";
 
 			if ( $instance['only_pl'] && $use_res == 2 ) { // print standard playlist
 				$output = array_merge($output, self::ytc_only_pl($instance));
@@ -446,34 +446,35 @@ function ytc_mute(event){
 				elseif ( $maxrnd > 50 ) { $maxrnd = 50; } // max 50
 
 				$feed_attr = '?alt=json';
-				$feed_attr .= '&v=2&start-index=2';
+				$feed_attr .= '&v=2';
 
 				// select fields
-				$feed_attr .= "&fields=entry(published,title,link,content)";
+				$feed_attr .= '&fields=entry(published,title,link,content)';
 
 				if ( !$instance['fixnoitem'] && $use_res != 1 )
 					$feed_attr .= '&orderby=published';
 
 				$getrnd = $instance['getrnd'];
-				if ( $getrnd ) $feed_attr .= '&max-results='.$maxrnd;
+				if ( $getrnd ) $feed_attr .= "&max-results=${maxrnd}";
 
 				$feed_attr .= '&rel=0';
 				switch ($use_res) {
 					case 1: // favorites
-						$feed_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/favorites'.$feed_attr;
+						$feed_url = "http://gdata.youtube.com/feeds/base/users/${channel}/favorites${feed_attr}";
 						break;
 					case 2: // playlist
 						$playlist = $this->clean_playlist_id($playlist);
-						$feed_url = 'http://gdata.youtube.com/feeds/api/playlists/'.$playlist.$feed_attr;
+						$feed_url = "http://gdata.youtube.com/feeds/api/playlists/${playlist}${feed_attr}";
 						break;
 					default:
-						$feed_url = 'http://gdata.youtube.com/feeds/base/users/'.$channel.'/uploads'.$feed_attr;
+						$feed_url = "http://gdata.youtube.com/feeds/base/users/${channel}/uploads${feed_attr}&start-index=2";
 				}
 
 				// do we need cache?
 				if ($instance['cache_time'] > 0 ) {
 					// generate feed cache key for caching time
-					$cache_key = 'ytc_'.md5($feed_url).'_'.$instance['cache_time'];
+					$md5_feed_url = md5($feed_url);
+					$cache_key = "ytc_${md5_feed_url}_${instance['cache_time']}";
 
 					if (!empty($_GET['ytc_force_recache']))
 						delete_transient($cache_key);
@@ -524,7 +525,10 @@ function ytc_mute(event){
 				}
 
 				if ($maxitems == 0) {
-					$output[] = __("No items", $this->plugin_slug).' [<a href="'.$feed_url.'" target="_blank">'.__("Check here why",$this->plugin_slug).'</a>]';
+					$output[] = __("No items", $this->plugin_slug);
+					$output[] = " [<a href=\"${feed_url}\" target=\"_blank\">";
+					$output[] = __("Check here why", $this->plugin_slug);
+					$output[] = '</a>]';
 				} else {
 
 					if ( $getrnd ) $rnd_used = array(); // set array for unique random item
@@ -540,9 +544,9 @@ function ytc_mute(event){
 								$rnd_item = mt_rand(0, (count($items)-1));
 							}
 							$rnd_used[] = $rnd_item;
-							$item = $items[$rnd_item];
+							$item = $items[ $rnd_item ];
 						} else {
-							$item = $items[$y-1];
+							$item = $items[ $y-1 ];
 						}
 
 						// print single video block
@@ -595,18 +599,18 @@ function ytc_mute(event){
 
 				$output[] = '<div class="ytc_link">';
 				$userchan = ( $instance['userchan'] ) ? 'channel' : 'user';
-				$goto_url = '//www.youtube.com/'.$userchan.'/'.$channel.'/';
+				$goto_url = "//www.youtube.com/${userchan}/${channel}/";
 				$newtab = __("in new window/tab", 'youtube-channel');
 				$output[] = '<p>';
 				switch ( $instance['popup_goto'] ) {
 					case 1:
-						$output[] = '<a href="javascript: window.open(\''.$goto_url.'\'); void 0;" title="'.$goto_txt.' '.$newtab.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"javascript: window.open('${goto_url}'); void 0;\" title=\"${goto_txt} ${newtab}\">${goto_txt}</a>";
 						break;
 					case 2:
-						$output[] = '<a href="'.$goto_url.'" target="_blank" title="'.$goto_txt.' '.$newtab.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"${goto_url}\" target=\"_blank\" title=\"${goto_txt} ${newtab}\">${goto_txt}</a>";
 						break;
 					default:
-						$output[] = '<a href="'.$goto_url.'" title="'.$goto_txt.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"${goto_url}\" title=\"${goto_txt}\">${goto_txt}</a>";
 				} // switch popup_goto
 				$output[] = '</p>';
 				$output[] = '</div>';
@@ -651,7 +655,7 @@ function ytc_mute(event){
 			$yt_id     = preg_replace('/^.*=(.*)&.*$/', '${1}', $yt_id);
 			$yt_url    = "v/$yt_id";
 
-			$yt_thumb  = "//img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
+			$yt_thumb  = "//img.youtube.com/vi/${yt_id}/0.jpg"; // zero for HD thumb
 			$yt_video  = $item->link[0]->href;
 			$yt_video  = preg_replace('/\&.*$/','',$yt_video);
 
@@ -979,7 +983,7 @@ JS;
 				foreach ($timeset as $n => $s)
 				{
 					$sec = $sc * $n;
-					$out .='<option value="'.$sec.'" '. selected( $cache_time, $sec, 0 ).'>'.__($s, $this->plugin_slug).'</option>';
+					$out .= '<option value="' . $sec . '" ' . selected( $cache_time, $sec, 0 ) . '>' . __($s, $this->plugin_slug) . '</option>';
 					unset($sec);
 				}
 			}
@@ -1037,7 +1041,7 @@ JS;
 			);
 
 			// return JSON file
-			header('Content-disposition: attachment; filename='.$for.'.json');
+			header("Content-disposition: attachment; filename=${for}.json");
 			header('Content-Type: application/json');
 			echo json_encode($data);
 
