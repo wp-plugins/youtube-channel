@@ -1,6 +1,7 @@
 .youtube_channel {
 	float: left;
 	clear: both;
+	position: relative;
 }
 .youtube_channel.responsive {
 	width:100%;
@@ -74,6 +75,9 @@ padding-bottom: 75%;
 }
 
 /* responsive iframe */
+.youtube_channel .ytc_video_container iframe {
+	margin-bottom: 0;
+}
 .youtube_channel.responsive .ytc_video_container.ar16_9 .fluid-width-video-wrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
@@ -95,4 +99,16 @@ padding-bottom: 75%;
 	left: 0;
 	width: 100%;
 	height: 100%;
+}
+
+/* link */
+.youtube_channel .ytc_link {
+	position: relative;
+	clear: both;
+	float: left;
+	width: 100%;
+}
+.youtube_channel .ytc_link>p {
+	padding: 0;
+	margin: 0;
 }

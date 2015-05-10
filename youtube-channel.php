@@ -86,8 +86,9 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		 */
 		public static function activate() {
 
-			$this->init_options();
-			$this->maybe_update();
+			global $WPAU_YOUTUBE_CHANNEL;
+			$WPAU_YOUTUBE_CHANNEL->init_options();
+			$WPAU_YOUTUBE_CHANNEL->maybe_update();
 
 		} // end function activate
 
@@ -426,7 +427,6 @@ function ytc_mute(event){
 			$instance['goto_txt']       = $goto_txt; // text for goto link - use settings
 			$instance['popup_goto']     = $popup; // open channel in: 0 same window, 1 javascript new, 2 target new
 			$instance['link_to']        = $link_to; // open channel in: 0 same window, 1 javascript new, 2 target new
-			//$instance['userchan']     = $userchan; // DEPRECATED link to user channel instaled page
 
 			// Customization
 			$instance['class']          = $class; // custom additional class for container
@@ -777,6 +777,7 @@ function ytc_mute(event){
 				$goto_txt = str_replace('%channel%', $channel, $goto_txt);
 				$goto_txt = str_replace('%vanity%', $vanity, $goto_txt);
 
+				$output[] = '<div class="clearfix"></div>';
 				$output[] = '<div class="ytc_link">';
 
 				$goto_url = "https://www.youtube.com/";
