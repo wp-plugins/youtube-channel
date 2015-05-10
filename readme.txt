@@ -67,13 +67,6 @@ If WordFence or other malware scan tool detect YouTube Channel fule youtube-chan
 * Spanish localization by [Diego Riaño](http://Digital03.net)
 * Danish localisation by [GSAdev v. Georg Adamsen](http://www.gsadev.dk)
 
-= How To Use =
-**Add New Widget**
-[youtube http://www.youtube.com/watch?v=Sj84cja7ieg]
-
-**Use Playlist**
-[youtube http://www.youtube.com/watch?v=y9zoi_Pk2kY]
-
 = Shortcode =
 
 Along to Widget, you can add YouTube Channel block inline by using shortcode `[youtube_channel]`. Default plugin parameters will be used for shortcode, but you can customize all parameters per shortcode.
@@ -82,32 +75,30 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 
 * `class` (string) Set custom class if you wish to target special styling for specific YTC block
 * `channel` (string) ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)
+* `vanity` (string) part after www.youtube.com/c/ from [Custom URL](https://support.google.com/youtube/answer/2657968?hl=en)
 * `playlist` (string) ID of preferred YouTube playlist.
-* `res` (int) Resource to use for feed:
+* `resource` (int) Resource to use for feed:
   * `0` Channel
   * `1` Favorites (for defined channel)
   * `2` Playlist
+  * `3` Liked Videos
 * `only_pl` (bool) If you set to use Playlist as resource, you can embed youtube playlist block instead single video from playlist. Simply set this option to true (1 or true)
 * `cache` (int) Period in seconds for caching feed. You can disable caching by setting this option to 0, but if you have a lot of visits, consider at least short caching (couple minutes).
 * `fetch` (int) Number of videos that will be used as stack for random pick (min 2, max 50)
 * `num` (int) Number of videos to display per YTC block.
-* `fix` (bool) Option to fix No Items error, and also to respect order of videos in feed or playlist.
 * `random` (bool) Option to randomize videos on every page load.
 
 **Video Settings**
 
 * `ratio` (int) Set preferred aspect ratio for thumbnail and video. You can use:
   * `3` 16:9 (widescreen)
-  * `2` 16:10 (computer screen) **deprecated**
   * `1` 4:3
 * `responsive` (bool) Distribute one full width video per row.
 * `width` (int) Width of thumbnail and video in pixels.
-* `show` (string) Object that will be used to represent video. We have couple predefined options:
-  * `thumbnail` Thumbnail will be used and video will be loaded in lightbox.
+* `display` (string) Object that will be used to represent video. We have couple predefined options:
+  * `thumbnail` Thumbnail will be used and video will be loaded in lightbox. (default)
   * `iframe` HTML5 (iframe)
   * `iframe2` HTML5 (iframe) with asynchronous loading - recommended
-  * `object` Flash object (not so good for Apple devices) **deprecated**
-  * `chromeless` Chromeless solution (also not good for Apple devices) **deprecated**
 * `no_thumb_title` (bool) By default YouTube thumbnail will have tooltip with info about video title and date of publishing. By setting this option to 1 or true you can hide tooltip
 * `themelight` (bool) By default YouTube have dark play controls theme. By setting this option to 1 or true you can get light theme in player (HTML5 and Flash)
 * `controls` (bool) Set this option to 1 or true to hide playback controls.
@@ -130,6 +121,7 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 * `goto_txt` (string)
 * `popup` (int)
 * `link_to` (int)
+
 == Installation ==
 
 You can use the built in installer and upgrader, or you can install the plugin manually.
@@ -140,6 +132,23 @@ You can use the built in installer and upgrader, or you can install the plugin m
 4. Set channel name and save changes
 
 If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
+
+= YouTube Data API Key =
+Main difference since v2.x branch is that now we use [YouTube Data API v3](https://developers.google.com/youtube/v3/) so to make plugin to work, you'll need to generate YouTube Data API Key and insert it to `wp-config.php` file.
+
+Learn more about [Obtaining authorization credentials](https://developers.google.com/youtube/registering_an_application) and for detailed instructions how to generate your own API Key watch video below.
+
+[youtube http://www.youtube.com/watch?v=8NlXV77QO8U]
+
+When you generate your own YouTube Data API Key, edit wp-config.php file and find line
+
+`/* That's all, stop editing! Happy blogging. */`
+
+Insert above that line code
+`define('YOUTUBE_DATA_API_KEY', 'YOUR_API_KEY');`
+
+just replace keyword <strong>YOUR_API_KEY</strong> with your real API Key previously generated (surround API key to single quotes). For example, if your key is **AIzaCuBWKZLyQthAgV3ofeYtCwrMSYvm6tX8IEY** then that line should be:
+`define('YOUTUBE_DATA_API_KEY', 'AIzaCuBWKZLyQthAgV3ofeYtCwrMSYvm6tX8IEY');`
 
 == Frequently Asked Questions ==
 
