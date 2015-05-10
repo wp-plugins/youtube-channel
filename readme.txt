@@ -3,8 +3,8 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
-Tested up to: 4.2
-Stable tag: 2.4.2.1
+Tested up to: 4.2.2
+Stable tag: 3.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,6 @@ Simply insert widget to sidebar, set channel name and if you wish leave all othe
 If you like this extension and you find it useful, please rate it on the right side.
 
 = Features =
-
 * Display latest videos from YouTube channel, favorites or playlist
 * Option to get random video from resources mentioned above
 * Responsive (one full width video per row) or non responsive (video wall)
@@ -35,10 +34,9 @@ If you like this extension and you find it useful, please rate it on the right s
 
 = Notice =
 
-For fully functional plugin you need to have PHP 5.3.29 or newer! If you experience issues on older PHP, we can't help you as we don't have access to such old development platform.
+For fully functional plugin you need to have PHP 5.3 or newer! If you experience issues on older PHP, we can't help you as we don't have access to such old development platform.
 
 = Styling =
-
 You can use `style.css` from theme to style `YouTube Video` widget content.
 
 * `.youtube_channel` - main widget wrapper class (non-responsive block have additional class `default`, responsive block have additional class `responsive`)
@@ -53,19 +51,17 @@ You can use `style.css` from theme to style `YouTube Video` widget content.
 
 = Known Issues =
 
-* Controls light theme and hidden annotations does not work for chromeless object.
 * Video description for videos from playlist does not work.
 * Removing YouTube logo from playback control bar does not work for all videos
 * Async HTML5 video does not work for 2nd same video on same page (two YTC blocks set to Async HTML5)
-* Chromeless video could not be used as responsive player
+* Thumbnail and opening video in lightbox does not work with `Responz` theme by `Thenify.me` if you wish to hide related videos, because this theme uses original `Magnific Popup` library that does not support `rel` parameter.
 
-If WordFence or other malware scan tool detect YouTube Channel file youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
+If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
 
 = Credits =
 
-* Chromeless option borrowed from [Chromeless YouTube](http://wordpress.org/extend/plugins/chromeless-youtube/) extension.
-* For playing videos in lightbox we use [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
-* Code improvements and textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
+* For playing videos in lightbox we use enhanced [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/).
+* Initial textdomain adds done by [dimadin](http://wordpress.org/extend/plugins/profile/dimadin).
 * [Federico Bozo](http://corchoweb.com/) reminded me to fix z-index problem
 * Czech localization by [Ladislav Drábek](http://zholesova.cz)
 * Spanish localization by [Diego Riaño](http://Digital03.net)
@@ -115,7 +111,6 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 * `no_thumb_title` (bool) By default YouTube thumbnail will have tooltip with info about video title and date of publishing. By setting this option to 1 or true you can hide tooltip
 * `themelight` (bool) By default YouTube have dark play controls theme. By setting this option to 1 or true you can get light theme in player (HTML5 and Flash)
 * `controls` (bool) Set this option to 1 or true to hide playback controls.
-* `fix_h` (bool) If you did not set to hide player controls, you can set this option to 1 or true to fix video height taken by controls
 * `autoplay` (bool) Enable autoplay of first video in YTC video stack by setting this option to 1 or true
 * `mute` (bool) Set this option to 1 or true to mute videos set to autoplay on load
 * `norel` (bool) Set this option to 1 or true to hire related videos after finished playbak
@@ -134,8 +129,7 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 * `goto` (bool)
 * `goto_txt` (string)
 * `popup` (int)
-* `userchan` (bool)
-
+* `link_to` (int)
 == Installation ==
 
 You can use the built in installer and upgrader, or you can install the plugin manually.
@@ -192,6 +186,34 @@ Also, even when hidding logo works for your video, on hover or when video is pau
 
 == Changelog ==
 
+= 3.0.0 (2015-05-07/08/09/10) =
+* Fix: Migraton of global and widget settings to v3.0.0
+* Add: New Global Settings page as replacement of Redux Framework solution
+* Add: Non-Dismissable Dashboard notice if YouTube Data API Key missing with link to explanation page
+* Change: Option key `ytc_version` to `youtube_channel_version`
+* Change: Shortcode parameters: `res` to `resource`, `show` to `display`; but leave old parameter names for backward compatibility
+* Enhance: Various plugin core micro optimizations
+* Enhance: Dashboard notices
+* Enhance: Proper options migration on plugin update
+* Remove: Redux Framework mentioning from core plugin
+* Remove: Redux Framework config.php
+* Remove: chromeless.swf asset
+* Remove: option `Fix height taken by controls` as now YouTube displays control bar only when video is hovered
+
+= 3.0.0alpha2 (2015-03-07/22/24) =
+* Add: Rewrite plugin to work with YouTube Data API v3
+* Add: Vanity link as option to Link to channel (now supports Legacy username, Channel and Vanity URL) with cleanup Vanity ID routine
+* Add: Liked videos as resource (now support channel, playlists, favourites and liked videos)
+* Add: Admin notification in widget output on front-end if no YouTube Data API Key is defined to prevent errors
+* Add: Dismissable Dashboard notice if PHP version is lower than 5.3 as YTC maybe will not work with older versions.
+* Change: Global and widget option names: `use_res` to `resource`, `cache_time` to `cache`, `maxrnd` to `fetch`, `vidqty` to `num`, `getrnd` to `random`, `to_show` to `display`, `showvidesc` to `showdesc`, `enhprivacy` to `privacy`, `videsclen` to `desclen`,
+* Change: Widget settings functionality, two column options, better toggle for playlist and GoTo section
+* Enhance: Caching routine (reduce possibility of failed feed fetch)
+* Remove: Chromeless and Flash player - leave only Thumbnail and HTML5
+* Remove: Aspect Ration 16:10 (so support only 16:9 and 4:3, same as modern YouTube)
+* Remove: "Fix No Item" option - not required for YouTube API 3.0
+
+*OLD RELEASES*
 = 2.4.2.1 (2015-04-24) =
 * Fix: devicesupport workaround strip 1st video from playlist and favourites and apply only for channel
 
@@ -211,13 +233,21 @@ Also, even when hidding logo works for your video, on hover or when video is pau
 * Fix: missing support to hide playback controls, info and annotations for embedded playlist
 
 = 2.4.1.5 (2015-04-13) =
-* Change: Add dismiss link for Old PHP notice and lower suggested PHP version to 5.3.x
+* (2015-04-13) Change: Add dismiss link for Old PHP notice and lower suggested PHP version to 5.3.x
+* (2015-02-19) Fix: missing admin notices if ReduxFramework not active
+* (2015-02-10) Add: links to explanations for channel ID and vanity URL
+* (2015-02-10) Add: goto macro %vanity% to insert vanity ID
+* (2015-02-10) Add: field for vanity URL ID
+* (2015-02-10) Add: option to select link to user page, channel page or vanity URL for goto link
+* (2015-02-10) Remove: option to use channel instead user page for goto link
 
 = 2.4.1.4 (2015-04-09) =
 * (2015-04-09) Add: Notification about old PHP if lower than 5.3.29
-* Change: Run admin functions only in dashboard
+* (2015-04-09) Change: Run admin functions only in dashboard
 * (2015-02-09) Fix: strip whitespace from the beginngine/end of channel and playlist ID
 * (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
+* (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
+* (2014-12-30) Add: make fallback cache for every feed and use it if no item occurs to avoid No items
 
 = 2.4.1.3 (2014-12-10) =
 * Fix: previous release broke opening lightbox for thumbnails and load YouTube website.
@@ -407,19 +437,3 @@ Responsive, bug fixes, support for WordPress 4.1
 2. YouTube Channel customized widget settings
 3. YouTube Channel in WP Customizer
 4. YouTube Channel preview
-
-== Other Notes ==
-
-Version 2.4.2 is latest feature release that will use YouTube API v2 and Redux Framework. We'll release micro releases only with bugfixes.
-
-We hope that until end of May 2015 we'll finish version 3.0.0. Please note, you'll need to create your own Google API Key and add it in `wp-config.php` to be able to use YouTube Channel v3.0.0.
-
-= Main differences we'll introduce in v3.0.0 =
-
-* Google YouTube API v3
-* WP Settings API (back to the roots to reduce 3rd party requirements - Redux Framework)
-* Available types to show: Thumbnail (default), HTML5 (iframe) and HTML5 (iframe) Asynchronous (FLASH and Chromeless object has been deprecated and removed)
-* Available resources: Channel, Favourites, Liked Videos or Playlist
-* Available aspect ratios: 16:9 (as default fallback) or 4:3 (16:10 has been deprecated and removed)
-* Links to channel below video blocks will be: Vanity customized name, Channel ID or Legacy username
-* No more problems with `No items`

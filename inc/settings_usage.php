@@ -1,3 +1,4 @@
+<h3>How to use YouTube Channel</h3>
 <p>You can insert YouTube Channel in couple different ways.</p>
 <ol>
 <li>Insert <a href="widget.php">YouTube Channel Widget</a> in preferred Widget Area, and configure it there.</li>

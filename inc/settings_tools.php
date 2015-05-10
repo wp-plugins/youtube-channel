@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
         if ( $('#recache_slug').val() == '' ) {
             $('#recache_message').html("Please type relative path and try again!").show().delay(3000).fadeOut(700);
         } else {
-            window.open( $('#recache_slug').val()+'?ytc_force_recache=1' );            
+            window.open( $('#recache_slug').val()+'?ytc_force_recache=1' );
         }
     });
 });
