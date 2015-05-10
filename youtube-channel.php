@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.0
+Version: 3.0.1
 Author URI: http://urosevic.net/
 */
 // @TODO make FitVideo optional
@@ -18,7 +18,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	{
 
 		const DB_VER = 3;
-		const VER = '3.0.0';
+		const VER = '3.0.1';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
