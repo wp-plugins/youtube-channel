@@ -386,6 +386,15 @@ function ytc_mute(event){
 				)
 			);
 
+			// backward compatibility for show -> display shortcode parameter
+			if ( $show !== $display && $show !== $instance['display'] ) {
+				$display = $show;
+			}
+			// backward compatibility for res -> resource shortcode parameter
+			if ( $res !== $resource && $res !== $instance['resource'] ) {
+				$resource = $res;
+			}
+
 			// prepare instance for output
 			$instance['vanity']         = $vanity;
 			$instance['channel']        = $channel;
@@ -441,14 +450,16 @@ function ytc_mute(event){
 			// and "Coming soon..." for visitors
 			if ( ! defined('YOUTUBE_DATA_API_KEY') ) {
 				if ( current_user_can('manage_options') ) {
-					return array(
-						__sprintf('<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</strong> to work. <a href="%s" target="_blank">Learn more here</a>.', 'youtube-channel'),
+					$output[] = sprintf(
+						__('<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</strong> to work. <a href="%s" target="_blank">Learn more here</a>.', 'youtube-channel'),
 						$this->plugin_name,
 						'http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key'
 					);
+
 				} else {
-					return array("Coming soon...");
+					$output[] = "Coming soon...";
 				}
+				return $output;
 			}
 
 			// 1) Get resource from widget/shortcode
