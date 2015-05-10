@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.2
+Version: 3.0.3
 Author URI: http://urosevic.net/
 */
 // @TODO make FitVideo optional
@@ -18,7 +18,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	{
 
 		const DB_VER = 3;
-		const VER = '3.0.2';
+		const VER = '3.0.3';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -27,10 +27,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		public $vanity_id     = "AleksandarUrosevic";
 		public $username_id   = "urkekg";
-		// user channel UC
-		// favourites list FL
-		// liked list LL
-		public $channel_id    = "UCRPqmcpGcJ_gFtTmN_a4aVA";
+		public $channel_id    = "UCRPqmcpGcJ_gFtTmN_a4aVA"; // user channel UC; favourites list FL; liked list LL
 		public $playlist_id   = "PLEC850BE962234400";
 		public $plugin_url;
 
@@ -345,7 +342,8 @@ function ytc_mute(event){
 						'channel'    => $instance['channel'],
 						'username'   => $instance['username'],
 						'playlist'   => $instance['playlist'],
-						'res'        => $instance['resource'], // (deprecated, but leave for back compatibility) ex use_res
+						'res'        => '', // (deprecated, but leave for back compatibility) ex res
+						'use_res'    => '', // (deprecated, but leave for back compatibility) ex use_res
 						'resource'   => $instance['resource'], // ex use_res
 						'only_pl'    => $instance['only_pl'],
 						'cache'      => $instance['cache'], // ex cache_time
@@ -390,8 +388,10 @@ function ytc_mute(event){
 			if ( $show !== $display && $show !== $instance['display'] ) {
 				$display = $show;
 			}
-			// backward compatibility for res -> resource shortcode parameter
-			if ( $res !== $resource && $res !== $instance['resource'] ) {
+			// backward compatibility for use_res -> resource shortcode parameter
+			if ( ! empty($use_res) ) {
+				$resource = $use_res;
+			} else if ( ! empty($res) ) {
 				$resource = $res;
 			}
 
@@ -477,7 +477,7 @@ function ytc_mute(event){
 			switch ($resource) {
 
 				// Playlist
-				case '3':
+				case '2':
 					// 1) Get Playlist from shortcode/widget
 					// 2) If not set, use global default
 					// 3) If no global, use plugin's default

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -193,7 +193,38 @@ Modestbranding option does not work for all videos, so a lot of videos will stil
 
 Also, even when hidding logo works for your video, on hover or when video is paused in upper right corner will be displayed YouTube link/logo. [Read more here](https://developers.google.com/youtube/player_parameters#modestbranding)
 
+= How I can achieve wall layout with one featured thumbnail? =
+
+You can try with shortcode combination:
+`[youtube_channel num=7 responsive=1 class=ytc_wall_1-6 resource=2 random=1]`
+
+and custom CSS code added to theme style.css or similar customization:
+`.youtube_channel.ytc_wall_1-6 .ytc_video_container {
+	padding: 10px;
+}
+.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
+	max-width: 33.333%;
+}
+@media screen and (max-width: 768px) {
+	.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
+		max-width: 50%;
+	}
+}
+@media screen and (max-width: 480px) {
+	.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
+		max-width: 100%;
+	}
+}`
+
+So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
+
 == Changelog ==
+
+= 3.0.3 (2015-05-10) =
+* Fix: "Ups, something went wrong." when Playlist selected as resource because wrong switch
+* Fix: Jumping thumbnails in responsive wall on hover in Twenty Fifteen theme because border-bottom for anchors
+* Fix: Another deprecated shortcode attribute backward compatibility (`use_res`)
+* Add: Example of dynamic responsive wall (1 large + 6 small thumbnails) (to [Description](https://wordpress.org/plugins/youtube-channel/))
 
 = 3.0.2 (2015-05-10) =
 * Fix: (typo - experiencing on frontend when no API Key set) PHP Fatal error:  Call to undefined function __sprintf() in youtube-channel.php on line 445

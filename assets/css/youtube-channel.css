@@ -21,6 +21,10 @@
 .youtube_channel.responsive .ytc_video_container {
 	width:100%!important;
 }
+/* Fix for Twenty Fifteen */
+.youtube_channel .ytc_video_container a {
+	border: none;
+}
 .ytc_thumb {
 	display: block;
 	overflow: hidden;
