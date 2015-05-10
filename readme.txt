@@ -140,6 +140,17 @@ Learn more about [Obtaining authorization credentials](https://developers.google
 
 [youtube http://www.youtube.com/watch?v=8NlXV77QO8U]
 
+1. Visit [Google Developers Console](https://console.developers.google.com/project)
+1. If you don't have any project, create new one. Name it so you can recognize it (for example **My WordPress Website**).
+1. Select your new project and from LHS sidebar expand group **APIs & auth**, then select item **APIs**
+1. Locate and click **YouTube Data API** under **YouTube API** section
+1. Click **Enable API** button
+1. When you get enabled YouTube Data API in your project, click **Credentials** item from LHS menu **APIs & auth**
+1. Click **Create New Key** button and select **Browser Key**
+1. Leave empty or enter domain name of your website with wildcards. If you get message **Ups, something went wrong.** try to tune referer with wildcars (I did not success in that) or leave any restriction.
+1. Click **Create** button
+1. Copy newly created **API Key**
+
 When you generate your own YouTube Data API Key, edit wp-config.php file and find line
 
 `/* That's all, stop editing! Happy blogging. */`
@@ -200,7 +211,8 @@ You can try with shortcode combination:
 
 and custom CSS code added to theme style.css or similar customization:
 `.youtube_channel.ytc_wall_1-6 .ytc_video_container {
-	padding: 10px;
+	padding: 5px;
+	box-sizing: border-box;
 }
 .youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
 	max-width: 33.333%;
