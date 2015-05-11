@@ -19,16 +19,16 @@ Simply insert widget to sidebar, set channel name and if you wish leave all othe
 If you like this extension and you find it useful, please rate it on the right side.
 
 = Features =
-* Display latest videos from YouTube channel, favorites or playlist
-* Option to get random video from resources mentioned above
-* Responsive (one full width video per row) or non responsive (video wall)
-* Preferred aspect ratio relative to width (16:9, 16:10 and 4:3)
+* Display latest videos from YouTube Channel (resources are sorted in reverse chronological order based on the date they were created) or videos naturaly sorted from Favorited Videos, Liked Videos and Playlist
+* Option to get random video from any of 4 resources
+* Responsive (one full width video per row) or non responsive
+* Preferred aspect ratio relative to width (16:9 and 4:3)
 * Custom width for video embeded object (default is 306px)
 * Enhanced Privacy
-* Choose to display video as thumbnail, HTML5 (iframe), HTML5 Asynchronous (iframe2), Flash (object) or Chromeless video
+* Choose to display video as thumbnail (default), HTML5 (iframe) or HTML5 Asynchronous (iframe2)
 * Thumbnail mode opens video in lightbox
 * Custom caching timeout
-* Optimized gdata feeds
+* Optimized data feeds
 * Optional video autoplay with optional muted audio
 * Show customized link to channel below videos
 
@@ -196,8 +196,11 @@ reason: ipRefererBlocked
 message: There is a per-IP or per-Referer restriction configured on your API key and the request does not match these restrictions. Please use the Google Developers Console to update your API key configuration if request from this IP or referer should be allowed.
 -->`
 
-Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
-If that does not help, please try to create new API Key for Browser w/o restrictions (not to regenerate existing one).
+Try with following possible solutions:
+1. If you are using **Jetpack** plugin with enabled **Protect** sub plugin, disable it. (kudos to [yudhita](https://wordpress.org/support/profile/yudhita) for tip)
+1. Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
+1. If that does not help, please try to create new API Key for Browser w/o restrictions (not to regenerate existing one).
+
 We still strugling with that Google's restrictions. If you get final solution, please inform us asap.
 
 = Where to find correct Channel ID and/or Vanity custom Name? =
@@ -254,6 +257,10 @@ and custom CSS code added to theme style.css or similar customization:
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
 == Changelog ==
+= 3.0.5 (2015-05-11) =
+* Change: Update plugin features
+* Improved: Retrieve only fields which will be used for output w/o unused items to reduce
+* Improved: More micro optimizations
 
 = 3.0.4 (2015-05-11) =
 * Add: Tip what to do if error ocurred with YouTube Data API Key printed inside YTC ERROR comment

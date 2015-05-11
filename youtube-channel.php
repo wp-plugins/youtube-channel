@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.4
+Version: 3.0.5
 Author URI: http://urosevic.net/
 */
 // @TODO make FitVideo optional
@@ -18,7 +18,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	{
 
 		const DB_VER = 3;
-		const VER = '3.0.4';
+		const VER = '3.0.5';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -710,24 +710,25 @@ function ytc_mute(event){
 			if ( $resource == 'channel' ) {
 
 				// channel
-				$feed_url = "https://www.googleapis.com/youtube/v3/search?";
-				$feed_url .= "part=snippet";
-				$feed_url .= "&channelId=" . $resource_id;
-				$feed_url .= "&order=date";
-				$feed_url .= "&type=video";
+				$feed_url = 'https://www.googleapis.com/youtube/v3/search?';
+				$feed_url .= 'part=snippet';
+				$feed_url .= "&channelId={$resource_id}";
+				$feed_url .= '&order=date';
+				$feed_url .= '&type=video';
+				$feed_url .= '&fields=items(id(videoId)%2Csnippet(title%2Cdescription%2CpublishedAt))';
 
 			} else if ( in_array($resource, array('playlist','favourites','liked')) ) {
 
 				// playlist
-				$feed_url = "https://www.googleapis.com/youtube/v3/playlistItems?";
-				$feed_url .= "part=snippet";
-				$feed_url .= "&playlistId=" . $resource_id;
+				$feed_url = 'https://www.googleapis.com/youtube/v3/playlistItems?';
+				$feed_url .= 'part=snippet';
+				$feed_url .= "&playlistId={$resource_id}";
+				$feed_url .= '&fields=items(snippet(title%2Cdescription%2CpublishedAt%2CresourceId(videoId)))';
 
 			}
 
 			// universal
-			$feed_url .= "&maxResults=" . $items;
-			$feed_url .= "&fields=items(id%2Csnippet)";
+			$feed_url .= "&maxResults={$items}";
 			$feed_url .= "&key=" . YOUTUBE_DATA_API_KEY;
 
 			$wprga = array(
@@ -735,6 +736,9 @@ function ytc_mute(event){
 			);
 			$response = wp_remote_get($feed_url, $wprga);
 			$json = wp_remote_retrieve_body( $response );
+
+			// free some memory
+			unset($response);
 
 			return $json;
 
@@ -814,13 +818,13 @@ function ytc_mute(event){
 				$output[] = '<p>';
 				switch ( $instance['popup_goto'] ) {
 					case 1:
-						$output[] = '<a href="javascript: window.open(\''.$goto_url.'\'); void 0;" title="'.$goto_txt.' '.$newtab.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"javascript: window.open('{$goto_url}'); void 0;\" title=\"{$goto_txt} {$newtab}\">{$goto_txt}</a>";
 						break;
 					case 2:
-						$output[] = '<a href="'.$goto_url.'" target="_blank" title="'.$goto_txt.' '.$newtab.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"{$goto_url}\" target=\"_blank\" title=\"{$goto_txt} {$newtab}\">{$goto_txt}</a>";
 						break;
 					default:
-						$output[] = '<a href="'.$goto_url.'" title="'.$goto_txt.'">'.$goto_txt.'</a>';
+						$output[] = "<a href=\"{$goto_url}\" title=\"{$goto_txt}\">$goto_txt</a>";
 				} // switch popup_goto
 				$output[] = '</p>';
 				$output[] = '</div>';
@@ -883,7 +887,6 @@ function ytc_mute(event){
 			switch ($instance['ratio'])
 			{
 				case 1: $arclass = 'ar4_3'; break;
-				case 2: $arclass = 'ar16_10'; break;
 				default: $arclass = 'ar16_9';
 			}
 			$output[] = "<div class=\"ytc_video_container ytc_video_{$y} ytc_video_{$vnumclass} ${arclass}\" style=\"width:{$width}px\">";
@@ -1003,8 +1006,6 @@ JS;
 				} else {
 					$output[] = "<a href=\"${yt_video}${p}\" class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" id=\"{$ytc_vid}\"></span></a>";
 				}
-
-				// $output[] = '<a href="'.$yt_video.$p.'" title="'.$yt_title.'" class="ytc_thumb ytc-lightbox '.$arclass.'"><span style="background-image: url('.$yt_thumb.');" title="'.$title.'" id="'.$ytc_vid.'"></span></a>';
 
 			} // what to show conditions
 
