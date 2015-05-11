@@ -1150,15 +1150,28 @@ JS;
 			// get widget ID from parameter
 			$for = $_GET['ytc_debug_json_for'];
 
-			// prepare option name and widget ID
-			$option_name = "widget_".substr($for,0,strrpos($for,"-"));
-			$widget_id = substr($for,strrpos($for,"-")+1);
+			if ( $for == 'global' ) {
+				// global settings
+				$options = get_option('youtube_channel_defaults');
 
-			// get YTC widgets options
-			$widget_options = get_option($option_name);
+				if ( ! is_array($options) )
+					return;
 
-			if (!is_array($widget_options[$widget_id]))
-				return;
+			} else {
+				// for widget
+				// prepare option name and widget ID
+				$option_name = "widget_".substr($for,0,strrpos($for,"-"));
+				$widget_id = substr($for,strrpos($for,"-")+1);
+
+				// get YTC widgets options
+				$widget_options = get_option($option_name);
+
+				if ( ! is_array($widget_options[$widget_id]) )
+					return;
+
+				$options = $widget_options[$widget_id];
+				unset ($widget_options);
+			}
 
 			// prepare debug data with settings of current widget
 			$data = array_merge(
@@ -1169,9 +1182,9 @@ JS;
 					'wp'        => $wp_version,
 					'ytc'       => self::VER,
 					'url'       => get_site_url(),
-					'widget_id' => $for
+					'for' => $for
 				),
-				$widget_options[$widget_id]
+				$options
 			);
 
 			// return JSON file
@@ -1180,7 +1193,7 @@ JS;
 			echo json_encode($data);
 
 			// destroy vars
-			unset($data,$widget_options,$widget_id,$option_name,$for);
+			unset($data,$options,$widget_id,$option_name,$for);
 
 			// exit now, because we need only debug data in JSON file, not settings or any other page
 			exit;

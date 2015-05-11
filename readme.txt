@@ -258,6 +258,7 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 
 == Changelog ==
 = 3.0.5 (2015-05-11) =
+* Add: Option to export global settings to JSON and add to Tools tab in settings button to download global settings JSON
 * Change: Update plugin features
 * Improved: Retrieve only fields which will be used for output w/o unused items to reduce
 * Improved: More micro optimizations
