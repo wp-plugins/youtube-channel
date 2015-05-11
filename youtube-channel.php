@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.3
+Version: 3.0.4
 Author URI: http://urosevic.net/
 */
 // @TODO make FitVideo optional
@@ -18,7 +18,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	{
 
 		const DB_VER = 3;
-		const VER = '3.0.3';
+		const VER = '3.0.4';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -634,6 +634,15 @@ function ytc_mute(event){
 							$output[] = 'domain: ' . $json_output->error->errors[0]->domain . "\n";
 							$output[] = 'reason: ' . $json_output->error->errors[0]->reason . "\n";
 							$output[] = 'message: ' . $json_output->error->errors[0]->message . "\n";
+							if ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
+								$output[] = "tip: You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Check https://wordpress.org/plugins/youtube-channel/faq/\n";
+							}
+							if ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
+								$output[] = "tip: Double check YOUTUBE_DATA_API_KEY and make sure it`s correct. Check https://wordpress.org/plugins/youtube-channel/installation/\n";
+							}
+							if ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
+								$output[] = "tip: Check YouTube Data API Key restrictions and key in wp-config.php, empty cache if enabled and append in browser address bar parameter ?ytc_force_recache=1\n";
+							}
 							$output[] = "-->\n";
 						}
 					}
@@ -722,7 +731,7 @@ function ytc_mute(event){
 			$feed_url .= "&key=" . YOUTUBE_DATA_API_KEY;
 
 			$wprga = array(
-				'timeout' => 2 // two seconds only
+				'timeout' => 5 // five seconds only
 			);
 			$response = wp_remote_get($feed_url, $wprga);
 			$json = wp_remote_retrieve_body( $response );
@@ -1137,9 +1146,6 @@ JS;
 		{
 			global $wp_version;
 
-			// get Redux Framework version (if active)
-			$redux = ( class_exists( "ReduxFramework" ) ) ? ReduxFramework::$_version : 'N/A';
-
 			// get widget ID from parameter
 			$for = $_GET['ytc_debug_json_for'];
 
@@ -1173,7 +1179,7 @@ JS;
 			echo json_encode($data);
 
 			// destroy vars
-			unset($data,$widget_options,$widget_id,$option_name,$for,$redux);
+			unset($data,$widget_options,$widget_id,$option_name,$for);
 
 			// exit now, because we need only debug data in JSON file, not settings or any other page
 			exit;

@@ -209,7 +209,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		</p>
 
 		<h4><?php _e('Does not work? Contact support!', 'youtube-channel'); ?></h4>
-		<p><small><a href="?ytc_debug_json_for=<?php echo $this->id; ?>" target="_blank"><?php _e('Get JSON file', 'youtube-channel'); ?></a> <?php printf(__('and send it to %s or to <a href="%s" target="_support">support forum</a>.', 'youtube-channel'), '<a href="mailto:urke.kg@gmail.com?subject=YTC%20debug%20log%20for%20'.get_home_url().'">urke.kg@gmail.com</a>', 'http://wordpress.org/support/plugin/youtube-channel'); ?></small>
+		<p><small><a href="?ytc_debug_json_for=<?php echo $this->id; ?>" target="_blank"><?php _e('Get JSON file', 'youtube-channel'); ?></a> <?php printf(__('and send it to <a href="%s" target="_support">support forum</a> with other details noted in <a href="%s" target=_blank">this article</a>.', 'youtube-channel'), 'http://wordpress.org/support/plugin/youtube-channel', 'https://wordpress.org/support/topic/ytc3-read-before-you-post-support-question-or-report-bug'); ?></small>
 		</p>
 
 <?php
