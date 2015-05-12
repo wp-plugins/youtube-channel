@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.4
+Stable tag: 3.0.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -257,7 +257,8 @@ and custom CSS code added to theme style.css or similar customization:
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
 == Changelog ==
-= 3.0.5 (2015-05-11) =
+= 3.0.5 (2015-05-11/12) =
+* Fix: Setting back dropdown options with `0` ID does not work on Settings page (Channel as resource to use, Cache timeout, Aspect ratio, What to show, Open link to, Link to)
 * Add: Option to export global settings to JSON and add to Tools tab in settings button to download global settings JSON
 * Change: Update plugin features
 * Improved: Retrieve only fields which will be used for output w/o unused items to reduce

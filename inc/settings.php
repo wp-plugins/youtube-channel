@@ -806,9 +806,9 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['vanity']   = ( ! empty($options['vanity']) ) ? trim($options['vanity']) : $this->defaults['vanity'];
 					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : $this->defaults['username'];
 					$sanitized['playlist'] = ( ! empty($options['playlist']) ) ? trim($options['playlist']) : $this->defaults['playlist'];
-					$sanitized['resource'] = ( ! empty($options['resource']) ) ? intval($options['resource']) : $this->defaults['resource'];
+					$sanitized['resource'] = ( isset($options['resource']) ) ? intval($options['resource']) : $this->defaults['resource'];
 					$sanitized['only_pl']  = ( ! empty($options['only_pl']) && $options['only_pl'] ) ? 1 : 0;
-					$sanitized['cache']    = ( ! empty($options['cache']) ) ? intval($options['cache']) : $this->defaults['cache'];
+					$sanitized['cache']    = ( isset($options['cache']) ) ? intval($options['cache']) : $this->defaults['cache'];
 					$sanitized['fetch']    = ( ! empty($options['fetch']) ) ? intval($options['fetch']) : $this->defaults['fetch'];
 					$sanitized['num']      = ( ! empty($options['num']) ) ? intval($options['num']) : $this->defaults['num'];
 					$sanitized['privacy']  = ( ! empty($options['privacy']) && $options['privacy'] ) ? 1 : 0;
@@ -818,9 +818,9 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				// --- Video ---
 				case 'ytc_video':
 					$sanitized['width']          = ( ! empty($options['width']) ) ? intval($options['width']) : $this->defaults['width'];
-					$sanitized['ratio']          = ( ! empty($options['ratio']) ) ? intval($options['ratio']) : $this->defaults['ratio'];
+					$sanitized['ratio']          = ( isset($options['ratio']) ) ? intval($options['ratio']) : $this->defaults['ratio'];
 					$sanitized['responsive']     = ( ! empty($options['responsive']) && $options['responsive'] ) ? 1 : 0;
-					$sanitized['display']        = ( ! empty($options['display']) ) ? intval($options['display']) : $this->defaults['display'];
+					$sanitized['display']        = ( ! empty($options['display']) ) ? trim($options['display']) : $this->defaults['display'];
 					$sanitized['themelight']     = ( ! empty($options['themelight']) && $options['themelight'] ) ? 1 : 0;
 					$sanitized['controls']       = ( ! empty($options['controls']) && $options['controls'] ) ? 1 : 0;
 					$sanitized['autoplay']       = ( ! empty($options['autoplay']) && $options['autoplay'] ) ? 1 : 0;
@@ -843,8 +843,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				case 'ytc_link':
 					$sanitized['showgoto']  = ( ! empty($options['showgoto']) && $options['showgoto'] ) ? 1 : 0;
 					$sanitized['goto_txt'] = ( ! empty($options['goto_txt']) ) ? $options['goto_txt'] : $this->defaults['goto_txt'];
-					$sanitized['popup_goto']    = ( ! empty($options['popup_goto']) ) ? intval($options['popup_goto']) : $this->defaults['popup_goto'];
-					$sanitized['link_to']    = ( ! empty($options['link_to']) ) ? intval($options['link_to']) : $this->defaults['link_to'];
+					$sanitized['popup_goto']    = ( isset($options['popup_goto']) ) ? intval($options['popup_goto']) : $this->defaults['popup_goto'];
+					$sanitized['link_to']    = ( isset($options['link_to']) ) ? intval($options['link_to']) : $this->defaults['link_to'];
 				break; // Link to Channel
 
 			} // switch
