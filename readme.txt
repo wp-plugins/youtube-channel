@@ -172,7 +172,7 @@ Please folllow [Installation](https://wordpress.org/plugins/youtube-channel/inst
 
 = I set everything correct but receiveing 'Ups, something went wrong' message =
 
-Right click that message on your website and look for HTML comment below it, message will look like this:
+Right click that message on your website, click *Inspect Element*, expand tag with class *youtube_channel* and look for HTML comment below it, message will look like this:
 
 `<!-- YTC ERROR:
 domain: youtube.search
@@ -196,12 +196,19 @@ reason: ipRefererBlocked
 message: There is a per-IP or per-Referer restriction configured on your API key and the request does not match these restrictions. Please use the Google Developers Console to update your API key configuration if request from this IP or referer should be allowed.
 -->`
 
-Try with following possible solutions:
-1. If you are using **Jetpack** plugin with enabled **Protect** sub plugin, disable it. (kudos to [yudhita](https://wordpress.org/support/profile/yudhita) for tip)
+We still strugling with that Google's restrictions. If you get final solution, please inform us asap. Try with following possible solutions:
+1. If you are using **Jetpack** plugin with enabled **Protect** sub plugin, try to disable it. (kudos to [yudhita](https://wordpress.org/support/profile/yudhita) for tip)
 1. Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
-1. If that does not help, please try to create new API Key for Browser w/o restrictions (not to regenerate existing one).
+1. If that does not help, please try to create new  API Key for Server w/o restrictions (not to regenerate existing one).
 
-We still strugling with that Google's restrictions. If you get final solution, please inform us asap.
+If there is no `YTC ERROR` code in HTML source, visit APIs Explorer
+* If you wish to display videos from Channel then ]this page](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.search.list?safeSearch=none&order=date&part=snippet&maxResults=5&channelId=)
+* If you wish to display videos from Playlist, Favourites or Liked videos then [this page](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.playlistItems.list?part=snippet&maxResults=5&playlistId=)
+
+Append Channel ID or Playlist ID to the end of proper URL listed above, and click **Execute** button at the bottom of that page.
+1. If you receive some error, fix settings.
+1. If there is no error but you do not get any video in results - contact Google Support
+1. If there are video results but not displayed with YouTube Channel plugin - [contact us](https://wordpress.org/support/plugin/youtube-channel)
 
 = Where to find correct Channel ID and/or Vanity custom Name? =
 
@@ -210,6 +217,12 @@ Login to your YouTube account and visit page [Account Advanced](https://www.yout
 You'll find your **Vanity Name** as "Your custom URL" in **Channel settins** section on that page. For YTC plugin use only part **after www.youtube.com/c/**, not full URL.
 
 **Channel ID** is **YouTube Channel ID** value composed of mixed characters starting with **UC**.
+
+= Where to find ID for Favourites and/or Liked Videos? =
+
+These two ID's are produced from your **Channel ID**. Channel ID start with **UC** (like `UCRPqmcpGcJ_gFtTmN_a4aVA`)
+* For Favourites ID replace **UC** with **FL** (so you get `ULRPqmcpGcJ_gFtTmN_a4aVA`)
+** For Liked Videos ID replace **UC** with **LL** (so you get `LLRPqmcpGcJ_gFtTmN_a4aVA`)
 
 = What is Vanity custom URL? =
 
