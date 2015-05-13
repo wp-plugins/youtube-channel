@@ -49,17 +49,24 @@
 </ul>
 <h4>Content Layout</h4>
 <ul>
-    <li><code>showtitle</code> <em>(bool)</em> </li>
-    <li><code>showdesc</code> <em>(bool)</em> </li>
-    <li><code>desclen</code> <em>(int)</em> </li>
-    <li><code>noinfo</code> <em>(bool)</em> </li>
-    <li><code>noanno</code> <em>(bool)</em> </li>
+    <li><code>showtitle</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to show video title.</li>
+    <li><code>titlebelow</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to move video title below video.</li>
+    <li><code>showdesc</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to show video description.</li>
+    <li><code>desclen</code> <em>(int)</em> Set number of characters to cut down length of video description. Set to <code>0</code> to use full length description.</li>
+    <li><code>noinfo</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to hide overlay video infos (from embedded player)</li>
+    <li><code>noanno</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to hide overlay video annotations (from embedded player)</li>
 </ul>
 <h4>Link to Channel</h4>
 <ul>
-    <li><code>goto</code> <em>(bool)</em> </li>
+    <li><code>goto</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to display link to channel at the bottom of YTC block.</li>
     <li><code>goto_txt</code> <em>(string)</em></li>
-    <li><code>popup</code> <em>(int)</em></li>
+    <li><code>popup</code> <em>(int)</em> Control where link to channel will be opened:
+    <ul>
+        <li>&bullet; <code>0</code> open link in same window</li>
+        <li>&bullet; <code>1</code> open link in new window with JavaScript</li>
+        <li>&bullet; <code>2</code> open link in new window with <code>target="_blank"</code> anchor attribute</li>
+    </ul>
+    </li>
     <li><code>link_to</code> <em>(int)</em> URL to link:
     <ul>
         <li>&bullet; <code>2</code> Vanity custom URL (default)</li>

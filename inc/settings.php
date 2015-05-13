@@ -40,6 +40,20 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				$this->slug . '_general' // Page Name
 			);
 			// --- Add Fields to General section ---
+			// YouTube Data API Key
+			add_settings_field(
+				$this->option_name . 'apikey', // Setting Slug
+				__('YouTube Data API Key', 'wpsk'), // Title
+				array(&$this, 'settings_field_input_password'), // Callback
+				$this->slug . '_general', // Page Name
+				'ytc_general', // Section Name
+				array(
+					'field'       => $this->option_name . '[apikey]',
+					'description' => __('Your YouTube Data API Key', 'wpsk'),
+					'class'       => 'regular-text password',
+					'value'       => $this->defaults['apikey'],
+				) // args
+			);
 			// Channel ID
 			add_settings_field(
 				$this->option_name . 'channel', // Setting Slug
@@ -658,6 +672,17 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 		} // eom settings_field_input_text()
 
 		/**
+		 * This function provides password inputs for settings fields
+		 */
+		public function settings_field_input_password($args) {
+
+			extract( $args );
+
+			echo sprintf('<input type="password" name="%s" id="%s" value="%s" class="%s" /><p class="description">%s</p>', $field, $field, $value, $class, $description);
+
+		} // eom settings_field_input_text()
+
+		/**
 		 * This function provides number inputs for settings fields
 		 */
 		public function settings_field_input_number($args) {
@@ -802,6 +827,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 
 				// --- General ---
 				case 'ytc_general':
+					$apikey = ( defined('YOUTUBE_DATA_API_KEY') ) ? YOUTUBE_DATA_API_KEY : '';
+					$sanitized['apikey']  = ( ! empty($options['apikey']) ) ? trim($options['apikey']) : $apikey;
 					$sanitized['channel']  = ( ! empty($options['channel']) ) ? trim($options['channel']) : $this->defaults['channel'];
 					$sanitized['vanity']   = ( ! empty($options['vanity']) ) ? trim($options['vanity']) : $this->defaults['vanity'];
 					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : $this->defaults['username'];
@@ -848,8 +875,6 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				break; // Link to Channel
 
 			} // switch
-			// $sanitized['dashboard_roles']            = ( ! empty($options['dashboard_roles']) && is_array($options['dashboard_roles']) ) ? $options['dashboard_roles'] : array('administrator','editor','client');
-			// $sanitized['dashboard_redirect_url']     = ( ! empty($options['dashboard_redirect_url']) ) ? $options['dashboard_redirect_url'] : '';
 
 			// --- Update ---
 			// now return sanitized options to be written to database

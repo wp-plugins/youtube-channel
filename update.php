@@ -218,3 +218,28 @@ function au_youtube_channel_update_routine_3() {
 	unset ($options_matrix, $init, $ytc_widgets, $widget_id, $widget_data);
 
 } // END function au_youtube_channel_update_routine_3()
+
+/**
+ * Store API Key to DB
+ */
+function au_youtube_channel_update_routine_4() {
+
+	if ( defined('YOUTUBE_DATA_API_KEY') ) {
+
+		// get options from DB
+		$defaults = get_option('youtube_channel_defaults');
+		if ( empty($defaults['apikey']) ) {
+			$defaults['apikey'] = YOUTUBE_DATA_API_KEY;
+			update_option('youtube_channel_defaults', $defaults);
+		}
+
+		unset($defaults);
+	}
+
+	// remove unused keys from DB
+	delete_option('youtube_channel_ver');
+
+	// Update plugin version number
+	update_option('youtube_channel_version', WPAU_YOUTUBE_CHANNEL::VER);
+
+} //END function au_youtube_channel_update_routine_4()

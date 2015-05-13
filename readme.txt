@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,27 +109,34 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 
 **Content Layout**
 
-* `showtitle` (bool)
-* `showdesc` (bool)
-* `desclen` (int)
-* `noinfo` (bool)
-* `noanno` (bool)
+* `showtitle` (bool) Set to 1 or true to show video title.
+* `titlebelow` (bool) Set to 1 or true to move video title below video.
+* `showdesc` (bool) Set to 1 or true to show video description.
+* `desclen` (int) Set number of characters to cut down length of video description. Set to 0 to use full length description.
+* `noinfo` (bool) Set to 1 or true to hide overlay video infos (from embedded player)
+* `noanno` (bool) Set to 1 or true to hide overlay video annotations (from embedded player)
 
 **Link to Channel**
 
-* `goto` (bool)
+* `goto` (bool) Set to 1 or true to display link to channel at the bottom of YTC block.
 * `goto_txt` (string)
-* `popup` (int)
-* `link_to` (int)
+* `popup` (int) Control where link to channel will be opened:
+  * `0` open link in same window
+  * `1` open link in new window with JavaScript
+  * `2` open link in new window with target="_blank" anchor attribute
+* `link_to` (int) URL to link:
+  * `2` Vanity custom URL (default)
+  * `1` Channel page
+  * `0` Legacy username page
 
 == Installation ==
 
 You can use the built in installer and upgrader, or you can install the plugin manually.
 
 1. You can either use the automatic plugin installer or your FTP program to upload unziped `youtube-channel` directory to your `wp-content/plugins` directory.
-2. Activate the plugin through the `Plugins` menu in WordPress
-3. Add YouTube Channel widget to sidebar
-4. Set channel name and save changes
+1. Activate the plugin through the `Plugins` menu in WordPress
+1. Add YouTube Channel widget to sidebar
+1. Set Channel ID and save changes
 
 If you have to upgrade manually simply repeat the installation steps and re-enable the plugin.
 
@@ -228,7 +235,6 @@ These two ID's are produced from your **Channel ID**. Channel ID start with **UC
 
 Check out [Channel custom URL](https://support.google.com/youtube/answer/2657968?ref_topic=3024172&hl=en-GB) article.
 
-
 = Where to find Playlist ID? =
 
 Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters **PL** represent Playlist ID (not full URL).
@@ -270,6 +276,12 @@ and custom CSS code added to theme style.css or similar customization:
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
 == Changelog ==
+= 3.0.6 (2015-05-13) =
+* Add: Option to move video title below video (boolean shortcode parameter `titlebelow`)
+* Add: PayPal donate button to settings page
+* Change: Move YouTube Data API Key to plugin settings and add notification to remove YOUTUBE_DATA_API_KEY from wp-config.php (optional)
+* Improved: Updated shortcode explanation in README and Help tab in plugin settings
+
 = 3.0.5 (2015-05-11/12) =
 * Fix: Setting back dropdown options with `0` ID does not work on Settings page (Channel as resource to use, Cache timeout, Aspect ratio, What to show, Open link to, Link to)
 * Add: Option to export global settings to JSON and add to Tools tab in settings button to download global settings JSON

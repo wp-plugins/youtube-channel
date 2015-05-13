@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.5
+Version: 3.0.6
 Author URI: http://urosevic.net/
 */
 // @TODO make FitVideo optional
@@ -17,8 +17,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 3;
-		const VER = '3.0.5';
+		const DB_VER = 4;
+		const VER = '3.0.6';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -94,8 +94,6 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		 * @return array Global defaults for current plugin version
 		 */
 		public function init_options() {
-			update_option('youtube_channel_version', self::VER);
-			add_option('youtube_channel_db_ver', self::DB_VER);
 
 			$init = array(
 				'vanity'         => $this->vanity_id,
@@ -134,7 +132,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'link_to'        => 0 // 0 legacy username, 1 channel, 2 vanity
 			);
 
-			add_option('youtube_channel_ver', self::VER, '', 'no');
+			add_option('youtube_channel_version', self::VER, '', 'no');
 			add_option('youtube_channel_db_ver', self::DB_VER, '', 'no');
 			add_option($this->plugin_option, $init, '', 'no');
 
@@ -227,6 +225,10 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				$dismissed_notices['old_php'] = 1;
 				update_option('youtube_channel_dismissed_notices', $dismissed_notices);
 			}
+			if ( ! empty($_GET['ytc_dismiss_notice_apikey_wpconfig']) ) {
+				$dismissed_notices['apikey_wpconfig'] = 1;
+				update_option('youtube_channel_dismissed_notices', $dismissed_notices);
+			}
 			if ( ! empty($_GET['ytc_dismiss_notice_vanity_option']) ) {
 				$dismissed_notices['vanity_option'] = 1;
 				update_option('youtube_channel_dismissed_notices', $dismissed_notices);
@@ -240,7 +242,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'info'    => ''
 			);
 
-			// Warn if PHP version is lower than 5.3
+			// Inform if PHP version is lower than 5.3
 			if ( version_compare(PHP_VERSION, "5.3", "<") && ( empty($dismissed_notices) || ( ! empty($dismissed_notices) && empty($dismissed_notices['old_php']) ) ) ) {
 				$notice['info'] .= sprintf(
 					__('<p>Your website running on web server with PHP version %s. Please note that <strong>%s</strong> requires PHP at least 5.3 or newer to work properly. <a href="%s" class="dismiss">Dismiss</a></p>', 'youtube-channel'),
@@ -250,13 +252,23 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				);
 			}
 
+			// Inform if YOUTUBE_DATA_API_KEY is still in wp-config.php
+			if ( defined('YOUTUBE_DATA_API_KEY') && empty($dismissed_notices['apikey_wpconfig']) ) {
+				$notice['info'] .= sprintf(
+					__('<p>Since <strong>%s</strong> v3.0.6 we store <strong>YouTube Data API Key</strong> in plugin settings. So, you can safely remove %s define line from your <strong>wp-config.php</strong> file. <a href="%s" class="dismiss">Dismiss</a></p>', 'youtube-channel'),
+					$this->plugin_name,
+					'YOUTUBE_DATA_API_KEY',
+					'?ytc_dismiss_notice_apikey_wpconfig=1'
+				);
+			}
+
 			// No YouTube DATA Api Key?
-			if ( ! defined('YOUTUBE_DATA_API_KEY') ) {
+			if ( empty($this->defaults['apikey']) ) {
 				$notice['error'] .= sprintf(
-					__('<p>Please note, to make <strong>%s</strong> plugin v3+ work, generate <strong>YouTube Data API Key</strong> and add it to <strong>wp-config.php</strong> file as we explained <a href="%s" target="_blank">here</a>.<br>If you already did this during <em>3.0.0-Alpha</em> test period, please rename constant name from <strong>GOOGLE_API_KEY</strong> to <strong>%s</strong>.<br><br>If you have any issue with new version of plugin, please ask for help on official <a href="%s" target="_blank">support forum</a>.<br>This notice will disappear when you add missing key as mentioned above!</p>', 'youtube-channel'),
+					__('<p>Please note, to make <strong>%s</strong> plugin v3+ work, generate <strong>YouTube Data API Key</strong> as explained <a href="%s" target="_blank">here</a> and add it at <a href="%s">General plugin settings tab</a>.<br><br>If you have any issue with new version of plugin, please ask for help on official <a href="%s" target="_blank">support forum</a>.<br>This notice will disappear when you add missing key as mentioned above!</p>', 'youtube-channel'),
 					$this->plugin_name,
 					'http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key',
-					'YOUTUBE_DATA_API_KEY',
+					'options-general.php?page=youtube-channel&tab=general',
 					'https://wordpress.org/support/plugin/youtube-channel'
 				);
 			}
@@ -367,6 +379,7 @@ function ytc_mute(event){
 						'norel'      => $instance['norel'],
 
 						'showtitle'  => $instance['showtitle'],
+						'titlebelow'  => 0, // move title below video
 						'showdesc'   => $instance['showdesc'], // ex showvidesc
 						'nobrand'    => ( ! empty($instance['modestbranding']) ) ? $instance['modestbranding'] : '0',
 						'desclen'    => $instance['desclen'], // ex videsclen
@@ -425,6 +438,7 @@ function ytc_mute(event){
 
 			// Content Layout
 			$instance['showtitle']      = $showtitle; // show video title, disabled by default
+			$instance['titlebelow']      = $titlebelow; // show video title, disabled by default
 			$instance['showdesc']       = $showdesc; // show video description, disabled by default
 			$instance['modestbranding'] = $nobrand; // hide YT logo
 			$instance['desclen']        = $desclen; // cut video description, number of characters
@@ -448,7 +462,7 @@ function ytc_mute(event){
 
 			// print info about API key to admins
 			// and "Coming soon..." for visitors
-			if ( ! defined('YOUTUBE_DATA_API_KEY') ) {
+			if ( empty($this->defaults['apikey']) ) {
 				if ( current_user_can('manage_options') ) {
 					$output[] = sprintf(
 						__('<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</strong> to work. <a href="%s" target="_blank">Learn more here</a>.', 'youtube-channel'),
@@ -638,10 +652,10 @@ function ytc_mute(event){
 								$output[] = "tip: You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Check https://wordpress.org/plugins/youtube-channel/faq/\n";
 							}
 							if ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
-								$output[] = "tip: Double check YOUTUBE_DATA_API_KEY and make sure it`s correct. Check https://wordpress.org/plugins/youtube-channel/installation/\n";
+								$output[] = "tip: Double check YouTube Data API Key on General plugin tab and make sure it`s correct. Check https://wordpress.org/plugins/youtube-channel/installation/\n";
 							}
 							if ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
-								$output[] = "tip: Check YouTube Data API Key restrictions and key in wp-config.php, empty cache if enabled and append in browser address bar parameter ?ytc_force_recache=1\n";
+								$output[] = "tip: Check YouTube Data API Key restrictions, empty cache if enabled and append in browser address bar parameter ?ytc_force_recache=1\n";
 							}
 							$output[] = "-->\n";
 						}
@@ -729,7 +743,7 @@ function ytc_mute(event){
 
 			// universal
 			$feed_url .= "&maxResults={$items}";
-			$feed_url .= "&key=" . YOUTUBE_DATA_API_KEY;
+			$feed_url .= "&key={$this->defaults['apikey']}";
 
 			$wprga = array(
 				'timeout' => 5 // five seconds only
@@ -891,8 +905,8 @@ function ytc_mute(event){
 			}
 			$output[] = "<div class=\"ytc_video_container ytc_video_{$y} ytc_video_{$vnumclass} ${arclass}\" style=\"width:{$width}px\">";
 
-			// show video title?
-			if ( ! empty($instance['showtitle']) ) {
+			// show video title above video?
+			if ( ! empty($instance['showtitle']) && empty($instance['titlebelow']) ) {
 				$output[] = "<h3 class=\"ytc_title\">{$yt_title}</h3>";
 			}
 
@@ -1008,6 +1022,11 @@ JS;
 				}
 
 			} // what to show conditions
+
+			// show video title below video?
+			if ( ! empty($instance['showtitle']) && ! empty($instance['titlebelow']) ) {
+				$output[] = "<h3 class=\"ytc_title\">{$yt_title}</h3>";
+			}
 
 			// do we need to show video description?
 			if ( $instance['showdesc'] ) {
@@ -1156,6 +1175,9 @@ JS;
 
 				if ( ! is_array($options) )
 					return;
+
+				// remove YouTube Data API Key from config JSON
+				unset($options['apikey']);
 
 			} else {
 				// for widget

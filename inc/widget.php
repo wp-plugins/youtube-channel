@@ -69,6 +69,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 
 		// Content Layout
 		$showtitle      = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
+		$titlebelow      = (!empty($instance['titlebelow'])) ? esc_attr($instance['titlebelow']) : '';
 		$showdesc       = (!empty($instance['showdesc'])) ? esc_attr($instance['showdesc']) : '';
 		$modestbranding = (!empty($instance['modestbranding'])) ? esc_attr($instance['modestbranding']) : '';
 		$desclen        = (!empty($instance['desclen'])) ? esc_attr($instance['desclen']) : 0;
@@ -179,6 +180,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		<h4><?php _e('Content Layout', 'youtube-channel'); ?></h4>
 		<p>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $showtitle, true ); ?> id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showtitle' ); ?>"><?php _e('Show video title', 'youtube-channel'); ?></label><br />
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $titlebelow, true ); ?> id="<?php echo $this->get_field_id( 'titlebelow' ); ?>" name="<?php echo $this->get_field_name( 'titlebelow' ); ?>" /> <label for="<?php echo $this->get_field_id( 'titlebelow' ); ?>"><?php _e('Move title below video', 'youtube-channel'); ?></label><br />
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $showdesc, true ); ?> id="<?php echo $this->get_field_id( 'showdesc' ); ?>" name="<?php echo $this->get_field_name( 'showdesc' ); ?>" /> <label for="<?php echo $this->get_field_id( 'showdesc' ); ?>"><?php _e('Show video description', 'youtube-channel'); ?></label><br />
 			<label for="<?php echo $this->get_field_id('desclen'); ?>"><?php _e('Description length', 'youtube-channel'); ?>: <input class="small-text" id="<?php echo $this->get_field_id('desclen'); ?>" name="<?php echo $this->get_field_name('desclen'); ?>" type="number" value="<?php echo $desclen; ?>" title="<?php _e('Set number of characters to cut down video description to (0 means full length)', 'youtube-channel');?>" /> (0 = full)</label><br />
 			<label for="<?php echo $this->get_field_id('descappend'); ?>"><?php _e('Et cetera string', 'youtube-channel'); ?> <input class="small-text" id="<?php echo $this->get_field_id('descappend'); ?>" name="<?php echo $this->get_field_name('descappend'); ?>" type="text" value="<?php echo $descappend; ?>" title="<?php _e('Default: &amp;hellip;', 'youtube-channel'); ?>"/></label><br />
@@ -237,6 +239,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['link_to']        = $new_instance['link_to'];
 
 		$instance['showtitle']      = (isset($new_instance['showtitle'])) ? $new_instance['showtitle'] : false;
+		$instance['titlebelow']      = (isset($new_instance['titlebelow'])) ? $new_instance['titlebelow'] : false;
 		$instance['showdesc']     = (isset($new_instance['showdesc'])) ? $new_instance['showdesc'] : false;
 		$instance['descappend']     = strip_tags($new_instance['descappend']);
 		$instance['desclen']      = strip_tags($new_instance['desclen']);
