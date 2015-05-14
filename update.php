@@ -222,22 +222,23 @@ function au_youtube_channel_update_routine_3() {
 /**
  * Store API Key to DB
  */
-function au_youtube_channel_update_routine_4() {
+function au_youtube_channel_update_routine_5() {
+
+	// get options from DB
+	$defaults = get_option('youtube_channel_defaults');
+	unset($defaults['only_pl']);
 
 	if ( defined('YOUTUBE_DATA_API_KEY') ) {
 
-		// get options from DB
-		$defaults = get_option('youtube_channel_defaults');
-
-		unset($defaults['only_pl']);
 
 		if ( empty($defaults['apikey']) ) {
 			$defaults['apikey'] = YOUTUBE_DATA_API_KEY;
-			update_option('youtube_channel_defaults', $defaults);
 		}
-
 		unset($defaults);
+
 	}
+
+	update_option('youtube_channel_defaults', $defaults);
 
 	// remove unused keys from DB
 	delete_option('youtube_channel_ver');
@@ -245,4 +246,4 @@ function au_youtube_channel_update_routine_4() {
 	// Update plugin version number
 	update_option('youtube_channel_version', WPAU_YOUTUBE_CHANNEL::VER);
 
-} //END function au_youtube_channel_update_routine_4()
+} //END function au_youtube_channel_update_routine_5()

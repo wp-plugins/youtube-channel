@@ -37,7 +37,9 @@ If you like this extension and you find it useful, please rate it on the right s
 For fully functional plugin you need to have PHP 5.3 or newer! If you experience issues on older PHP, we can't help you as we don't have access to such old development platform.
 
 = Styling =
+
 You can use `style.css` from theme to style `YouTube Video` widget content.
+
 * `.widget_youtube-channel` – class of whole widget (parent for widget title and YTC block)
 * `.youtube_channel` – YTC block wrapper class. Additional classes are available:
   * `.default` – for non-responsive block
@@ -209,12 +211,14 @@ We still strugling with that Google's restrictions. If you get final solution, p
 1. If that does not help, please try to create new  API Key for Server w/o restrictions (not to regenerate existing one).
 
 If there is no `YTC ERROR` code in HTML source, visit [Google API Explorer](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.playlistItems.list?part=snippet&maxResults=5&playlistId=) and append:
+
 * for videos from channel replace **UC** with **UU** in Channel ID (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *UURPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Favourited videos replace **UC** with **FL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *FLRPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Liked Videos replace **UC** with **LL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *LLRPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Playlist simply use Playlist ID (like *PLEC850BE962234400*)
 
 Note that all four resources are *playlists* (including channel), so append mentioned ID to field **playlistId** (not to **id**), and click **Execute** button at the bottom of that page.
+
 1. If you receive some error, fix settings.
 1. If there is no error but you do not get any video in results - contact Google Support
 1. If there are video results but not displayed with YouTube Channel plugin - [contact us](https://wordpress.org/support/plugin/youtube-channel)
@@ -230,6 +234,7 @@ You'll find your **Vanity Name** as "Your custom URL" in **Channel settins** sec
 = Where to find ID for Favourites and/or Liked Videos? =
 
 You will not need that two ID's, in general. But, if you really wish to know, these two ID's are produced from your **Channel ID**. Channel ID start with **UC** (like `UCRPqmcpGcJ_gFtTmN_a4aVA`)
+
 * For Favourites ID replace **UC** with **FL** (so you get `FLRPqmcpGcJ_gFtTmN_a4aVA`)
 * For Liked Videos ID replace **UC** with **LL** (so you get `LLRPqmcpGcJ_gFtTmN_a4aVA`)
 
@@ -278,7 +283,9 @@ and custom CSS code added to theme style.css or similar customization:
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
 == Changelog ==
+
 = 3.0.6 (2015-05-13/14) =
+
 * Fix: Prevent Fatal error on PHP<5.3 because required __DIR__ for updater replaced with dirname(__FILE__)
 * Fix: No retrieved or missing videos from some channels so switch `search` to `playlistItems` API call (kudos to @[mmirus](https://wordpress.org/support/profile/mmirus))
 * Add: Embed As Playlist for all resources
@@ -293,6 +300,7 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 * Remove: Loading of fitVids JS library for test before final removing.
 
 = 3.0.5 (2015-05-11/12) =
+
 * Fix: Setting back dropdown options with `0` ID does not work on Settings page (Channel as resource to use, Cache timeout, Aspect ratio, What to show, Open link to, Link to)
 * Add: Option to export global settings to JSON and add to Tools tab in settings button to download global settings JSON
 * Change: Update plugin features
@@ -300,6 +308,7 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 * Improved: More micro optimizations
 
 = 3.0.4 (2015-05-11) =
+
 * Add: Tip what to do if error ocurred with YouTube Data API Key printed inside YTC ERROR comment
 * Change: Where to ask for support links in widget
 * Change: Timeout for getting feed increased from 2 to 5 seconds
@@ -307,20 +316,24 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 * Remove: Check for Redux Framework in debug JSON generator
 
 = 3.0.3 (2015-05-10) =
+
 * Fix: "Oops, something went wrong." when Playlist selected as resource because wrong switch
 * Fix: Jumping thumbnails in responsive wall on hover in Twenty Fifteen theme because border-bottom for anchors
 * Fix: Another deprecated shortcode attribute backward compatibility (`use_res`)
 * Add: Example of dynamic responsive wall (1 large + 6 small thumbnails) (to [Description](https://wordpress.org/plugins/youtube-channel/))
 
 = 3.0.2 (2015-05-10) =
+
 * Fix: (typo - experiencing on frontend when no API Key set) PHP Fatal error:  Call to undefined function __sprintf() in youtube-channel.php on line 445
 * Fix: shortcode deprecated params `res` and `show` not backward compatibile
 
 = 3.0.1 (2015-05-10) =
+
 * Fix: Fatal error: Using $this when not in object context in youtube-channel.php on line 89
 * Fix: Link to channel not visible on Twenty Fifteen theme
 
 = 3.0.0 (2015-05-07/08/09/10) =
+
 * Fix: Migraton of global and widget settings to v3.0.0
 * Add: New Global Settings page as replacement of Redux Framework solution
 * Add: Non-Dismissable Dashboard notice if YouTube Data API Key missing with link to explanation page
@@ -335,6 +348,7 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 * Remove: option `Fix height taken by controls` as now YouTube displays control bar only when video is hovered
 
 = 3.0.0alpha2 (2015-03-07/22/24) =
+
 * Add: Rewrite plugin to work with YouTube Data API v3
 * Add: Vanity link as option to Link to channel (now supports Legacy username, Channel and Vanity URL) with cleanup Vanity ID routine
 * Add: Liked videos as resource (now support channel, playlists, favourites and liked videos)
@@ -347,7 +361,8 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 * Remove: Aspect Ration 16:10 (so support only 16:9 and 4:3, same as modern YouTube)
 * Remove: "Fix No Item" option - not required for YouTube API 3.0
 
-*OLD RELEASES*
+**OLD RELEASES**
+
 = 2.4.2.1 (2015-04-24) =
 * Fix: devicesupport workaround strip 1st video from playlist and favourites and apply only for channel
 
