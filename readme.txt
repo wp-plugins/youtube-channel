@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.6
+Stable tag: 3.0.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -284,8 +284,9 @@ So, we display thumbnails for 7 random videos from default (global) playlist, an
 
 == Changelog ==
 
-= 3.0.7 =
-* Add: box-sizing of .youtube_channel container for crappy themes
+= 3.0.6.1 (2015-05-14) =
+* Fix: Undefined index: random
+* Fix: Unremoved only_pl from global settings
 
 = 3.0.6 (2015-05-13/14) =
 
