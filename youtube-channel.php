@@ -22,12 +22,11 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
-
 		public $plugin_option = "youtube_channel_defaults";
 
 		public $vanity_id     = "AleksandarUrosevic";
 		public $username_id   = "urkekg";
-		public $channel_id    = "UCRPqmcpGcJ_gFtTmN_a4aVA"; // user channel UC; favourites list FL; liked list LL
+		public $channel_id    = "UCRPqmcpGcJ_gFtTmN_a4aVA"; // user channel UC; user uploads UU; favourites list FL; liked list LL
 		public $playlist_id   = "PLEC850BE962234400";
 		public $plugin_url;
 
@@ -310,7 +309,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.min.css', __FILE__), array(), self::VER );
 
 			// enqueue fitVids
-			wp_enqueue_script( 'fitvids', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), self::VER, true );
+			// wp_enqueue_script( 'fitvids', plugins_url('assets/js/jquery.fitvids.min.js', __FILE__), array('jquery'), self::VER, true );
 
 			// enqueue magnific-popup
 			wp_enqueue_script( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), self::VER, true );
@@ -607,7 +606,7 @@ function ytc_mute(event){
 
 				// if current feed is messed up, try to get it from fallback cache
 				if ( is_wp_error($json_output) && ! is_object($json_output) && empty($json_output->items) ) {
-					error_log("[YTC] Get fallback feed for $feed_url");
+					// error_log("[YTC] Get fallback feed for $feed_url");
 					// do we have fallback cache?!
 					if ( true === ( $json_fallback = get_transient( $cache_key_fallback ) ) && ! empty($json_fallback) ) {
 						$json_output = json_decode( base64_decode($json_fallback) );
@@ -642,7 +641,7 @@ function ytc_mute(event){
 						$output[] = $error_string;
 						unset($error_string);
 					} else {
-						$output[] = __("Ups, something went wrong.", 'youtube-channel');
+						$output[] = __("Oops, something went wrong.", 'youtube-channel');
 						// append YouTube DATA API error reason as comment
 						if ( ! empty($json_output) && is_object($json_output) && !empty($json_output->error->errors) ) {
 							$output[] = "<!-- YTC ERROR:\n";
