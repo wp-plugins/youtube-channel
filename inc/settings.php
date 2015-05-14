@@ -132,6 +132,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				) // args
 			);
 			// Playlist Only
+			/*
 			add_settings_field(
 				$this->option_name . 'only_pl', // id
 				__('Embed standard playlist', 'wpsk'), // Title
@@ -145,6 +146,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['only_pl'],
 				) // args
 			);
+			*/
 			// Cache
 			add_settings_field(
 				$this->option_name . 'cache', // id
@@ -225,12 +227,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[privacy]",
-					'description' => __("Enable this option to protect your visitors privacy. http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780", 'wpsk'),
+					'description' => __(sprintf('Enable this option to protect your visitors privacy. <a href="%s" target="_blank">Learn more here</a>', 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'), 'wpsk'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['privacy'],
 				) // args
 			);
 			// Random video
+			/*
 			add_settings_field(
 				$this->option_name . 'random', // id
 				__('Show random video', 'wpsk'), // Title
@@ -244,6 +247,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['random'],
 				) // args
 			);
+			*/
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
 				'ytc_general', // Setting group
@@ -834,12 +838,12 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : $this->defaults['username'];
 					$sanitized['playlist'] = ( ! empty($options['playlist']) ) ? trim($options['playlist']) : $this->defaults['playlist'];
 					$sanitized['resource'] = ( isset($options['resource']) ) ? intval($options['resource']) : $this->defaults['resource'];
-					$sanitized['only_pl']  = ( ! empty($options['only_pl']) && $options['only_pl'] ) ? 1 : 0;
+					// $sanitized['only_pl']  = ( ! empty($options['only_pl']) && $options['only_pl'] ) ? 1 : 0;
 					$sanitized['cache']    = ( isset($options['cache']) ) ? intval($options['cache']) : $this->defaults['cache'];
 					$sanitized['fetch']    = ( ! empty($options['fetch']) ) ? intval($options['fetch']) : $this->defaults['fetch'];
 					$sanitized['num']      = ( ! empty($options['num']) ) ? intval($options['num']) : $this->defaults['num'];
 					$sanitized['privacy']  = ( ! empty($options['privacy']) && $options['privacy'] ) ? 1 : 0;
-					$sanitized['random']   = ( ! empty($options['random']) && $options['random'] ) ? 1 : 0;
+					// $sanitized['random']   = ( ! empty($options['random']) && $options['random'] ) ? 1 : 0;
 				break; // General
 
 				// --- Video ---

@@ -101,12 +101,12 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'username'       => $this->username_id,
 				'playlist'       => $this->playlist_id,
 				'resource'       => 0, // ex use_res
-				'only_pl'        => 0,
+				// 'only_pl'        => 0,
 				'cache'          => 300, // 5 minutes // ex cache_time
 				'fetch'          => 25, // ex maxrnd
 				'num'            => 1, // ex vidqty
 				'privacy'        => 0,
-				'random'         => 0, // ex getrnd
+				// 'random'         => 0, // ex getrnd
 
 				'ratio'          => 3, // 3 - 16:9, 1 - 4:3 (deprecated: 2 - 16:10)
 				'width'          => 306,
@@ -148,7 +148,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				return;
 			}
 
-			require_once( __DIR__ . '/update.php' );
+			require_once( dirname(__FILE__) . '/update.php' );
 			au_youtube_channel_update();
 
 		} // END public function maybe_update()
@@ -357,7 +357,7 @@ function ytc_mute(event){
 						'res'        => '', // (deprecated, but leave for back compatibility) ex res
 						'use_res'    => '', // (deprecated, but leave for back compatibility) ex use_res
 						'resource'   => $instance['resource'], // ex use_res
-						'only_pl'    => $instance['only_pl'],
+						'only_pl'    => 0, // disabled by default (was: $instance['only_pl'],)
 						'cache'      => $instance['cache'], // ex cache_time
 						'privacy'    => $instance['privacy'], // ex showvidesc
 						'fetch'      => $instance['fetch'], // ex maxrnd
@@ -528,14 +528,32 @@ function ytc_mute(event){
 				$class .= ' responsive';
 			}
 
+			switch ($resource) {
+				case 1: // Favourites
+					$resource_name = 'favourites';
+					$resource_id = preg_replace('/^UC/', 'FL', $channel);
+					break;
+				case 2: // Playlist
+					$resource_name = 'playlist';
+					$resource_id = $playlist;
+					break;
+				case 3: // Liked
+					$resource_name = 'liked';
+					$resource_id = preg_replace('/^UC/', 'LL', $channel);
+					break;
+				default: // Channel
+					$resource_name = 'channel';
+					$resource_id = preg_replace('/^UC/', 'UU', $channel); //$channel;
+			}
+
 			// Start output array
 			$output = array();
 
 			$output[] = "<div class=\"youtube_channel {$class}\">";
 
-			if ( $instance['only_pl'] && $resource == 2 ) { // print standard playlist
+			if ( $instance['only_pl'] ) { // print standard playlist
 
-				$output = array_merge($output, self::ytc_only_pl($instance));
+				$output = array_merge($output, self::embed_playlist($resource_id, $instance));
 
 			} else { // videos from channel, favourites, liked or playlist
 
@@ -544,23 +562,6 @@ function ytc_mute(event){
 				if ( $fetch < 1 ) { $fetch = 10; } // default 10
 				elseif ( $fetch > 50 ) { $fetch = 50; } // max 50
 
-				switch ($resource) {
-					case 1: // Favourites
-						$resource_name = 'favourites';
-						$resource_id = preg_replace('/^UC/', 'FL', $channel);
-						break;
-					case 2: // Playlist
-						$resource_name = 'playlist';
-						$resource_id = $playlist;
-						break;
-					case 3: // Liked
-						$resource_name = 'liked';
-						$resource_id = preg_replace('/^UC/', 'LL', $channel);
-						break;
-					default: // Channel
-						$resource_name = 'channel';
-						$resource_id = $channel;
-				}
 				$resource_key = "{$resource_id}_{$fetch}";
 
 				// Do we need cache? let we define cache fallback key
@@ -579,7 +580,7 @@ function ytc_mute(event){
 					if ( false === ($json = get_transient($cache_key)) || empty($json) ) {
 
 						// no cached JSON, get new
-						$json = $this->fetch_youtube_feed($resource_name, $resource_id, $fetch);
+						$json = $this->fetch_youtube_feed($resource_id, $fetch);
 
 						// set decoded JSON to transient cache_key
 						set_transient($cache_key, base64_encode($json), $instance['cache']);
@@ -594,7 +595,7 @@ function ytc_mute(event){
 				} else {
 
 					// just get fresh feed if cache disabled
-					$json = $this->fetch_youtube_feed($resource_name, $resource_id, $fetch);
+					$json = $this->fetch_youtube_feed($resource_id, $fetch);
 
 				}
 
@@ -648,14 +649,22 @@ function ytc_mute(event){
 							$output[] = 'domain: ' . $json_output->error->errors[0]->domain . "\n";
 							$output[] = 'reason: ' . $json_output->error->errors[0]->reason . "\n";
 							$output[] = 'message: ' . $json_output->error->errors[0]->message . "\n";
-							if ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
-								$output[] = "tip: You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Check https://wordpress.org/plugins/youtube-channel/faq/\n";
+
+							if ( $json_output->error->errors[0]->reason == 'playlistNotFound' ) {
+								if ( $resource_name == 'playlist' ) {
+									$output[] = "tip: Please check did you set existing Playlist ID. We should display videos from {$resource_name} videos, but YouTube does not recognize {$resource_id} as existing and public playlist.\n";
+								} else {
+									$output[] = "tip: Please check did you set proper Channel ID. We should display videos from {$resource_name} videos, but YouTube does not recognize your channel ID {$channel} as existing and public resource.\n";
+								}
 							}
-							if ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
+							elseif ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
 								$output[] = "tip: Double check YouTube Data API Key on General plugin tab and make sure it`s correct. Check https://wordpress.org/plugins/youtube-channel/installation/\n";
 							}
-							if ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
+							elseif ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
 								$output[] = "tip: Check YouTube Data API Key restrictions, empty cache if enabled and append in browser address bar parameter ?ytc_force_recache=1\n";
+							}
+							elseif ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
+								$output[] = "tip: You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Check https://wordpress.org/plugins/youtube-channel/faq/\n";
 							}
 							$output[] = "-->\n";
 						}
@@ -702,9 +711,14 @@ function ytc_mute(event){
 
 			} // single playlist or ytc way
 
-			$output = array_merge( $output, $this->ytc_channel_link($instance) ); // insert link to channel on bootom of widget
+			if ( ! empty($instance['showgoto']) ) {
+				$output = array_merge( $output, $this->ytc_channel_link($instance) ); // insert link to channel on bootom of widget
+			}
 
 			$output[] = '</div><!-- .youtube_channel -->';
+
+			// fix overflow on crappy themes
+			$output[] = '<div class="clearfix"></div>';
 
 			return $output;
 
@@ -714,34 +728,16 @@ function ytc_mute(event){
 
 		/**
 		 * Download YouTube video feed through API 3.0
-		 * @param  string $resource Name of resource (channel, playlist, favourites, liked)
 		 * @param  string $id       ID of resource
 		 * @param  integer $items   Number of items to fetch (min 2, max 50)
 		 * @return array            JSON with videos
 		 */
-		function fetch_youtube_feed($resource, $resource_id, $items) {
+		function fetch_youtube_feed($resource_id, $items) {
 
-			if ( $resource == 'channel' ) {
-
-				// channel
-				$feed_url = 'https://www.googleapis.com/youtube/v3/search?';
-				$feed_url .= 'part=snippet';
-				$feed_url .= "&channelId={$resource_id}";
-				$feed_url .= '&order=date';
-				$feed_url .= '&type=video';
-				$feed_url .= '&fields=items(id(videoId)%2Csnippet(title%2Cdescription%2CpublishedAt))';
-
-			} else if ( in_array($resource, array('playlist','favourites','liked')) ) {
-
-				// playlist
-				$feed_url = 'https://www.googleapis.com/youtube/v3/playlistItems?';
-				$feed_url .= 'part=snippet';
-				$feed_url .= "&playlistId={$resource_id}";
-				$feed_url .= '&fields=items(snippet(title%2Cdescription%2CpublishedAt%2CresourceId(videoId)))';
-
-			}
-
-			// universal
+			$feed_url = 'https://www.googleapis.com/youtube/v3/playlistItems?';
+			$feed_url .= 'part=snippet';
+			$feed_url .= "&playlistId={$resource_id}";
+			$feed_url .= '&fields=items(snippet(title%2Cdescription%2CpublishedAt%2CresourceId(videoId)))';
 			$feed_url .= "&maxResults={$items}";
 			$feed_url .= "&key={$this->defaults['apikey']}";
 
@@ -756,7 +752,7 @@ function ytc_mute(event){
 
 			return $json;
 
-		} // END function fetch_youtube_feed($resource, $resource_id, $items)
+		} // END function fetch_youtube_feed($resource_id, $items)
 
 		// function to calculate height by width and ratio
 		function height_ratio($width=306, $ratio) {
@@ -874,8 +870,8 @@ function ytc_mute(event){
 			$themelight = $instance['themelight'];
 			/* end of video settings */
 
-			// from channel videoId is in own node `id`
-			$yt_id = ($instance['resource'] == 0) ? $item->id->videoId : $item->snippet->resourceId->videoId;
+			// Prepare Video ID from Resource
+			$yt_id = $item->snippet->resourceId->videoId;
 			$yt_url    = "v/$yt_id";
 			$yt_thumb  = "//img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
 			$yt_video  = "//www.youtube.com/watch?v=" . $yt_id;
@@ -1056,33 +1052,25 @@ JS;
 		} // end function ytc_print_video
 
 		/* function to print standard playlist embed code */
-		function ytc_only_pl($instance) {
+		function embed_playlist($resource_id, $instance) {
 
-		$width = $instance['width'];
-		if ( empty($width) )
-			$width = 306;
+			$width = ( empty($instance['width']) ) ? 306 : $instance['width'];
+			$height = self::height_ratio($width, $instance['ratio']);
+			$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
+			$theme = (empty($instance['themelight'])) ? '' : '&theme=light';
+			$modestbranding = (empty($instance['modestbranding'])) ? '' : '&modestbranding=1';
+			$rel = (empty($instance['norel'])) ? '' : '&rel=0';
 
-		$playlist = (empty($instance['playlist'])) ? $this->playlist_id : $instance['playlist'];
+			// enhanced privacy
+			$youtube_domain = $this->youtube_domain($instance);
 
-		$height = self::height_ratio($width, $instance['ratio']);
+			$output[] = "<div class=\"ytc_video_container ytc_video_1 ytc_video_single ytc_playlist_only\">";
+			$output[] = "<iframe src=\"//{$youtube_domain}/embed/videoseries?list={$resource_id}{$autoplay}{$theme}{$modestbranding}{$rel}\"";
+			$output[] = " width=\"{$width}\" height=\"{$height}\" frameborder=\"0\"></iframe></div>";
 
-		$playlist = $this->clean_playlist_id($playlist);
-
-		$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
-
-		$theme = (empty($instance['themelight'])) ? '' : '&theme=light';
-
-		$modestbranding = (empty($instance['modestbranding'])) ? '' : '&modestbranding=1';
-
-		$rel = (empty($instance['norel'])) ? '' : '&rel=0';
-
-		// enhanced privacy
-		$youtube_domain = $this->youtube_domain($instance);
-		$output[] = '<div class="ytc_video_container ytc_video_1 ytc_video_single">
-		<iframe src="//'.$youtube_domain.'/embed/videoseries?list=PL'.$playlist.$autoplay.$theme.$modestbranding.$rel.'"
-		width="'.$width.'" height="'.$height.'" frameborder="0"></iframe></div>';
 			return $output;
-		} // end function ytc_only_pl
+
+		} // END function embed_playlist($resource_id, $instance)
 
 		// Helper function cache_time()
 		function cache_time($cache_time)

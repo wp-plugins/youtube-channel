@@ -134,7 +134,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		</p>
 
 		<p class="playlist-only <?php echo $this->get_field_id('resource'); ?> glue-top">
-			<label for="<?php echo $this->get_field_id( 'only_pl' ); ?>" id="<?php echo $this->get_field_id( 'only_pl' ); ?>_label"><input class="checkbox" type="checkbox" <?php checked( (bool) $only_pl, true );	?> id="<?php echo $this->get_field_id( 'only_pl' ); ?>" name="<?php echo $this->get_field_name( 'only_pl' ); ?>" title="<?php _e('Enable this option to embed YouTube playlist instead single video from playlist.', 'youtube-channel'); ?>" /> <?php _e('Embed standard playlist<br /><small>(Please note <em>What to show?</em> have no effect for embedded playlist)</small>', 'youtube-channel'); ?></label>
+			<label for="<?php echo $this->get_field_id( 'only_pl' ); ?>" id="<?php echo $this->get_field_id( 'only_pl' ); ?>_label"><input class="checkbox" type="checkbox" <?php checked( (bool) $only_pl, true );	?> id="<?php echo $this->get_field_id( 'only_pl' ); ?>" name="<?php echo $this->get_field_name( 'only_pl' ); ?>" title="<?php _e('Enable this option to embed seek YouTube playlist instead individual videos from selected resource.', 'youtube-channel'); ?>" /> <?php _e('Embed resource as playlist <small>(override "random video")</small>', 'youtube-channel'); ?></label>
 		</p>
 
 		<p class="half left glue-top">
@@ -146,7 +146,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		<p>
 			<input class="checkbox" type="checkbox" <?php checked( (bool) $privacy, true ); ?> id="<?php echo $this->get_field_id( 'privacy' ); ?>" name="<?php echo $this->get_field_name( 'privacy' ); ?>" title="<?php _e('Enable this option to protect your visitors privacy', 'youtube-channel'); ?>" /> <label for="<?php echo $this->get_field_id( 'privacy' ); ?>"><?php printf(__('Use <a href="%s" target="_blank">Enhanced Privacy</a>', 'youtube-channel'), 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'); ?></label>
 			<br />
-			<input class="checkbox" type="checkbox" <?php checked( (bool) $random, true ); ?> id="<?php echo $this->get_field_id( 'random' ); ?>" name="<?php echo $this->get_field_name( 'random' ); ?>" title="<?php _e('Get random videos of all fetched from channel or playlist', 'youtube-channel'); ?>" /> <label for="<?php echo $this->get_field_id( 'random' ); ?>"><?php _e('Show random video', 'youtube-channel'); ?></label>
+			<input class="checkbox" type="checkbox" <?php checked( (bool) $random, true ); ?> id="<?php echo $this->get_field_id( 'random' ); ?>" name="<?php echo $this->get_field_name( 'random' ); ?>" title="<?php _e('Get random videos of all fetched from channel or playlist', 'youtube-channel'); ?>" /> <label for="<?php echo $this->get_field_id( 'random' ); ?>"><?php _e('Show random video from resource <small>(Have no effect if "Embed resource as playlist" is enabled)</small>', 'youtube-channel'); ?></label>
 		</p>
 
 		<h4><?php _e('Video Settings', 'youtube-channel'); ?></h4>

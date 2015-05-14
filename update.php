@@ -228,6 +228,9 @@ function au_youtube_channel_update_routine_4() {
 
 		// get options from DB
 		$defaults = get_option('youtube_channel_defaults');
+
+		unset($defaults['only_pl']);
+
 		if ( empty($defaults['apikey']) ) {
 			$defaults['apikey'] = YOUTUBE_DATA_API_KEY;
 			update_option('youtube_channel_defaults', $defaults);

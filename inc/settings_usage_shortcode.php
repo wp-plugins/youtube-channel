@@ -14,7 +14,7 @@
         <li>&bullet; <code>2</code> Playlist</li>
         <li>&bullet; <code>3</code> Liked Videos (for defined channel)</li>
     </ul></li>
-    <li><code>only_pl</code> <em>(bool)</em> If you set to use Playlist as resource, you can embed youtube playlist block instead single video from playlist. Simply set this option to true (<code>1</code> or <code>true</code>)</li>
+    <li><code>only_pl</code> <em>(bool)</em> You can embed all 4 resources as seekable YouTube playlist block instead to display individual videos. Simply set this option to true (<code>1</code> or <code>true</code>)</li>
     <li><code>cache</code> <em>(int)</em> Period in seconds for caching feed. You can disable caching by setting this option to <code>0</code>, but if you have a lot of visits, consider at least short caching (couple minutes).</li>
 
     <li><code>fetch</code> <em>(int)</em> Number of videos that will be used as stack for random pick (min 2, max 50)</li>

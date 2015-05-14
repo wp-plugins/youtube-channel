@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, flash player, rss, feed, video, thumbnail, embed, sidebar, chromeless, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.6
+Stable tag: 3.0.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -153,8 +153,8 @@ Learn more about [Obtaining authorization credentials](https://developers.google
 1. Locate and click **YouTube Data API** under **YouTube API** section
 1. Click **Enable API** button
 1. When you get enabled YouTube Data API in your project, click **Credentials** item from LHS menu **APIs & auth**
-1. Click **Create New Key** button and select **Browser Key**
-1. Leave empty or enter domain name of your website with wildcards. If you get message **Ups, something went wrong.** try to tune referer with wildcars (I did not success in that) or leave any restriction.
+1. Click **Create New Key** button and select **Server Key**
+1. Leave empty or enter IP of your website. If you get message **Ups, something went wrong.** make sure you set proper IP, or leave any restriction.
 1. Click **Create** button
 1. Copy newly created **API Key**
 
@@ -182,12 +182,13 @@ Please folllow [Installation](https://wordpress.org/plugins/youtube-channel/inst
 Right click that message on your website, click *Inspect Element*, expand tag with class *youtube_channel* and look for HTML comment below it, message will look like this:
 
 `<!-- YTC ERROR:
-domain: youtube.search
-reason: invalidChannelId
-message: Invalid channel.
+domain: youtube.playlistItem
+reason: playlistNotFound
+message: Not Found
+tip: Please check did you set proper Channel ID. We should display videos from channel videos, but YouTube does not recognize your channel ID UCkVThLIHAZVsJc7f28tIsIws as existing and public resource.
 -->`
 
-This means that you have set wrong **Channel ID**. Fix that in **General** plugin settings, Widget and/or shortcode.
+Do exactly what tip says - check and correct Channel ID in default settings/widget/shortcode.
 
 `<!-- YTC ERROR:
 domain: usageLimits
@@ -204,6 +205,7 @@ message: There is a per-IP or per-Referer restriction configured on your API key
 -->`
 
 We still strugling with that Google's restrictions. If you get final solution, please inform us asap. Try with following possible solutions:
+
 1. If you are using **Jetpack** plugin with enabled **Protect** sub plugin, try to disable it. (kudos to [yudhita](https://wordpress.org/support/profile/yudhita) for tip)
 1. Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
 1. If that does not help, please try to create new  API Key for Server w/o restrictions (not to regenerate existing one).
@@ -276,11 +278,17 @@ and custom CSS code added to theme style.css or similar customization:
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
 == Changelog ==
-= 3.0.6 (2015-05-13) =
+= 3.0.6 (2015-05-13/14) =
+* Fix: Prevent Fatal error on PHP<5.3 because required __DIR__ for updater replaced with dirname(__FILE__)
+* Fix: No retrieved or missing videos from some channels so switch `search` to `playlistItems` API call (thanks to @[mmirus](https://wordpress.org/support/profile/mmirus))
+* Add: Embed As Playlist for all resources
+* Add: Clearfix for crappy themes where clearfix does not exists
 * Add: Option to move video title below video (boolean shortcode parameter `titlebelow`)
 * Add: PayPal donate button to settings page
-* Change: Move YouTube Data API Key to plugin settings and add notification to remove YOUTUBE_DATA_API_KEY from wp-config.php (optional)
-* Improved: Updated shortcode explanation in README and Help tab in plugin settings
+* Improved: Move YouTube Data API Key to plugin settings and add notification to remove YOUTUBE_DATA_API_KEY from wp-config.php (optional)
+* Improved: Updated shortcode explanation in README and Help tab in plugin settings.
+* Improved: Better tips for 'Ups, something went wrong' message.
+* Remove: options `Embed standard playlist` and `Show random video` from global settings as this should be off by default
 
 = 3.0.5 (2015-05-11/12) =
 * Fix: Setting back dropdown options with `0` ID does not work on Settings page (Channel as resource to use, Cache timeout, Aspect ratio, What to show, Open link to, Link to)
