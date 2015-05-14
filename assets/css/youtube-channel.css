@@ -5,6 +5,7 @@
 	float: left;
 	clear: both;
 	position: relative;
+	box-sizing: border-box;
 }
 .youtube_channel.responsive {
 	width:100%;

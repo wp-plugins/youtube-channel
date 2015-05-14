@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 4;
+		const DB_VER = 5;
 		const VER = '3.0.6';
 
 		public $plugin_name   = "YouTube Channel";
