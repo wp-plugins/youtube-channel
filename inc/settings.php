@@ -49,7 +49,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[apikey]',
-					'description' => __('Your YouTube Data API Key', 'wpsk'),
+					'description' => sprintf(__('Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)', 'wpsk'), 'https://console.developers.google.com/project'),
 					'class'       => 'regular-text password',
 					'value'       => $this->defaults['apikey'],
 				) // args
@@ -63,7 +63,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[channel]',
-					'description' => __('Your YouTube Channel ID (ID only starting with UC, not full URL)', 'wpsk'),
+					'description' => sprintf(__('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['channel'],
 				) // args
@@ -77,7 +77,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[vanity]",
-					'description' => __('Your YouTube Custom Name (only part after www.youtube.com/c/ instead whole URL)', 'wpsk'),
+					'description' => sprintf(__('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['vanity'],
 				) // args

@@ -226,19 +226,23 @@ function au_youtube_channel_update_routine_5() {
 
 	// get options from DB
 	$defaults = get_option('youtube_channel_defaults');
-	unset($defaults['only_pl']);
+
+	if ( isset($defaults['only_pl']) ) {
+		unset($defaults['only_pl']);
+	}
 
 	if ( defined('YOUTUBE_DATA_API_KEY') ) {
-
 
 		if ( empty($defaults['apikey']) ) {
 			$defaults['apikey'] = YOUTUBE_DATA_API_KEY;
 		}
-		unset($defaults);
 
 	}
 
-	update_option('youtube_channel_defaults', $defaults);
+	if ( isset($defaults) ) {
+		update_option('youtube_channel_defaults', $defaults);
+		unset($defaults);
+	}
 
 	// remove unused keys from DB
 	delete_option('youtube_channel_ver');
