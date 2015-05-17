@@ -37,20 +37,20 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		// General Options
 		$title          = (!empty($instance['title'])) ? esc_attr($instance['title']) : '';
 		$class          = (!empty($instance['class'])) ? esc_attr($instance['class']) : '';
-		$vanity         = ( ! empty($instance['vanity']) ) ? esc_attr($instance['vanity']) : trim($defaults['vanity']);
+		$vanity         = (!empty($instance['vanity']) ) ? esc_attr($instance['vanity']) : trim($defaults['vanity']);
 		$channel        = (!empty($instance['channel'])) ? esc_attr($instance['channel']) : trim($defaults['channel']);
 		$username       = (!empty($instance['username'])) ? esc_attr($instance['username']) : trim($defaults['username']);
 		$playlist       = (!empty($instance['playlist'])) ? esc_attr($instance['playlist']) : trim($defaults['playlist']);
 
-		$resource        = (!empty($instance['resource'])) ? esc_attr($instance['resource']) : 0; // resource to use: channel, favorites, playlist
+		$resource       = (!empty($instance['resource'])) ? esc_attr($instance['resource']) : 0; // resource to use: channel, favorites, playlist
 		$only_pl        = (!empty($instance['only_pl'])) ? esc_attr($instance['only_pl']) : '';
 
-		$cache     = (!empty($instance['cache'])) ? esc_attr($instance['cache']) : trim($defaults['cache']);
+		$cache          = (!empty($instance['cache'])) ? esc_attr($instance['cache']) : trim($defaults['cache']);
 
-		$fetch         = (!empty($instance['fetch'])) ? esc_attr($instance['fetch']) : trim($defaults['fetch']); // items to fetch
-		$num         = (!empty($instance['num'])) ? esc_attr($instance['num']) : trim($defaults['num']); // number of items to show
+		$fetch          = (!empty($instance['fetch'])) ? esc_attr($instance['fetch']) : trim($defaults['fetch']); // items to fetch
+		$num            = (!empty($instance['num'])) ? esc_attr($instance['num']) : trim($defaults['num']); // number of items to show
 
-		$privacy     = (!empty($instance['privacy'])) ? esc_attr($instance['privacy']) : 0;
+		$privacy        = (!empty($instance['privacy'])) ? esc_attr($instance['privacy']) : 0;
 		$random         = (!empty($instance['random'])) ? esc_attr($instance['random']) : 0;
 
 		// Video Settings
@@ -69,7 +69,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 
 		// Content Layout
 		$showtitle      = (!empty($instance['showtitle'])) ? esc_attr($instance['showtitle']) : '';
-		$titlebelow      = (!empty($instance['titlebelow'])) ? esc_attr($instance['titlebelow']) : '';
+		$titlebelow     = (!empty($instance['titlebelow'])) ? esc_attr($instance['titlebelow']) : '';
 		$showdesc       = (!empty($instance['showdesc'])) ? esc_attr($instance['showdesc']) : '';
 		$modestbranding = (!empty($instance['modestbranding'])) ? esc_attr($instance['modestbranding']) : '';
 		$desclen        = (!empty($instance['desclen'])) ? esc_attr($instance['desclen']) : 0;
@@ -226,12 +226,12 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['username']       = strip_tags($new_instance['username']);
 		$instance['playlist']       = strip_tags($new_instance['playlist']);
 		$instance['vanity']         = strip_tags($new_instance['vanity']);
-		$instance['num']         = $new_instance['num'];
-		$instance['resource']        = $new_instance['resource'];
-		$instance['cache']     = $new_instance['cache'];
+		$instance['num']            = $new_instance['num'];
+		$instance['resource']       = $new_instance['resource'];
+		$instance['cache']          = $new_instance['cache'];
 		$instance['only_pl']        = (isset($new_instance['only_pl'])) ? $new_instance['only_pl'] : false;
 		$instance['random']         = (isset($new_instance['random'])) ? $new_instance['random'] : false;
-		$instance['fetch']         = $new_instance['fetch'];
+		$instance['fetch']          = $new_instance['fetch'];
 
 		$instance['showgoto']       = (isset($new_instance['showgoto'])) ? $new_instance['showgoto'] : false;
 		$instance['goto_txt']       = strip_tags($new_instance['goto_txt']);
@@ -239,10 +239,10 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['link_to']        = $new_instance['link_to'];
 
 		$instance['showtitle']      = (isset($new_instance['showtitle'])) ? $new_instance['showtitle'] : false;
-		$instance['titlebelow']      = (isset($new_instance['titlebelow'])) ? $new_instance['titlebelow'] : false;
-		$instance['showdesc']     = (isset($new_instance['showdesc'])) ? $new_instance['showdesc'] : false;
+		$instance['titlebelow']     = (isset($new_instance['titlebelow'])) ? $new_instance['titlebelow'] : false;
+		$instance['showdesc']       = (isset($new_instance['showdesc'])) ? $new_instance['showdesc'] : false;
 		$instance['descappend']     = strip_tags($new_instance['descappend']);
-		$instance['desclen']      = strip_tags($new_instance['desclen']);
+		$instance['desclen']        = strip_tags($new_instance['desclen']);
 		$instance['width']          = strip_tags($new_instance['width']);
 		$instance['responsive']     = (isset($new_instance['responsive'])) ? $new_instance['responsive'] : '';
 
@@ -258,7 +258,7 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		$instance['hideinfo']       = (isset($new_instance['hideinfo'])) ? $new_instance['hideinfo'] : '';
 		$instance['hideanno']       = (isset($new_instance['hideanno'])) ? $new_instance['hideanno'] : '';
 		$instance['themelight']     = (isset($new_instance['themelight'])) ? $new_instance['themelight'] : '';
-		$instance['privacy']     = (isset($new_instance['privacy'])) ? $new_instance['privacy'] : '';
+		$instance['privacy']        = (isset($new_instance['privacy'])) ? $new_instance['privacy'] : '';
 
 		return $instance;
 	}

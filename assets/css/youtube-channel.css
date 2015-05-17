@@ -71,11 +71,6 @@
 .ytc_thumb.ar16_9>span:before {
 padding-bottom: 56.26%;
 }
-.ytc_thumb.ar16_10,
-.ytc_thumb.ar16_10>span,
-.ytc_thumb.ar16_10>span:before {
-padding-bottom: 62.5%;
-}
 .ytc_thumb.ar4_3,
 .ytc_thumb.ar4_3>span,
 .ytc_thumb.ar4_3>span:before {
@@ -89,11 +84,6 @@ padding-bottom: 75%;
 .youtube_channel.responsive .ytc_video_container.ar16_9 .fluid-width-video-wrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
-	height: 0;
-}
-.youtube_channel.responsive .ytc_video_container.ar16_10 .fluid-width-video-wrapper {
-	position: relative;
-	padding-bottom: 62.5%; /* 16:10 */
 	height: 0;
 }
 .youtube_channel.responsive .ytc_video_container.ar4_3 .fluid-width-video-wrapper {

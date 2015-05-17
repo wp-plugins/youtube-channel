@@ -49,7 +49,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[apikey]',
-					'description' => sprintf(__('Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)', 'wpsk'), 'https://console.developers.google.com/project'),
+					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)', 'wpsk'), __('Required'), 'https://console.developers.google.com/project'),
 					'class'       => 'regular-text password',
 					'value'       => $this->defaults['apikey'],
 				) // args
@@ -63,7 +63,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[channel]',
-					'description' => sprintf(__('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), __('Required'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['channel'],
 				) // args
@@ -77,7 +77,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[vanity]",
-					'description' => sprintf(__('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf("[%s] " . __('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), __('Optional'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['vanity'],
 				) // args
@@ -91,7 +91,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[username]",
-					'description' => __('Your YouTube legacy username', 'wpsk'),
+					'description' => sprintf("[%s] %s", __('Optional'), __('Your YouTube legacy username', 'wpsk') ),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['username'],
 				) // args
@@ -105,7 +105,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[playlist]",
-					'description' => __('Enter default playlist ID (not playlist name)', 'wpsk'),
+					'description' => sprintf("[%s] %s", __('Optional'), __('Enter default playlist ID (not playlist name)', 'wpsk') ),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['playlist'],
 				) // args
@@ -131,22 +131,6 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					)
 				) // args
 			);
-			// Playlist Only
-			/*
-			add_settings_field(
-				$this->option_name . 'only_pl', // id
-				__('Embed standard playlist', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
-				$this->slug . '_general', // Page
-				'ytc_general', // section
-				array(
-					'field'       => $this->option_name . "[only_pl]",
-					'description' => __("Enable this option to embed whole playlist instead single video from playlist when you chose playlist as resource", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['only_pl'],
-				) // args
-			);
-			*/
 			// Cache
 			add_settings_field(
 				$this->option_name . 'cache', // id
@@ -232,22 +216,6 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['privacy'],
 				) // args
 			);
-			// Random video
-			/*
-			add_settings_field(
-				$this->option_name . 'random', // id
-				__('Show random video', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
-				$this->slug . '_general', // Page
-				'ytc_general', // section
-				array(
-					'field'       => $this->option_name . "[random]",
-					'description' => __("Get random videos of all fetched from channel or playlist", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['random'],
-				) // args
-			);
-			*/
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
 				'ytc_general', // Setting group
@@ -414,8 +382,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[modestbranding]",
-					'description' => __("Enable this option to hide YouTube logo from playback control bar. Does not work for all videos.
-", 'wpsk'),
+					'description' => __("Enable this option to hide YouTube logo from playback control bar. Does not work for all videos.", 'wpsk'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['modestbranding'],
 				) // args
@@ -833,10 +800,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				case 'ytc_general':
 					$apikey = ( defined('YOUTUBE_DATA_API_KEY') ) ? YOUTUBE_DATA_API_KEY : '';
 					$sanitized['apikey']  = ( ! empty($options['apikey']) ) ? trim($options['apikey']) : $apikey;
-					$sanitized['channel']  = ( ! empty($options['channel']) ) ? trim($options['channel']) : $this->defaults['channel'];
-					$sanitized['vanity']   = ( ! empty($options['vanity']) ) ? trim($options['vanity']) : $this->defaults['vanity'];
-					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : $this->defaults['username'];
-					$sanitized['playlist'] = ( ! empty($options['playlist']) ) ? trim($options['playlist']) : $this->defaults['playlist'];
+					$sanitized['channel']  = ( ! empty($options['channel']) ) ? trim($options['channel']) : ''; //$this->defaults['channel'];
+					$sanitized['vanity']   = ( ! empty($options['vanity']) ) ? trim($options['vanity']) : ''; //$this->defaults['vanity'];
+					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : ''; //$this->defaults['username'];
+					$sanitized['playlist'] = ( ! empty($options['playlist']) ) ? trim($options['playlist']) : ''; //$this->defaults['playlist'];
 					$sanitized['resource'] = ( isset($options['resource']) ) ? intval($options['resource']) : $this->defaults['resource'];
 					// $sanitized['only_pl']  = ( ! empty($options['only_pl']) && $options['only_pl'] ) ? 1 : 0;
 					$sanitized['cache']    = ( isset($options['cache']) ) ? intval($options['cache']) : $this->defaults['cache'];

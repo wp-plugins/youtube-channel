@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.6.2
+Stable tag: 3.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -282,7 +282,20 @@ and custom CSS code added to theme style.css or similar customization:
 
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
+= Your plugin does not support *THIS* or *THAT* =
+
+If you really need that missing feature ASAP, feel free to [contact me](urosevic.net/wordpress/contact/). Select *Subject* option "Quote For New Feature in YouTube Channel", provide detailed explanation of feature you need, also provide some example if there is such, and I'll send you price for implementation.
+
+If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
+
 == Changelog ==
+
+= 3.0.7 (2015-05-17) =
+* Fix: Uncaught TypeError: e(...).fitVids is not a function
+* Change: Remove plugin default Channel ID, Vanity custom name, Legacy username and Playlist ID; leave them empty by default and allow them to be empty parameters; throw error if required value not provided. All this to prevent questions like *Why I see your videos on my website* or *Why my website link to your channel*
+* Cleanup: Deprecated widget toggler for Playlist Only depending on selected Resource
+* Cleanup: Deprecated 16:10 styles
+* Optimize: Minimize admin style for widget layout
 
 = 3.0.6.2 (2015-05-15) =
 * Fix: Fatal error: Cannot unset string offsets in update.php on line 229 (introduced in 3.0.6.1)
