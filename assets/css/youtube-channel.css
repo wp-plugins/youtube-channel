@@ -1,6 +1,3 @@
-.clearfix {
-	clear: both;
-}
 .youtube_channel {
 	float: left;
 	clear: both;
@@ -10,14 +7,14 @@
 .youtube_channel.responsive {
 	width:100%;
 }
+.clearfix:after,
 .widget_youtube-channel:after,
 .youtube_channel:after {
+	content: " "; /* Older browser do not support empty content */
 	visibility: hidden;
 	display: block;
-	font-size: 0;
-	content: " ";
-	clear: both;
 	height: 0;
+	clear: both;
 }
 .youtube_channel .ytc_video_container {
 	float: left;

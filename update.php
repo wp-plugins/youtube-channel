@@ -36,6 +36,10 @@ function au_youtube_channel_update() {
 		// pick up where it left off
 		update_option( 'youtube_channel_db_ver', $current_db_ver );
 	}
+
+	// Update plugin version number
+	update_option('youtube_channel_version', WPAU_YOUTUBE_CHANNEL::VER);
+
 } // END function au_youtube_channel_update()
 
 /**
@@ -180,9 +184,6 @@ function au_youtube_channel_update_routine_3() {
 	// Add empty option key for dismissed notices
 	add_option('youtube_channel_dismissed_notices', '', '', 'no');
 
-	// Update plugin version number
-	update_option('youtube_channel_version', WPAU_YOUTUBE_CHANNEL::VER);
-
 	// Delete all YouTube Channel transients
 	global $_wp_using_ext_object_cache, $wpdb;
 	if ( ! $_wp_using_ext_object_cache ) {
@@ -246,8 +247,5 @@ function au_youtube_channel_update_routine_5() {
 
 	// remove unused keys from DB
 	delete_option('youtube_channel_ver');
-
-	// Update plugin version number
-	update_option('youtube_channel_version', WPAU_YOUTUBE_CHANNEL::VER);
 
 } //END function au_youtube_channel_update_routine_5()
