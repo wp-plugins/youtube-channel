@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.7.1
+Version: 3.0.7.2
 Author URI: http://urosevic.net/
 */
 
@@ -17,7 +17,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	{
 
 		const DB_VER = 8;
-		const VER = '3.0.7.1';
+		const VER = '3.0.7.2';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -297,6 +297,9 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 		}
 
+		/**
+		 * Enqueue frontend scripts and styles
+		 */
 		function enqueue_scripts() {
 			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.min.css', __FILE__), array(), self::VER );
 
@@ -448,23 +451,18 @@ function ytc_mute(event){
 		// Print out YTC block
 		public function output($instance) {
 
-			// print info about API key to admins
-			// and "Coming soon..." for visitors
+			// Error message if no YouTube Data API Key
 			if ( empty($this->defaults['apikey']) ) {
-				if ( current_user_can('manage_options') ) {
-					$output[] = sprintf(
-						__('<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</strong> to work. <a href="%s" target="_blank">Learn more here</a>.', 'youtube-channel'),
-						$this->plugin_name,
-						'http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key'
-					);
 
-				} else {
-					$output[] = "Coming soon...";
-					$output[] = "<!-- YTC ERROR:\n";
-					$output[] = "tip: No YouTube Data API Key provided!\n";
-					$output[] = "-->\n";
-				}
+				$error_msg = sprintf(
+					__('<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</strong> to work. <a href="%s" target="_blank">Learn more here</a>.', 'youtube-channel'),
+					$this->plugin_name,
+					'http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key'
+				);
+
+				$output[] = $this->front_debug($error_msg);
 				return $output;
+
 			}
 
 			// 1) Get resource from widget/shortcode
@@ -493,10 +491,7 @@ function ytc_mute(event){
 					}
 					// Now check has Playlist ID set or throw error
 					if ( $playlist == "" ) {
-						$output[] = "Comming soon...";
-						$output[] = "<!-- YTC ERROR:\n";
-						$output[] = "tip: Playlist selected as resource but no Playlist ID provided!\n";
-						$output[] = "-->\n";
+						$output[] = $this->front_debug("Playlist selected as resource but no Playlist ID provided!");
 						return $output;
 					}
 					break;
@@ -514,13 +509,11 @@ function ytc_mute(event){
 					}
 					// Now check is Channel ID set or throw error
 					if ( $channel == '' ) {
-						$output[] = "Comming soon...";
-						$output[] = "<!-- YTC ERROR:\n";
 						if ( $resource == 1 ) { $resource_name = 'Favourited videos'; }
 						elseif ( $resource == 3 ) { $resource_name = 'Liked videos'; }
 						else { $resource_name = 'Channel (User uploads)'; }
-						$output[] = sprintf('tip: %s selected as resource but no Channel ID provided!', $resource_name) . "\n";
-						$output[] = "-->\n";
+						$error_msg = sprintf('%s selected as resource but no Channel ID provided!', $resource_name);
+						$output[] = $this->front_debug($error_msg);
 						return $output;
 					}
 
@@ -549,7 +542,7 @@ function ytc_mute(event){
 					break;
 				default: // Channel
 					$resource_name = 'channel';
-					$resource_id = preg_replace('/^UC/', 'UU', $channel); //$channel;
+					$resource_id = preg_replace('/^UC/', 'UU', $channel);
 			}
 
 			// Start output array
@@ -623,9 +616,19 @@ function ytc_mute(event){
 					}
 				}
 
+				// Prevent further checks if we have WP Error or empty record even after fallback
+				if ( is_wp_error($json_output) ) {
+					$output[] = $this->front_debug( $json_output->get_error_message() );
+					return $output;
+				}
+				elseif ( empty($json_output) ) {
+					$output[] = $this->front_debug(sprintf(__('We have empty record for this feed. Please read <a href="%s" target="_blank">FAQ</a> and if that does not help, contact <a href="%s" target="_blank">support</a>.'), 'https://wordpress.org/plugins/youtube-channel/faq/', 'https://wordpress.org/support/plugin/youtube-channel'));
+					return $output;
+				}
+
 				// Predefine `max_items` to prevent undefined notices
 				$max_items = 0;
-				if ( ! is_wp_error($json_output) && is_object($json_output) && !empty($json_output->items) ) {
+				if ( is_object($json_output) && ! empty($json_output->items) ) {
 					// Sort by date uploaded
 					$json_entry = $json_output->items;
 
@@ -643,39 +646,41 @@ function ytc_mute(event){
 
 				if ($max_items == 0) {
 
-					// is this WP error?
-					if ( is_wp_error($json_output) ) {
-						$error_string = $json_output->get_error_message();
-						$output[] = $error_string;
-						unset($error_string);
-					} else {
-						$output[] = __("Oops, something went wrong.", 'youtube-channel');
-						// append YouTube DATA API error reason as comment
-						if ( ! empty($json_output) && is_object($json_output) && !empty($json_output->error->errors) ) {
-							$output[] = "<!-- YTC ERROR:\n";
-							$output[] = 'domain: ' . $json_output->error->errors[0]->domain . "\n";
-							$output[] = 'reason: ' . $json_output->error->errors[0]->reason . "\n";
-							$output[] = 'message: ' . $json_output->error->errors[0]->message . "\n";
+					// append YouTube DATA API error reason as comment
+					if ( ! empty($json_output) && is_object($json_output) && ! empty($json_output->error->errors) ) {
 
-							if ( $json_output->error->errors[0]->reason == 'playlistNotFound' ) {
-								if ( $resource_name == 'playlist' ) {
-									$output[] = "tip: Please check did you set existing Playlist ID. We should display videos from {$resource_name} videos, but YouTube does not recognize {$resource_id} as existing and public playlist.\n";
-								} else {
-									$output[] = "tip: Please check did you set proper Channel ID. We should display videos from {$resource_name} videos, but YouTube does not recognize your channel ID {$channel} as existing and public resource.\n";
-								}
-							}
-							elseif ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
-								$output[] = "tip: Double check YouTube Data API Key on General plugin tab and make sure it`s correct. Check https://wordpress.org/plugins/youtube-channel/installation/\n";
-							}
-							elseif ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
-								$output[] = "tip: Check YouTube Data API Key restrictions, empty cache if enabled and append in browser address bar parameter ?ytc_force_recache=1\n";
-							}
-							elseif ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
-								$output[] = "tip: You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Check https://wordpress.org/plugins/youtube-channel/faq/\n";
-							}
-							$output[] = "-->\n";
+						// Error went in fetch_youtube_feed()
+						if ( $json_output->error->errors[0]->reason == 'wpError' ) {
+							$error_msg = $json_output->error->errors[0]->message;
 						}
-					}
+						// Playlist error from Google API
+						elseif ( $json_output->error->errors[0]->reason == 'playlistNotFound' ) {
+							if ( $resource_name == 'playlist' ) {
+								$error_msg = "Please check did you set existing <em>Playlist ID</em>. You set to show videos from {$resource_name}, but YouTube does not recognize <strong>{$resource_id}</strong> as existing and public playlist.";
+							} else {
+								$error_msg = "Please check did you set proper <em>Channel ID</em>. You set to show videos from {$resource_name}, but YouTube does not recognize <strong>{$channel}</strong> as existing and public channel.";
+							}
+						}
+						// Invalid YouTube Data API Key
+						elseif ( $json_output->error->errors[0]->reason == 'keyInvalid' ) {
+							$error_msg = sprintf(__("Double check <em>YouTube Data API Key</em> on <em>General</em> plugin tab and make sure it's correct. Read <a href=\"%s\" target=\"_blank\">Installation</a> document."), 'https://wordpress.org/plugins/youtube-channel/installation/');
+						}
+						// Restricted access YouTube Data API Key
+						elseif ( $json_output->error->errors[0]->reason == 'ipRefererBlocked' ) {
+							$error_msg = "Check <em>YouTube Data API Key</em> restrictions, empty cache if enabled by appending in browser address bar parameter <em>?ytc_force_recache=1</em>";
+						}
+						// (deprecated?) Non existing Channel ID set
+						elseif ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
+							$error_msg = sprintf(__("You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Read <a href=\"%s\" target=\"_blank\">FAQ</a> document."), 'https://wordpress.org/plugins/youtube-channel/faq/');
+						}
+
+					} else { // ELSE ! empty($json_output->error->errors)
+
+						$error_msg = "Unrecognized error experienced.";
+
+					} // END ! empty($json_output->error->errors)
+
+					$output[] = $this->front_debug($error_msg);
 
 				} else { // ELSE if ($max_items == 0)
 
@@ -751,17 +756,62 @@ function ytc_mute(event){
 			$wprga = array(
 				'timeout' => 5 // five seconds only
 			);
-			$response = wp_remote_get($feed_url, $wprga);
-			$json = wp_remote_retrieve_body( $response );
 
-			// free some memory
+			$response = wp_remote_get($feed_url, $wprga);
+
+			// If we have WP error, make JSON with error
+			if ( is_wp_error($response) ) {
+
+				$json = "{\"error\":{\"errors\":[{\"reason\":\"wpError\",";
+				$json .= "\"message\":\"{$response->get_error_message()}\",";
+				$json .= "\"domain\":\"wpRemoteGet\"}]}}";
+
+			} else {
+
+				$json = wp_remote_retrieve_body( $response );
+
+			}
+
+			// Mree some memory
 			unset($response);
 
 			return $json;
 
 		} // END function fetch_youtube_feed($resource_id, $items)
 
-		// function to calculate height by width and ratio
+
+		/**
+		 * Print explanation of error for administrators (users with capability manage_options)
+		 * and hidden message for lower users and visitors
+		 * @param  string $message Error message
+		 * @return string          FOrmatted message for error
+		 */
+		function front_debug($message) {
+
+			// Show visible error to admin, Oops message to visitors and lower members
+			if ( is_user_logged_in() && current_user_can('manage_options') ) {
+
+				$output = "<p class=\"ytc_error\"><strong>YTC ERROR:</strong> $message</p>";
+
+			} else {
+
+				$output = __("Oops, something went wrong.", 'youtube-channel');
+				$output .= "<!-- YTC ERROR:\n";
+				$output .= strip_tags($message);
+				$output .= "\n-->\n";
+
+			}
+
+			return $output;
+
+		} // END function debug($message)
+
+		/**
+		 * Calculate height by provided width and aspect ratio
+		 * @param  integer $width Width in pixels
+		 * @param  integer $ratio Selected aspect ratio (1 for 4:3, other for 16:9)
+		 * @return integer        Calculated height in pixels
+		 */
 		function height_ratio($width=306, $ratio) {
 
 			switch ($ratio)
