@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
 Author: Aleksandar Urošević
-Version: 3.0.7.2
+Version: 3.0.7.3
 Author URI: http://urosevic.net/
 */
 
@@ -16,8 +16,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 8;
-		const VER = '3.0.7.2';
+		const DB_VER = 9;
+		const VER = '3.0.7.3';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -41,6 +41,10 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			add_action( 'plugins_loaded', array($this, 'maybe_update') );
 
 			$this->defaults = self::defaults();
+
+			// TinyMCE AddOn
+			add_filter('mce_external_plugins', array($this, 'mce_external_plugins'), 998 );
+			add_filter("mce_buttons", array($this, "mce_buttons"), 999 );
 
 			if ( is_admin() ) {
 
@@ -185,7 +189,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			global $pagenow;
 
 			// Enqueue only on widget page
-			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' ) return;
+			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' ) return;
 
 			wp_enqueue_script(
 				$this->plugin_slug . '-admin',
@@ -621,6 +625,10 @@ function ytc_mute(event){
 					$output[] = $this->front_debug( $json_output->get_error_message() );
 					return $output;
 				}
+				elseif ( isset($json_output->items) && sizeof($json_output->items) == 0 ) {
+					$output[] = $this->front_debug(sprintf(__("You have set to display videos from %s [resource list ID: %s], but there have no public videos in that resouce."), $this->resource_nice_name($resource), $resource_id ));
+					return $output;
+				}
 				elseif ( empty($json_output) ) {
 					$output[] = $this->front_debug(sprintf(__('We have empty record for this feed. Please read <a href="%s" target="_blank">FAQ</a> and if that does not help, contact <a href="%s" target="_blank">support</a>.'), 'https://wordpress.org/plugins/youtube-channel/faq/', 'https://wordpress.org/support/plugin/youtube-channel'));
 					return $output;
@@ -629,6 +637,7 @@ function ytc_mute(event){
 				// Predefine `max_items` to prevent undefined notices
 				$max_items = 0;
 				if ( is_object($json_output) && ! empty($json_output->items) ) {
+
 					// Sort by date uploaded
 					$json_entry = $json_output->items;
 
@@ -644,6 +653,8 @@ function ytc_mute(event){
 					}
 				}
 
+				$resource_nice_name = $this->resource_nice_name($resource);
+
 				if ($max_items == 0) {
 
 					// append YouTube DATA API error reason as comment
@@ -656,9 +667,9 @@ function ytc_mute(event){
 						// Playlist error from Google API
 						elseif ( $json_output->error->errors[0]->reason == 'playlistNotFound' ) {
 							if ( $resource_name == 'playlist' ) {
-								$error_msg = "Please check did you set existing <em>Playlist ID</em>. You set to show videos from {$resource_name}, but YouTube does not recognize <strong>{$resource_id}</strong> as existing and public playlist.";
+								$error_msg = "Please check did you set existing <em>Playlist ID</em>. You set to show videos from {$resource_nice_name}, but YouTube does not recognize <strong>{$resource_id}</strong> as existing and public playlist.";
 							} else {
-								$error_msg = "Please check did you set proper <em>Channel ID</em>. You set to show videos from {$resource_name}, but YouTube does not recognize <strong>{$channel}</strong> as existing and public channel.";
+								$error_msg = "Please check did you set proper <em>Channel ID</em>. You set to show videos from {$resource_nice_name}, but YouTube does not recognize <strong>{$channel}</strong> as existing and public channel.";
 							}
 						}
 						// Invalid YouTube Data API Key
@@ -1202,6 +1213,15 @@ JS;
 			return $youtube_domain;
 		} // end function youtube_domain
 
+		function resource_nice_name($resource_id) {
+			if ( $resource_id == 0 ) { $resource_nice_name = 'Channel (User uploads)'; }
+			elseif ( $resource_id == 1 ) { $resource_nice_name = 'Favourited videos'; }
+			elseif ( $resource_id == 2 ) { $resource_nice_name = 'Liked videos'; }
+			elseif ( $resource_id == 3 ) { $resource_nice_name = 'Liked videos'; }
+			else { $resource_nice_name = 'Unknown resource'; }
+			return $resource_nice_name;
+		}
+
 		function clean_playlist_id($playlist) {
 			if ( substr($playlist,0,4) == "http" ) {
 				// if URL provided, extract playlist ID
@@ -1211,6 +1231,32 @@ JS;
 			}
 			return $playlist;
 		} // end function clean_playlist_id
+
+
+		/**
+		 * Register TinyMCE button for YTC
+		 * @param  array $plugins Unmodified set of plugins
+		 * @return array          Set of TinyMCE plugins with YTC addition
+		 */
+		function mce_external_plugins($plugins) {
+
+			$plugins['youtube_channel'] = plugin_dir_url(__FILE__) . 'inc/tinymce/plugin.min.js';
+
+			return $plugins;
+
+		} // END function mce_external_plugins($plugins)
+
+		/**
+		 * Append TinyMCE button for YTC at the end of row 1
+		 * @param  array $buttons Unmodified set of buttons
+		 * @return array          Set of TinyMCE buttons with YTC addition
+		 */
+		function mce_buttons($buttons) {
+
+			$buttons[] = 'youtube_channel_shortcode';
+			return $buttons;
+
+		} // END function mce_buttons($buttons)
 
 		function generate_debug_json()
 		{
