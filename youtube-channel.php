@@ -620,13 +620,16 @@ function ytc_mute(event){
 					}
 				}
 
+				// Get resource nice name based on selected resource
+				$resource_nice_name = $this->resource_nice_name($resource);
+
 				// Prevent further checks if we have WP Error or empty record even after fallback
 				if ( is_wp_error($json_output) ) {
 					$output[] = $this->front_debug( $json_output->get_error_message() );
 					return $output;
 				}
 				elseif ( isset($json_output->items) && sizeof($json_output->items) == 0 ) {
-					$output[] = $this->front_debug(sprintf(__("You have set to display videos from %s [resource list ID: %s], but there have no public videos in that resouce."), $this->resource_nice_name($resource), $resource_id ));
+					$output[] = $this->front_debug(sprintf(__("You have set to display videos from %s [resource list ID: %s], but there have no public videos in that resouce."), $resource_nice_name, $resource_id ));
 					return $output;
 				}
 				elseif ( empty($json_output) ) {
@@ -652,8 +655,6 @@ function ytc_mute(event){
 						$items = array_slice($json_entry, 0, $num);
 					}
 				}
-
-				$resource_nice_name = $this->resource_nice_name($resource);
 
 				if ($max_items == 0) {
 
@@ -783,13 +784,12 @@ function ytc_mute(event){
 
 			}
 
-			// Mree some memory
+			// Free some memory
 			unset($response);
 
 			return $json;
 
 		} // END function fetch_youtube_feed($resource_id, $items)
-
 
 		/**
 		 * Print explanation of error for administrators (users with capability manage_options)

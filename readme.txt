@@ -8,15 +8,17 @@ Stable tag: 3.0.7.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Show video thumbnails or playable blocks of recent videos from YouTube Channel or Playlist.
+Show video thumbnails or playable blocks of recent videos from YouTube Playlist, Channel (User Uploads), Liked or Favourited videos.
 
 == Description ==
 
-When you need to display sidebar widget with latest video from some YouTube channel or playlist, you can use customisable `YouTube Channel` plugin.
+When you need to display sidebar widget with latest or random video from some YouTube channel or playlist, use plugin **YouTube Channel**!
 
-Simply insert widget to sidebar, set channel name and if you wish leave all other options on default. You will get latest video from chosen YouTube channel embedded in sidebar widget, with link to channel on the bottom of the widget. If you wish to use playlist instead of channel, just set playlist ID and injoy!
+Simply insert widget to sidebar or shortcode to content, set Channel or Playlist ID, select resource to use and if you wish leave all other options on default. You will get latest video from chosen YouTube channel or playlist embedded on location of widget/shortcode, with optional link to channel at the bottom of the YTC block.
 
-If you like this extension and you find it useful, please rate it on the right side.
+If you like our plugin and you find it useful, please [write review and rate it](https://wordpress.org/support/view/plugin-reviews/youtube-channel).
+
+For manual set of videos from YouTube check out [Easy YouTube Gallery](https://wordpress.org/plugins/easy-youtube-gallery/).
 
 = Features =
 * Display latest videos from YouTube Channel (resources are sorted in reverse chronological order based on the date they were created) or videos naturaly sorted from Favorited Videos, Liked Videos and Playlist
@@ -27,18 +29,20 @@ If you like this extension and you find it useful, please rate it on the right s
 * Enhanced Privacy
 * Choose to display video as thumbnail (default), HTML5 (iframe) or HTML5 Asynchronous (iframe2)
 * Thumbnail mode opens video in lightbox
-* Custom caching timeout
-* Optimized data feeds
+* Custom feed caching timeout
 * Optional video autoplay with optional muted audio
-* Show customized link to channel below videos
+* Show customized link to channel/vanity/legacy username below videos
+* Final look is highly customizable thanks to predefined classes for each element of YTC block!
 
-= Notice =
+= Requirements =
 
 For fully functional plugin you need to have PHP 5.3 or newer! If you experience issues on older PHP, we can't help you as we don't have access to such old development platform.
 
+If you have an old version of WordPress bundled with jQuery library older than v1.7, some aspects of plugin may not work, as we do not reinclude jQuery library.
+
 = Styling =
 
-You can use `style.css` from theme to style `YouTube Video` widget content.
+You can use `style.css` from theme or other custom location to additionaly style/tweak look of YTC block. You can stick to classes:
 
 * `.widget_youtube-channel` – class of whole widget (parent for widget title and YTC block)
 * `.youtube_channel` – YTC block wrapper class. Additional classes are available:
@@ -62,7 +66,6 @@ You can use `style.css` from theme to style `YouTube Video` widget content.
 * Video description for videos from playlist does not work.
 * Removing YouTube logo from playback control bar does not work for all videos
 * Async HTML5 video does not work for 2nd same video on same page (two YTC blocks set to Async HTML5)
-* Thumbnail and opening video in lightbox does not work with `Responz` theme by `Thenify.me` if you wish to hide related videos, because this theme uses original `Magnific Popup` library that does not support `rel` parameter.
 
 If WordFence or other malware scan tool detect YouTube Channel fule youtube-channel.php as potential risk because `base64_encode()` and `base64_decode()` functions, remember that we use this two functions to store and restore JSON feeds to transient cache, so potential detection is false positive.
 
@@ -137,6 +140,8 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
   * `1` Channel page
   * `0` Legacy username page
 
+*Please note, to enhance plugin functionality, we can change some shortcode parameters in future.*
+
 == Installation ==
 
 You can use the built in installer and upgrader, or you can install the plugin manually.
@@ -155,16 +160,16 @@ Learn more about [Obtaining authorization credentials](https://developers.google
 
 [youtube http://www.youtube.com/watch?v=8NlXV77QO8U]
 
-1. Visit [Google Developers Console](https://console.developers.google.com/project)
+1. Visit [Google Developers Console](https://console.developers.google.com/project).
 1. If you don't have any project, create new one. Name it so you can recognize it (for example **My WordPress Website**).
-1. Select your new project and from LHS sidebar expand group **APIs & auth**, then select item **APIs**
-1. Locate and click **YouTube Data API** under **YouTube API** section
-1. Click **Enable API** button
-1. When you get enabled YouTube Data API in your project, click **Credentials** item from LHS menu **APIs & auth**
-1. Click **Create New Key** button and select **Server Key**
-1. Leave empty or enter IP of your website. If you get message **Oops, something went wrong.** make sure you set proper IP, or leave any restriction.
-1. Click **Create** button
-1. Copy newly created **API Key**
+1. Select your new project and from LHS sidebar expand group **APIs & auth**, then select item **APIs**.
+1. Locate and click **YouTube Data API** under **YouTube API** section.
+1. Click **Enable API** button.
+1. When you get enabled YouTube Data API in your project, click **Credentials** item from LHS menu **APIs & auth**.
+1. Click **Create New Key** button and select **Server Key**.
+1. Leave empty or enter IP of your website. If you get message **Oops, something went wrong.** make sure you set proper IP, or do not set any restriction.
+1. Click **Create** button.
+1. Copy newly created **API Key**.
 
 When you generate your own YouTube Data API Key, from your **Dashboard** go to **Settings** -> **YouTube Channel** -> **General** and paster key in to field **YouTube Data API Key**.
 
@@ -179,17 +184,13 @@ Please folllow [Installation](https://wordpress.org/plugins/youtube-channel/inst
 
 = I set everything correct but receiveing 'Oops, something went wrong' message =
 
-Right click that message on your website, click *Inspect Element*, expand tag with class *youtube_channel* and look for HTML comment below it, message will look like this:
+Login as user with Administrator role and you'll see YTC ERROR message with explanation what's wrong. Examples:
 
-`<!-- YTC ERROR:
-Please check did you set proper Channel ID. You set to show videos from channel, but YouTube does not recognize MyCoolLegacyName as existing and public channel.
--->`
+> **YTC ERROR:** Please check did you set proper Channel ID. You set to show videos from channel, but YouTube does not recognize MyCoolLegacyName as existing and public channel.
 
 Do exactly what message says - check and correct Channel ID in default settings/widget/shortcode.
 
-`<!-- YTC ERROR:
-Check YouTube Data API Key restrictions, empty cache if enabled by appending in browser address bar parameter ?ytc_force_recache=1
--->`
+> **YTC ERROR** Check YouTube Data API Key restrictions, empty cache if enabled by appending in browser address bar parameter ?ytc_force_recache=1
 
 1. Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
 1. If that does not help, please try to create new API Key for Server w/o restrictions (not to regenerate existing one).
