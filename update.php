@@ -249,3 +249,72 @@ function au_youtube_channel_update_routine_5() {
 	delete_option('youtube_channel_ver');
 
 } //END function au_youtube_channel_update_routine_5()
+
+/**
+ * Remove deprecated and migrate modified options
+ */
+function au_youtube_channel_update_routine_10() {
+
+	// get options from DB
+	$defaults = get_option('youtube_channel_defaults');
+
+	// Set default `link_to` and migrate
+	if ( ! isset($defaults['link_to']) ) {
+		$defaults['link_to'] = 'none';
+	} else {
+		switch ($defaults['link_to']) {
+			case 2:
+				$defaults['link_to'] = 'vanity';
+				break;
+			case 1:
+				$defaults['link_to'] = 'channel';
+				break;
+			case 0:
+				$defaults['link_to'] = 'legacy';
+				break;
+			default:
+				$defaults['link_to'] = 'none';
+		}
+	}
+
+	// Show title migration
+	if ( isset($defaults['showtitle']) ) {
+		if ( isset($defaults['titlebelow']) ) {
+			$defaults['showtitle'] = 'below';
+			unset($defaults['titlebelow']);
+		} else {
+			$defaults['showtitle'] = 'above';
+		}
+	} else {
+		$defaults['showtitle'] = 'none';
+	}
+
+	// Remove deprecated
+	$deprecated_options = array(
+		'vidqty',
+		'maxrnd',
+		'getrnd',
+		'random',
+		'only_pl',
+		'fixyt',
+		'showvidesc',
+		'videsclen',
+		'descappend',
+		'titlebelow',
+		'showgoto',
+		'userchan',
+		'fixnoitem',
+		'use_res'
+	);
+	foreach ( $deprecated_options as $deprecated ) {
+		if ( isset($defaults[$deprecated]) ) {
+			unset($defaults[$deprecated]);
+		}
+	}
+
+	if ( isset($defaults) ) {
+		update_option('youtube_channel_defaults', $defaults);
+		unset($defaults);
+	}
+
+} //END function au_youtube_channel_update_routine_10()

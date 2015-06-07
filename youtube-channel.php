@@ -2,22 +2,22 @@
 /*
 Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
-Description: <a href="widgets.php">Widget</a> that display latest video thumbnail or iframe (HTML5) video from YouTube Channel, Liked Videos, Favourites or Playlist.
+Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
 Author: Aleksandar Urošević
-Version: 3.0.7.3
+Version: 3.0.8
 Author URI: http://urosevic.net/
 */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
+if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 {
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 9;
-		const VER = '3.0.7.3';
+		const DB_VER = 10;
+		const VER = '3.0.8';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -32,9 +32,13 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$this->plugin_url = plugin_dir_url(__FILE__);
 			load_plugin_textdomain( $this->plugin_slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
-			// debug JSON
-			if ( ! empty($_GET['ytc_debug_json_for']) )
+			// Generate debug JSON
+			if ( ! empty($_GET['ytc_debug_json_for']) ) {
 				$this->generate_debug_json();
+			}
+
+			// Clear all YTC cache
+			add_action( 'wp_ajax_ytc_clear_all_cache', array(&$this, 'clear_all_cache') );
 
 			// Activation hook and maybe update trigger
 			register_activation_hook( __FILE__, array($this, 'activate') );
@@ -43,8 +47,8 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$this->defaults = self::defaults();
 
 			// TinyMCE AddOn
-			add_filter('mce_external_plugins', array($this, 'mce_external_plugins'), 998 );
-			add_filter("mce_buttons", array($this, "mce_buttons"), 999 );
+			add_filter( 'mce_external_plugins', array($this, 'mce_external_plugins'), 998 );
+			add_filter( 'mce_buttons', array($this, "mce_buttons"), 999 );
 
 			if ( is_admin() ) {
 
@@ -55,7 +59,7 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 				add_action( 'admin_notices', array($this, 'admin_notices') );
 
 				// Enqueue scripts and styles for Widgets page
-				add_action('admin_enqueue_scripts', array($this, 'widget_scripts'));
+				add_action( 'admin_enqueue_scripts', array($this, 'widget_scripts') );
 
 			} else { // ELSE if ( is_admin() )
 
@@ -105,31 +109,31 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 				'ratio'          => 3, // 3 - 16:9, 1 - 4:3 (deprecated: 2 - 16:10)
 				'width'          => 306,
-				'responsive'     => true,
-				'display'        => 'thumbnail', // thumbnail, iframe, iframe2 (deprecated: chromeless, object)
+				'responsive'     => 1,
+				'display'        => 'thumbnail', // thumbnail, iframe, iframe2, playlist (deprecated: chromeless, object)
 				'themelight'     => 0,
 				'controls'       => 0,
 				'autoplay'       => 0,
 				'autoplay_mute'  => 0,
 				'norel'          => 0,
 
-				'showtitle'      => 0,
+				'showtitle'      => 'none',
 				'showdesc'       => 0,
 				'desclen'        => 0,
-				'descappend'     => '&hellip;',
 				'modestbranding' => 0,
 				'hideanno'       => 0,
 				'hideinfo'       => 0,
 
 				'goto_txt'       => 'Visit our channel',
-				'showgoto'       => 0,
 				'popup_goto'     => 0, // 0 same window, 1 new window JS, 2 new window target
-				'link_to'        => 0 // 0 legacy username, 1 channel, 2 vanity
+				'link_to'        => 'none' // 0 legacy username, 1 channel, 2 vanity
 			);
 
 			add_option('youtube_channel_version', self::VER, '', 'no');
 			add_option('youtube_channel_db_ver', self::DB_VER, '', 'no');
 			add_option($this->plugin_option, $init, '', 'no');
+
+			return $init;
 
 		} // END public function init_options()
 
@@ -153,7 +157,9 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		 */
 		function admin_init() {
 
-			add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link') );
+			add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link') );
+			// add row to plugin page
+			add_filter( 'plugin_row_meta', array($this, 'add_plugin_meta_links'), 10, 2 );
 
 			require_once( 'inc/settings.php' );
 
@@ -182,24 +188,41 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		} // END function add_settings_link()
 
 		/**
+		 * Add link to official plugin page
+		 */
+		function add_plugin_meta_links($links, $file) {
+
+			if ($file === 'youtube-channel/youtube-channel.php') {
+				return array_merge(
+					$links,
+					array( sprintf( '<a href="https://wordpress.org/support/plugin/youtube-channel" target="_blank">%s</a>', __('Support') ) )
+				);
+			}
+			return $links;
+
+		}
+		/**
 		 * Enqueue admin scripts and styles for widget customization
 		 */
 		function widget_scripts() {
 
 			global $pagenow;
 
-			// Enqueue only on widget page
-			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' ) return;
+			// Enqueue only on widget or post pages
+			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' ) {
+				return;
+			}
 
+			/*
 			wp_enqueue_script(
 				$this->plugin_slug . '-admin',
 				plugins_url( 'assets/js/admin.min.js', __FILE__ ),
 				array('jquery'),
 				self::VER
-			);
+			);*/
 			wp_enqueue_style(
 				$this->plugin_slug . '-admin',
-				plugins_url( 'assets/css/admin.min.css', __FILE__ ),
+				plugins_url( 'assets/css/admin.css', __FILE__ ),
 				array(),
 				self::VER
 			);
@@ -305,36 +328,88 @@ if ( !class_exists('WPAU_YOUTUBE_CHANNEL') )
 		 * Enqueue frontend scripts and styles
 		 */
 		function enqueue_scripts() {
-			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.min.css', __FILE__), array(), self::VER );
 
-			// enqueue magnific-popup
-			wp_enqueue_script( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), self::VER, true );
-			wp_enqueue_style( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__), array(), self::VER );
-			wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.min.js', __FILE__), array(), self::VER, true );
-		} // end function enqueue_scripts
-
-		function footer_scripts() {
-			// Print JS only if we have set YTC array
-			if ( ! empty($_SESSION['ytc_html5_js']) )
-			{
-				?>
-<!-- YouTube Channel v<?php echo self::VER; ?> -->
-<script type="text/javascript">
-var tag = document.createElement('script');
-tag.src = "//www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-function onYouTubeIframeAPIReady() {
-<?php echo $_SESSION['ytc_html5_js']; ?>
-}
-function ytc_mute(event){
-	event.target.mute();
-}
-</script>
-<?php
+			// Do we need our own lightbox?
+			if ( empty($this->defaults['nolightbox']) ) {
+				wp_enqueue_style( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__), array(), self::VER );
+				wp_enqueue_script( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), self::VER, true );
 			}
 
-		} // eof footer_scripts
+			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.css', __FILE__), array(), self::VER );
+			wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.min.js', __FILE__), array('jquery'), self::VER, true );
+
+		} // end function enqueue_scripts
+
+		/**
+		 * Generate comlete inline JavaScript code that conains
+		 * Async video load and lightbox init for thumbnails
+		 * @return string Compressed JavaScript code
+		 */
+		function footer_scripts() {
+
+			$js = '';
+
+			// Print YT API only if we have set ytc_html5_js in $_SESSION
+			if ( ! empty($_SESSION['ytc_html5_js']) ) {
+				$js .= "
+					if (!window['YT']) {
+						var tag=document.createElement('script');
+						tag.src=\"//www.youtube.com/iframe_api\";
+						var firstScriptTag=document.getElementsByTagName('script')[0];
+						firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);
+					}
+					function ytc_create_ytplayers(){
+						{$_SESSION['ytc_html5_js']}
+					}
+					// Create YouTube players if API is loaded
+					try {
+						ytc_create_ytplayers();
+					} catch (e) {
+						// console.log('API not loaded and will create player using onYouTubeIframeAPIReady');
+					}
+					function onYouTubeIframeAPIReady(){
+						ytc_create_ytplayers();
+					}
+					function ytc_mute(event){event.target.mute();}
+				";
+			} // END if ( ! empty($_SESSION['ytc_html5_js']) )
+
+			// Print Magnific Popup if not disabled
+			if ( empty($this->defaults['nolightbox']) ) {
+				$js .= "
+					jQuery(document).ready(function($){
+						$('.ytc-lightbox').magnificPopupAU({
+							disableOn:700,
+							type:'iframe',
+							mainClass:'mfp-fade',
+							removalDelay:160,
+							preloader:false,
+							fixedContentPos:false
+						});
+					});
+				";
+			} // END if ( empty($this->defaults['nolightbox']) )
+
+			if ( ! empty($js) ) {
+				$js = "
+				<!-- YouTube Channel 3 -->
+				<script type=\"text/javascript\">
+				$js
+				</script>\n
+				";
+
+				if ( WP_DEBUG ) {
+					// Uncompressed code if WP debug is enabled
+					$js = str_replace(';var', ";\nvar", $js);
+					$js = str_replace("\t", "", $js);
+					// $js = str_replace(',', ",\n\t", $js);
+					echo $js;
+				} else {
+					echo trim(preg_replace('/[\t\r\n]+/', '', $js));
+				}
+			}
+
+		} // END function footer_scripts()
 
 		public function shortcode($atts) {
 
@@ -373,18 +448,16 @@ function ytc_mute(event){
 						'mute'           => $instance['autoplay_mute'],
 						'norel'          => $instance['norel'],
 
-						'showtitle'      => $instance['showtitle'],
-						'titlebelow'     => 0, // move title below video
+						'showtitle'      => $instance['showtitle'], // none, above, below
 						'showdesc'       => $instance['showdesc'], // ex showvidesc
 						'nobrand'        => ( ! empty($instance['modestbranding']) ) ? $instance['modestbranding'] : '0',
 						'desclen'        => $instance['desclen'], // ex videsclen
 						'noinfo'         => $instance['hideinfo'],
 						'noanno'         => $instance['hideanno'],
 
-						'goto'           => $instance['showgoto'],
 						'goto_txt'       => $instance['goto_txt'],
 						'popup'          => $instance['popup_goto'],
-						'link_to'        => $instance['link_to'],
+						'link_to'        => $instance['link_to'], // none, vanity, channel, legacy
 
 						'class'          => ( ! empty($instance['class']) ) ? $instance['class'] : ''
 						),
@@ -393,7 +466,7 @@ function ytc_mute(event){
 			);
 
 			// backward compatibility for show -> display shortcode parameter
-			if ( $show !== $display && $show !== $instance['display'] ) {
+			if ( ! empty($show) && $show !== $display && $show !== $instance['display'] ) {
 				$display = $show;
 			}
 			// backward compatibility for use_res -> resource shortcode parameter
@@ -408,8 +481,7 @@ function ytc_mute(event){
 			$instance['channel']        = $channel;
 			$instance['username']       = $username;
 			$instance['playlist']       = $playlist;
-			$instance['resource']       = $resource; // resource: 0 channel, 1 favorites, 2 playlist
-			$instance['only_pl']        = $only_pl; // use embedded playlist - false by default
+			$instance['resource']       = $resource; // resource: 0 channel, 1 favorites, 2 playlist, 3 liked
 			$instance['cache']          = $cache; // in seconds, def 5min - settings?
 			$instance['privacy']        = $privacy; // enhanced privacy
 
@@ -422,7 +494,7 @@ function ytc_mute(event){
 			$instance['ratio']          = $ratio; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
 			$instance['width']          = $width; // 306
 			$instance['responsive']     = $responsive; // enable responsivenes?
-			$instance['display']        = $display; // thumbnail, iframe, iframe2
+			$instance['display']        = $display; // thumbnail, iframe, iframe2, playlist
 			$instance['no_thumb_title'] = $no_thumb_title; // hide tooltip for thumbnails
 
 			$instance['themelight']     = $themelight; // use light theme, dark by default
@@ -433,7 +505,6 @@ function ytc_mute(event){
 
 			// Content Layout
 			$instance['showtitle']      = $showtitle; // show video title, disabled by default
-			$instance['titlebelow']     = $titlebelow; // show video title, disabled by default
 			$instance['showdesc']       = $showdesc; // show video description, disabled by default
 			$instance['modestbranding'] = $nobrand; // hide YT logo
 			$instance['desclen']        = $desclen; // cut video description, number of characters
@@ -441,10 +512,9 @@ function ytc_mute(event){
 			$instance['hideanno']       = $noanno; // hide annotations, false by default
 
 			// Link to Channel
-			$instance['showgoto']       = $goto; // show goto link, disabled by default
 			$instance['goto_txt']       = $goto_txt; // text for goto link - use settings
 			$instance['popup_goto']     = $popup; // open channel in: 0 same window, 1 javascript new, 2 target new
-			$instance['link_to']        = $link_to; // open channel in: 0 same window, 1 javascript new, 2 target new
+			$instance['link_to']        = $link_to; // link to: none, vanity, legacy, channel
 
 			// Customization
 			$instance['class']          = $class; // custom additional class for container
@@ -530,6 +600,9 @@ function ytc_mute(event){
 			if ( ! empty($instance['responsive']) ) {
 				$class .= ' responsive';
 			}
+			if ( ! empty($instance['display']) ) {
+				$class .= " ytc_display_{$instance['display']}";
+			}
 
 			switch ($resource) {
 				case 1: // Favourites
@@ -554,11 +627,11 @@ function ytc_mute(event){
 
 			$output[] = "<div class=\"youtube_channel {$class}\">";
 
-			if ( $instance['only_pl'] ) { // print standard playlist
+			if ( $instance['display'] == 'playlist' ) { // Insert as Embedded playlist
 
 				$output = array_merge( $output, self::embed_playlist($resource_id, $instance) );
 
-			} else { // videos from channel, favourites, liked or playlist
+			} else { // Individual videos from channel, favourites, liked or playlist
 
 				// Get max items for random video
 				$fetch = $instance['fetch'];
@@ -574,7 +647,7 @@ function ytc_mute(event){
 				if ( $instance['cache'] > 0 ) {
 
 					// generate feed cache key for caching time
-					$cache_key = 'ytc_'.md5($resource_key).'_'.$instance['cache'];
+					$cache_key = 'ytc_' . md5($resource_key) . '_' . $instance['cache'];
 
 					if ( ! empty($_GET['ytc_force_recache']) ) {
 						delete_transient($cache_key);
@@ -658,7 +731,7 @@ function ytc_mute(event){
 
 				if ($max_items == 0) {
 
-					// append YouTube DATA API error reason as comment
+					// Append YouTube DATA API error reason as comment
 					if ( ! empty($json_output) && is_object($json_output) && ! empty($json_output->error->errors) ) {
 
 						// Error went in fetch_youtube_feed()
@@ -712,7 +785,7 @@ function ytc_mute(event){
 						$num = sizeof($items);
 					}
 
-					for ($y = 1; $y <= $num; ++$y) {
+					for ( $y = 1; $y <= $num; ++$y ) {
 						if ( ! empty($instance['random']) ) {
 
 							$random_item = mt_rand( 0, (count($items)-1) );
@@ -725,7 +798,7 @@ function ytc_mute(event){
 							$item = $items[ $y - 1 ];
 						}
 
-						// print single video block
+						// Generate single video block
 						$output = array_merge( $output, $this->ytc_print_video($item, $instance, $y) );
 					}
 					// Free some memory
@@ -735,8 +808,9 @@ function ytc_mute(event){
 
 			} // single playlist or ytc way
 
-			if ( ! empty($instance['showgoto']) ) {
-				$output = array_merge( $output, $this->ytc_channel_link($instance) ); // insert link to channel on bootom of widget
+			// Append link to channel on bootom of the widget
+			if ( ! empty($instance['link_to']) && $instance['link_to'] != 'none' ) {
+				$output = array_merge( $output, $this->ytc_channel_link($instance) );
 			}
 
 			$output[] = '</div><!-- .youtube_channel -->';
@@ -839,7 +913,7 @@ function ytc_mute(event){
 		} // END function height_ratio($width=306, $ratio)
 
 		/**
-		 * Generate link to YouTUbe channel/user
+		 * Generate link to YouTube channel/user
 		 * @param  array $instance widget or shortcode settings
 		 * @return array           components prepared for output
 		 */
@@ -849,49 +923,43 @@ function ytc_mute(event){
 			$output = array();
 
 			// do we need to show goto link?
-			if ( $instance['showgoto'] ) {
+			if ( $instance['link_to'] != 'none' ) {
 
-				$link_to  = $instance['link_to'];
+				$goto_url = "https://www.youtube.com/";
 
-				$channel  = trim($instance['channel']);
-				$username = trim($instance['username']);
+				switch ($instance['link_to']) {
+					case 'vanity':
+						$vanity   = trim($instance['vanity']);
+						if ( empty($vanity) ) {
+							return array("<!-- YTC ERROR: Selected Vanity custom URL to be linked but no Vanity Name provided! -->");
+						}
+						// sanity vanity content (strip all in front of last slash to cleanup vanity ID only)
+						if ( ! empty( $vanity ) && strpos($vanity, 'youtube.com') !== false ) {
+							$vanity = preg_replace('/^.*\//', '', $vanity);
+						}
+						$goto_url .= "c/$vanity";
+						break;
 
-				// sanity vanity content (strip all in front of last slash to cleanup vanity ID only)
-				$vanity   = trim($instance['vanity']);
-				if ( ! empty( $vanity ) && strpos($vanity, 'youtube.com') !== false )
-					$vanity = preg_replace('/^.*\//', '', $vanity);
+					case 'legacy':
+						$username = trim($instance['username']);
+						if ( empty($username) ) {
+							return array("<!-- YTC ERROR: Selected Legacy username to be linked but no Legacy username provided! -->");
+						}
+						$goto_url .= "user/$username";
+						break;
+
+					case 'channel':
+						$channel  = trim($instance['channel']);
+						if ( empty($channel) ) {
+							return array("<!-- YTC ERROR: Selected Channel page to be linked but no Channel ID provided! -->");
+						}
+						$goto_url .= "channel/$channel";
+						break;
+				}
 
 				$goto_txt = trim($instance['goto_txt']);
 				if ( $goto_txt == "" ) {
 					$goto_txt = __('Visit our YouTube channel', 'youtube-channel');
-				}
-
-				if ( ! empty($username) ) {
-					$goto_txt = str_replace('%username%', $username, $goto_txt);
-				}
-				if ( ! empty($channel) ) {
-					$goto_txt = str_replace('%channel%', $channel, $goto_txt);
-				}
-				if ( ! empty( $vanity ) ) {
-					$goto_txt = str_replace('%vanity%', $vanity, $goto_txt);
-				}
-
-				$goto_url = "https://www.youtube.com/";
-				if ( $link_to == '2' ) { // vanity
-					if ( empty($vanity) ) {
-						return array("<!-- YTC ERROR: Selected Vanity custom URL to be linked but no Vanity Name provided! -->");
-					}
-					$goto_url .= "c/$vanity";
-				} else if ( $link_to == '0') { // legacy username
-					if ( empty($username) ) {
-						return array("<!-- YTC ERROR: Selected Legacy username to be linked but no Legacy username provided! -->");
-					}
-					$goto_url .= "user/$username";
-				} else { // channel (default)
-					if ( empty($channel) ) {
-						return array("<!-- YTC ERROR: Selected Channel page to be linked but no Channel ID provided! -->");
-					}
-					$goto_url .= "channel/$channel";
 				}
 
 				$newtab = __("in new window/tab", 'youtube-channel');
@@ -917,40 +985,35 @@ function ytc_mute(event){
 			return $output;
 		} // end function ytc_channel_link
 
-		/* function to print video block */
+
+		/**
+		 * Generate output for single video block
+		 * @param  object $item     Video object from JSON
+		 * @param  array  $instance Settings from widget or shortcode
+		 * @param  int    $y        Order number of video
+		 * @return array            Prepared single video block as array to concatenate
+		 */
 		function ytc_print_video($item, $instance, $y) {
 
-			// get hideinfo, autoplay and controls settings
-			// where this is used?
-			$hideinfo       = $instance['hideinfo'];
-			$autoplay       = $instance['autoplay'];
-			$autoplay_mute  = $instance['autoplay_mute'];
-			$controls       = $instance['controls'];
-			$norel          = $instance['norel'];
-			$class          = $instance['class'];
-			$modestbranding = $instance['modestbranding'];
+			// Calculate width and height
+			if ( empty($instance['width']) ) {
+				$instance['width'] = $this->defaults['width'];
+			}
+			$height = $this->height_ratio($instance['width'], $instance['ratio']);
 
-			// set width and height
-			$width  = ( empty($instance['width']) ) ? 306 : $instance['width'];
-			$height = $this->height_ratio($width, $instance['ratio']);
+			// How to display videos?
+			if ( empty($instance['display']) ) {
+				$instance['display'] = 'thumbnail';
+			}
 
-			// calculate image height based on width for 4:3 thumbnail
-			$imgfixedheight = $width / 4 * 3;
-
-			// which type to show
-			$display    = (empty($instance['display'])) ? 'object' : $instance['display'];
-			$hideanno   = $instance['hideanno'];
-			$themelight = $instance['themelight'];
-			/* end of video settings */
-
-			// Prepare Video ID from Resource
-			$yt_id = $item->snippet->resourceId->videoId;
-			$yt_url    = "v/$yt_id";
+			// Extract details about video from Resource
+			$yt_id    = $item->snippet->resourceId->videoId;
+			$yt_title = $item->snippet->title;
+			$yt_date  = $item->snippet->publishedAt;
 			$yt_thumb  = "//img.youtube.com/vi/$yt_id/0.jpg"; // zero for HD thumb
-			$yt_video  = "//www.youtube.com/watch?v=" . $yt_id;
 
-			$yt_title  = $item->snippet->title;
-			$yt_date   = $item->snippet->publishedAt;
+			// Enhanced privacy?
+			$youtube_domain = $this->youtube_domain($instance);
 
 			switch ($y) {
 				case 1:
@@ -966,74 +1029,67 @@ function ytc_mute(event){
 					break;
 			}
 
-			// set proper class for responsive thumbs per selected aspect ratio
-			switch ($instance['ratio'])
-			{
-				case 1: $arclass = 'ar4_3'; break;
-				default: $arclass = 'ar16_9';
+			// Set proper class for responsive thumbs per selected aspect ratio
+			$arclass = $this->arclass($instance);
+
+			$output[] = "<div class=\"ytc_video_container ytc_video_{$y} ytc_video_{$vnumclass} ${arclass}\" style=\"width:{$instance['width']}px\">";
+
+			// Show video title above video?
+			if ( ! empty($instance['showtitle']) && $instance['showtitle'] == 'above' ) {
+				$output[] = "<h3 class=\"ytc_title ytc_title_above\">{$yt_title}</h3>";
 			}
-			$output[] = "<div class=\"ytc_video_container ytc_video_{$y} ytc_video_{$vnumclass} ${arclass}\" style=\"width:{$width}px\">";
-
-			// show video title above video?
-			if ( ! empty($instance['showtitle']) && empty($instance['titlebelow']) ) {
-				$output[] = "<h3 class=\"ytc_title\">{$yt_title}</h3>";
-			}
-
-			// Define object ID
-			$ytc_vid = "ytc_{$yt_id}";
-
-			// Enhanced privacy?
-			$youtube_domain = $this->youtube_domain($instance);
 
 			// Print out video
-			if ( $display == "iframe" ) {
-				if ( empty($usepl) ) {
-					$yt_url = $yt_id;
-				}
+			if ( $instance['display'] == "iframe" ) {
 
 				// Start wrapper for responsive item
 				if ( $instance['responsive'] ) {
 					$output[] = '<div class="fluid-width-video-wrapper">';
 				}
 
-				$output[] = "<iframe title=\"YouTube Video Player\" width=\"{$width}\" height=\"{$height}\" src=\"//{$youtube_domain}/embed/{$yt_url}?wmode=opaque";
-				if ( $controls ) $output[] = "&amp;controls=0";
-				if ( $hideinfo ) $output[] = "&amp;showinfo=0";
-				if ( $autoplay ) $output[] = "&amp;autoplay=1";
-				if ( $hideanno ) $output[] = "&amp;iv_load_policy=3";
-				if ( $themelight ) $output[] = "&amp;theme=light";
-				if ( $modestbranding ) $output[] = "&amp;modestbranding=1";
-				// disable related videos
-				if ( $norel ) $output[] = "&amp;rel=0";
+				$output[] = "<iframe title=\"YouTube Video Player\" width=\"{$instance['width']}\" height=\"{$height}\" src=\"//{$youtube_domain}/embed/{$yt_id}?wmode=opaque";
 
-				$output[] = "\" style=\"border:0;\" allowfullscreen id=\"{$ytc_vid}\"></iframe>";
+				if ( ! empty($instance['norel']) ) $output[] = "&amp;rel=0"; // disable related videos
+				if ( ! empty($instance['controls']) ) $output[] = "&amp;controls=0";
+				if ( ! empty($instance['hideinfo']) ) $output[] = "&amp;showinfo=0";
+				if ( ! empty($instance['autoplay']) ) $output[] = "&amp;autoplay=1";
+				if ( ! empty($instance['hideanno']) ) $output[] = "&amp;iv_load_policy=3";
+				if ( ! empty($instance['themelight']) ) $output[] = "&amp;theme=light";
+				if ( ! empty($instance['modestbranding']) ) $output[] = "&amp;modestbranding=1";
+
+				$output[] = "\" style=\"border:0;\" allowfullscreen id=\"ytc_{$yt_id}\"></iframe>";
 
 				// Close wrapper for responsive item
 				if ( $instance['responsive'] ) {
 					$output[] = '</div>';
 				}
 
-			} else if ( $display == "iframe2" ) {
+			} else if ( $instance['display'] == "iframe2" ) {
 
 				// youtube API async
-				if ( empty($usepl) ) $yt_url = $yt_id;
+				$js_vars = '';
+				$js_vars .= ( ! empty($instance['norel']) ) ? "rel:0," : '';
+				$js_vars .= ( ! empty($instance['autoplay']) ) ? "autoplay:1," : '';
+				$js_vars .= ( ! empty($instance['hideinfo']) ) ? "showinfo:0," : '';
+				$js_vars .= ( ! empty($instance['controls']) ) ? "controls:0," : '';
+				$js_vars .= ( ! empty($instance['themelight']) ) ? "theme:'light'," : '';
+				$js_vars .= ( ! empty($instance['modestbranding']) ) ? "modestbranding:1," : '';
+				$js_vars .= "wmmode:'opaque'";
+				$js_vars = rtrim($js_vars, ",");
 
-				$js_rel            = ( $norel ) ? "rel: 0," : '';
-				$js_controls       = ( $controls ) ? "controls: 0," : '';
-				$js_showinfo       = ( $hideinfo ) ? "showinfo: 0," : '';
-				$js_iv_load_policy = ( $hideanno ) ? "iv_load_policy: 3," : '';
-				$js_theme          = ( $themelight ) ? "theme: 'light'," : '';
-				$js_autoplay       = ( $autoplay ) ? "autoplay: 1," : '';
-				$js_modestbranding = ( $modestbranding ) ? "modestbranding: 1," : '';
-				$js_autoplay_mute  = ( $autoplay && $autoplay_mute ) ? "events: {'onReady': ytc_mute}" : '';
-				$js_player_id      = str_replace('-', '_', $yt_url);
+				$js_end = '';
+				$js_end .= ( ! empty($instance['hideanno']) ) ? "iv_load_policy:3," : '';
+				$js_end .= ( ! empty($instance['autoplay']) && ! empty($instance['autoplay_mute']) ) ? "events:{'onReady':ytc_mute}," : '';
+				$js_end = rtrim($js_end, ',');
+
+				$js_player_id      = str_replace('-', '_', $yt_id);
 
 				// Start wrapper for responsive item
 				if ( $instance['responsive'] ) {
 					$output[] = '<div class="fluid-width-video-wrapper">';
 				}
 
-				$output[] = '<div id="ytc_player_'.$js_player_id.'"></div>';
+				$output[] = "<div id=\"ytc_player_{$js_player_id}\"></div>";
 
 				// Close wrapper for responsive item
 				if ( $instance['responsive'] ) {
@@ -1041,37 +1097,18 @@ function ytc_mute(event){
 				}
 
 				$site_domain = $_SERVER['HTTP_HOST'];
-				$ytc_html5_js = <<<JS
-					var ytc_player_$js_player_id;
-					ytc_player_$js_player_id = new YT.Player('ytc_player_$js_player_id', {
-						height: '$height',
-						width: '$width',
-						videoId: '$yt_url',
-						enablejsapi: 1,
-						playerVars: {
-							$js_autoplay $js_showinfo $js_controls $js_theme $js_rel $js_modestbranding wmmode: 'opaque'
-						},
-						origin: '$site_domain',
-						$js_iv_load_policy $js_autoplay_mute
-					});
-JS;
+				$ytc_html5_js = "var ytc_player_{$js_player_id};";
+				$ytc_html5_js .= "ytc_player_{$js_player_id}=new YT.Player('ytc_player_{$js_player_id}',{height:'{$height}',width:'{$instance['width']}',";
+				$ytc_html5_js .= "videoId:'{$yt_id}',enablejsapi:1,playerVars:{{$js_vars}},origin:'{$site_domain}',{$js_end}});";
 
-			// prepare JS for footer
-			if ( empty($_SESSION['ytc_html5_js']) )
-				$_SESSION['ytc_html5_js'] = $ytc_html5_js;
-			else
-				$_SESSION['ytc_html5_js'] .= $ytc_html5_js;
+				// prepare JS for footer
+				if ( empty($_SESSION['ytc_html5_js']) ) {
+					$_SESSION['ytc_html5_js'] = $ytc_html5_js;
+				} else {
+					$_SESSION['ytc_html5_js'] .= $ytc_html5_js;
+				}
 
 			} else { // default is thumbnail
-
-				// set proper class for responsive thumbs per selected aspect ratio
-				switch ($instance['ratio']) {
-					case 1:
-						$arclass = 'ar4_3';
-						break;
-					default:
-						$arclass = 'ar16_9';
-				}
 
 				// Do we need tooltip for thumbnail?
 				if ( empty($instance['no_thumb_title']) ) {
@@ -1079,37 +1116,32 @@ JS;
 				}
 
 				$p = '';
-				if ( $norel ) $p .= '&amp;rel=0';
-				if ( $modestbranding ) $p .= "&amp;modestbranding=1";
-				if ( $controls ) $p .= "&amp;controls=0";
+				if ( empty($instance['nolightbox']) ) {
+					if ( ! empty($instance['norel']) ) $p .= '&amp;rel=0';
+					if ( ! empty($instance['modestbranding']) ) $p .= "&amp;modestbranding=1";
+					if ( ! empty($instance['controls']) ) $p .= "&amp;controls=0";
+				}
 
 				// Do we need thumbnail w/ or w/o tooltip
-				if ( empty($instance['no_thumb_title']) ) {
-					$output[] = "<a href=\"${yt_video}${p}\" title=\"{$yt_title}\" class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" title=\"{$title}\" id=\"{$ytc_vid}\"></span></a>";
-				} else {
-					$output[] = "<a href=\"${yt_video}${p}\" class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" id=\"{$ytc_vid}\"></span></a>";
-				}
+				$tag_title = ( empty($instance['no_thumb_title']) ) ? $tag_title = "title=\"{$yt_title}\"" : "";
+				$output[] = "<a href=\"//${youtube_domain}/watch?v=${yt_id}${p}\" ${tag_title} class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" ${tag_title} id=\"ytc_{$yt_id}\"></span></a>";
 
 			} // what to show conditions
 
 			// show video title below video?
-			if ( ! empty($instance['showtitle']) && ! empty($instance['titlebelow']) ) {
-				$output[] = "<h3 class=\"ytc_title\">{$yt_title}</h3>";
+			if ( ! empty($instance['showtitle']) && $instance['showtitle'] == 'below' ) {
+				$output[] = "<h3 class=\"ytc_title ytc_title_below\">{$yt_title}</h3>";
 			}
 
 			// do we need to show video description?
-			if ( $instance['showdesc'] ) {
+			if ( ! empty($instance['showdesc']) ) {
 
 				$video_description = $item->snippet->description;
 				$etcetera = '';
 				if ( $instance['desclen'] > 0 ) {
 					if ( strlen($video_description) > $instance['desclen'] ) {
 						$video_description = substr($video_description, 0, $instance['desclen']);
-						if ( $instance['descappend'] ) {
-							$etcetera = $instance['descappend'];
-						} else {
-							$etcetera = '&hellip;';
-						}
+						$etcetera = '&hellip;';
 					}
 				}
 
@@ -1127,19 +1159,22 @@ JS;
 		/* function to print standard playlist embed code */
 		function embed_playlist($resource_id, $instance) {
 
-			$width = ( empty($instance['width']) ) ? 306 : $instance['width'];
-			$height = self::height_ratio($width, $instance['ratio']);
-			$autoplay = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
-			$theme = (empty($instance['themelight'])) ? '' : '&theme=light';
+			$width          = ( empty($instance['width']) ) ? 306 : $instance['width'];
+			$height         = self::height_ratio($width, $instance['ratio']);
+			$autoplay       = (empty($instance['autoplay'])) ? '' : '&autoplay=1';
+			$theme          = (empty($instance['themelight'])) ? '' : '&theme=light';
 			$modestbranding = (empty($instance['modestbranding'])) ? '' : '&modestbranding=1';
-			$rel = (empty($instance['norel'])) ? '' : '&rel=0';
+			$rel            = (empty($instance['norel'])) ? '' : '&rel=0';
 
 			// enhanced privacy
 			$youtube_domain = $this->youtube_domain($instance);
-
-			$output[] = "<div class=\"ytc_video_container ytc_video_1 ytc_video_single ytc_playlist_only\">";
+			$arclass = $this->arclass($instance);
+			$output[] = "<div class=\"ytc_video_container ytc_video_1 ytc_video_single ytc_playlist_only {$arclass}\">";
+			$output[] = "<div class=\"fluid-width-video-wrapper\">";
 			$output[] = "<iframe src=\"//{$youtube_domain}/embed/videoseries?list={$resource_id}{$autoplay}{$theme}{$modestbranding}{$rel}\"";
-			$output[] = " width=\"{$width}\" height=\"{$height}\" frameborder=\"0\"></iframe></div>";
+			$output[] = " width=\"{$width}\" height=\"{$height}\" frameborder=\"0\"></iframe>";
+			$output[] = "</div><!-- .fluid-width-video-wrapper -->";
+			$output[] = "</div><!-- .ytc_video_container -->";
 
 			return $output;
 
@@ -1208,11 +1243,44 @@ JS;
 			return $out;
 		} // end function cache_time
 
-		function youtube_domain($instance) {
-			$youtube_domain = ( !empty($instance['privacy']) ) ? 'www.youtube-nocookie.com' : 'www.youtube.com';
-			return $youtube_domain;
-		} // end function youtube_domain
 
+		/**
+		 * Method to delete all YTC transient caches
+		 * @return string Report message about success or failed purge cache
+		 */
+		function clear_all_cache() {
+
+			global $wpdb;
+
+			$ret = $wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM $wpdb->options
+					 WHERE option_name LIKE %s
+					 OR option_name LIKE %s
+					",
+					'_transient_timeout_ytc_%',
+					'_transient_ytc_%'
+				)
+			);
+
+			if ( false === $ret ) {
+				echo "Oops, we did not cleared any YouTube Channel cache because some error occured";
+			} else {
+				if ( $ret == 0 ) {
+					echo "Congratulations! You can chill, there is no YouTube Channel caches.";
+				} else {
+					echo "Success! We cleared $ret row/s with YouTube Channel caches.";
+				}
+			}
+			exit();
+
+		} // END function clear_all_cache()
+
+		/**
+		 * Return nice name for resource by provided resource ID
+		 * @param  integer $resource_id Resource ID
+		 * @return string               Resource nice name
+		 */
 		function resource_nice_name($resource_id) {
 			if ( $resource_id == 0 ) { $resource_nice_name = 'Channel (User uploads)'; }
 			elseif ( $resource_id == 1 ) { $resource_nice_name = 'Favourited videos'; }
@@ -1222,16 +1290,14 @@ JS;
 			return $resource_nice_name;
 		}
 
-		function clean_playlist_id($playlist) {
-			if ( substr($playlist,0,4) == "http" ) {
-				// if URL provided, extract playlist ID
-				$playlist = preg_replace('/.*list=PL([A-Za-z0-9\-\_]*).*/','$1', $playlist);
-			} else if ( substr($playlist,0,2) == 'PL' ) {
-				$playlist = substr($playlist,2);
-			}
-			return $playlist;
-		} // end function clean_playlist_id
+		function youtube_domain($instance) {
+			$youtube_domain = ( !empty($instance['privacy']) ) ? 'www.youtube-nocookie.com' : 'www.youtube.com';
+			return $youtube_domain;
+		} // end function youtube_domain
 
+		function arclass($instance) {
+			return ( ! empty($instance['ratio']) && $instance['ratio'] == 1) ? 'ar4_3' : 'ar16_9';
+		} // END function arclass()
 
 		/**
 		 * Register TinyMCE button for YTC
@@ -1263,57 +1329,61 @@ JS;
 			global $wp_version;
 
 			// get widget ID from parameter
-			$for = $_GET['ytc_debug_json_for'];
+			$for = trim($_GET['ytc_debug_json_for']);
 
 			if ( $for == 'global' ) {
 				// global settings
 				$options = get_option('youtube_channel_defaults');
 
-				if ( ! is_array($options) )
+				if ( ! is_array($options) ) {
 					return;
+				}
 
-				// remove YouTube Data API Key from config JSON
+				// Remove YouTube Data API Key from config JSON
 				unset($options['apikey']);
 
 			} else {
-				// for widget
-				// prepare option name and widget ID
-				$option_name = "widget_".substr($for,0,strrpos($for,"-"));
-				$widget_id = substr($for,strrpos($for,"-")+1);
+				// widget
+				$widget_id = (int)$for;
+				$for = "youtube-channel-{$for}";
 
 				// get YTC widgets options
-				$widget_options = get_option($option_name);
+				$widget_options = get_option('widget_youtube-channel');
 
-				if ( ! is_array($widget_options[$widget_id]) )
+				if ( ! is_array($widget_options[ $widget_id ]) ) {
 					return;
+				}
 
-				$options = $widget_options[$widget_id];
+				$options = $widget_options[ $widget_id ];
 				unset ($widget_options);
 			}
 
 			// prepare debug data with settings of current widget
 			$data = array_merge(
 				array(
-					'date'      => date("r"),
-					'server'    => $_SERVER["SERVER_SOFTWARE"],
-					'php'       => PHP_VERSION,
-					'wp'        => $wp_version,
-					'ytc'       => self::VER,
-					'url'       => get_site_url(),
-					'for' => $for
+					'date'   => date("r"),
+					'server' => $_SERVER['SERVER_SOFTWARE'],
+					'php'    => PHP_VERSION,
+					'wp'     => $wp_version,
+					'ytc'    => self::VER,
+					'url'    => get_site_url(),
+					'for'    => $for
 				),
 				$options
 			);
 
-			// return JSON file
-			header('Content-disposition: attachment; filename='.$for.'.json');
+			// Construct descriptive filename
+			$date = date('ymdHis');
+			$json_filename = "ytc3_{$_SERVER['HTTP_HOST']}_{$for}_{$date}.json";
+			// Return JSON file
+			header("Content-disposition: attachment; filename={$json_filename}");
 			header('Content-Type: application/json');
 			echo json_encode($data);
 
-			// destroy vars
-			unset($data,$options,$widget_id,$option_name,$for);
+			// Destroy vars
+			unset($data, $options, $widget_id, $option_name, $for, $date, $json_filename);
 
-			// exit now, because we need only debug data in JSON file, not settings or any other page
+			// Exit now, because we need only debug data in JSON file, not settings or any other page
 			exit;
 		}
 	} // end class

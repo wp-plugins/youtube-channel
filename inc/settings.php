@@ -235,7 +235,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Width
 			add_settings_field(
 				$this->option_name . 'width', // id
-				__('Width', 'wpsk'), // Title
+				__('Initial Width', 'wpsk'), // Title
 				array(&$this, 'settings_field_input_number'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
@@ -268,20 +268,6 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					)
 				) // args
 			);
-			// Responsive
-			add_settings_field(
-				$this->option_name . 'responsive', // id
-				__('Responsive video', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
-				$this->slug . '_video', // Page
-				'ytc_video', // section
-				array(
-					'field'       => $this->option_name . "[responsive]",
-					'description' => __("Enable this option to make all YTC videos responsive. Please note, this option will set all videos full width relative to parent container, and disable more than one video per row.", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['responsive'],
-				) // args
-			);
 			// Display
 			add_settings_field(
 				$this->option_name . 'display', // id
@@ -291,15 +277,44 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[display]",
-					// 'label' => __('Ratio:', 'wpsk'),
-					'description' => __('Select aspect ratio for displayed video', 'wpsk'),
+					'description' => __('Choose how to embed video block', 'wpsk'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['display'],
 					'items'       => array(
 						'thumbnail' => 'Thumbnail',
 						'iframe'    => 'HTML5 (iframe)',
-						'iframe2'   => 'HTML5 (iframe) Asynchronous'
+						'iframe2'   => 'HTML5 (iframe) Asynchronous',
+						'playlist'  => 'Embedded Playlist',
+						// 'gallery'   => 'Gallery'
 					)
+				) // args
+			);
+			// Responsive
+			add_settings_field(
+				$this->option_name . 'responsive', // id
+				__('Enable Responsive', 'wpsk'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[responsive]",
+					'description' => __("Enable this option to make YTC videos and thumbnails responsive by default. Please note, this option will set videos and thumbnail to full width relative to parent container, and disable more than one video per row.", 'wpsk'),
+					'class'       => 'checkbox',
+					'value'       => $this->defaults['responsive'],
+				) // args
+			);
+			// No Lightbox
+			add_settings_field(
+				$this->option_name . 'nolightbox', // id
+				__('Disable Lightbox', 'wpsk'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[nolightbox]",
+					'description' => __("Enable this option to disable built-in lightbox for thumbnails.", 'wpsk'),
+					'class'       => 'checkbox',
+					'value'       => ( isset($this->defaults['nolightbox']) ) ? $this->defaults['nolightbox'] : '',
 				) // args
 			);
 			// Light Theme
@@ -387,6 +402,34 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['modestbranding'],
 				) // args
 			);
+			// Hide Annotations
+			add_settings_field(
+				$this->option_name . 'hideanno', // id
+				__('Hide video annotations', 'wpsk'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[hideanno]",
+					'description' => __("Enable this option to hide video annotations (custom text set by uploader over video during playback)", 'wpsk'),
+					'class'       => 'checkbox',
+					'value'       => $this->defaults['hideanno'],
+				) // args
+			);
+			// Hide Video Info
+			add_settings_field(
+				$this->option_name . 'hideinfo', // id
+				__('Hide video info', 'wpsk'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[hideinfo]",
+					'description' => __("Enable this option to hide informations about video before play start (video title and uploader in overlay)", 'wpsk'),
+					'class'       => 'checkbox',
+					'value'       => $this->defaults['hideinfo'],
+				) // args
+			);
 			// --- Register setting Video so $_POST handling is done ---
 			register_setting(
 				'ytc_video', // Setting group
@@ -407,14 +450,19 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			add_settings_field(
 				$this->option_name . 'showtitle', // id
 				__('Show video title', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
+				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_content', // Page
 				'ytc_content', // section
 				array(
 					'field'       => $this->option_name . "[showtitle]",
-					'description' => __("Enable this option to display title of video", 'wpsk'),
-					'class'       => 'checkbox',
+					'description' => __("Select should we and where display title of video", 'wpsk'),
+					'class'       => 'regular-text',
 					'value'       => $this->defaults['showtitle'],
+					'items'       => array(
+						'none'    => 'Hide title',
+						'above'  => 'Above video/thumbnail',
+						'below' => 'Below video/thumbnail',
+					)
 				) // args
 			);
 			// Video Description
@@ -448,48 +496,6 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'std'         => 0
 				) // args
 			);
-			// Et cetera string
-			add_settings_field(
-				$this->option_name . 'descappend', // id
-				__('Et cetera string', 'wpsk'), // Title
-				array(&$this, 'settings_field_input_text'), // Callback
-				$this->slug . '_content', // Page
-				'ytc_content', // section
-				array(
-					'field'       => $this->option_name . "[descappend]",
-					'description' => __('Indicator for shortened video description (default: …)', 'wpsk'),
-					'class'       => 'small-text',
-					'value'       => $this->defaults['descappend'],
-				) // args
-			);
-			// Hide Annotations
-			add_settings_field(
-				$this->option_name . 'hideanno', // id
-				__('Hide video annotations', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
-				$this->slug . '_content', // Page
-				'ytc_content', // section
-				array(
-					'field'       => $this->option_name . "[hideanno]",
-					'description' => __("Enable this option to hide video annotations (custom text set by uploader over video during playback)", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['hideanno'],
-				) // args
-			);
-			// Hide Video Info
-			add_settings_field(
-				$this->option_name . 'hideinfo', // id
-				__('Hide video info', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
-				$this->slug . '_content', // Page
-				'ytc_content', // section
-				array(
-					'field'       => $this->option_name . "[hideinfo]",
-					'description' => __("Enable this option to hide informations about video before play start (video title and uploader in overlay)", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['hideinfo'],
-				) // args
-			);
 
 			// --- Register setting Content so $_POST handling is done ---
 			register_setting(
@@ -507,32 +513,25 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				$this->slug . '_link' // Page Name
 			);
 			// --- Add Fields to video section ---
-			// Show link to channel
+			// Link to...
 			add_settings_field(
-				$this->option_name . 'showgoto', // id
-				__('Show link to channel', 'wpsk'), // Title
-				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->option_name . 'link_to', // id
+				__('Link to...', 'wpsk'), // Title
+				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_link', // Page
 				'ytc_link', // section
 				array(
-					'field'       => $this->option_name . "[showgoto]",
-					'description' => __("Enable this option to show customized link to channel at the bottom of YTC block", 'wpsk'),
-					'class'       => 'checkbox',
-					'value'       => $this->defaults['showgoto'],
-				) // args
-			);
-			// Visit channel text
-			add_settings_field(
-				$this->option_name . 'goto_txt', // id
-				__('Text for Visit channel link', 'wpsk'), // Title
-				array(&$this, 'settings_field_input_text'), // Callback
-				$this->slug . '_link', // Page
-				'ytc_link', // section
-				array(
-					'field'       => $this->option_name . "[goto_txt]",
-					'description' => __('Use placeholder %channel% or %vanity% to insert channel/nice name', 'wpsk'),
+					'field'       => $this->option_name . "[link_to]",
+					// 'label' => __('Ratio:', 'wpsk'),
+					'description' => __('Set where link will lead visitors', 'wpsk'),
 					'class'       => 'regular-text',
-					'value'       => $this->defaults['goto_txt'],
+					'value'       => $this->defaults['link_to'],
+					'items'       => array(
+						'none'    => 'Hide link',
+						'vanity'  => 'Vanity custom URL',
+						'channel' => 'Channel page URL',
+						'legacy'  => 'Legacy username page'
+					)
 				) // args
 			);
 			// Open in...
@@ -555,26 +554,21 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					)
 				) // args
 			);
-			// Link to...
+			// Visit channel text
 			add_settings_field(
-				$this->option_name . 'link_to', // id
-				__('Link to...', 'wpsk'), // Title
-				array(&$this, 'settings_field_select'), // Callback
+				$this->option_name . 'goto_txt', // id
+				__('Text for Visit channel link', 'wpsk'), // Title
+				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_link', // Page
 				'ytc_link', // section
 				array(
-					'field'       => $this->option_name . "[link_to]",
-					// 'label' => __('Ratio:', 'wpsk'),
-					'description' => __('Set where link will lead visitors', 'wpsk'),
+					'field'       => $this->option_name . "[goto_txt]",
 					'class'       => 'regular-text',
-					'value'       => $this->defaults['link_to'],
-					'items'       => array(
-						'2' => 'Vanity custom URL',
-						'1' => 'Channel page URL',
-						'0' => 'Legacy username page'
-					)
+					'description' => 'Set default title for link',
+					'value'       => $this->defaults['goto_txt'],
 				) // args
 			);
+
 			// --- Register setting Content so $_POST handling is done ---
 			register_setting(
 				'ytc_link', // Setting group
@@ -805,44 +799,42 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['username'] = ( ! empty($options['username']) ) ? trim($options['username']) : ''; //$this->defaults['username'];
 					$sanitized['playlist'] = ( ! empty($options['playlist']) ) ? trim($options['playlist']) : ''; //$this->defaults['playlist'];
 					$sanitized['resource'] = ( isset($options['resource']) ) ? intval($options['resource']) : $this->defaults['resource'];
-					// $sanitized['only_pl']  = ( ! empty($options['only_pl']) && $options['only_pl'] ) ? 1 : 0;
 					$sanitized['cache']    = ( isset($options['cache']) ) ? intval($options['cache']) : $this->defaults['cache'];
 					$sanitized['fetch']    = ( ! empty($options['fetch']) ) ? intval($options['fetch']) : $this->defaults['fetch'];
 					$sanitized['num']      = ( ! empty($options['num']) ) ? intval($options['num']) : $this->defaults['num'];
 					$sanitized['privacy']  = ( ! empty($options['privacy']) && $options['privacy'] ) ? 1 : 0;
-					// $sanitized['random']   = ( ! empty($options['random']) && $options['random'] ) ? 1 : 0;
 				break; // General
 
 				// --- Video ---
 				case 'ytc_video':
 					$sanitized['width']          = ( ! empty($options['width']) ) ? intval($options['width']) : $this->defaults['width'];
 					$sanitized['ratio']          = ( isset($options['ratio']) ) ? intval($options['ratio']) : $this->defaults['ratio'];
-					$sanitized['responsive']     = ( ! empty($options['responsive']) && $options['responsive'] ) ? 1 : 0;
 					$sanitized['display']        = ( ! empty($options['display']) ) ? trim($options['display']) : $this->defaults['display'];
+					$sanitized['responsive']     = ( ! empty($options['responsive']) && $options['responsive'] ) ? 1 : 0;
+					$sanitized['nolightbox']     = ( ! empty($options['nolightbox']) && $options['nolightbox'] ) ? 1 : 0;
+
 					$sanitized['themelight']     = ( ! empty($options['themelight']) && $options['themelight'] ) ? 1 : 0;
 					$sanitized['controls']       = ( ! empty($options['controls']) && $options['controls'] ) ? 1 : 0;
 					$sanitized['autoplay']       = ( ! empty($options['autoplay']) && $options['autoplay'] ) ? 1 : 0;
 					$sanitized['autoplay_mute']  = ( ! empty($options['autoplay_mute']) && $options['autoplay_mute'] ) ? 1 : 0;
 					$sanitized['norel']          = ( ! empty($options['norel']) && $options['norel'] ) ? 1 : 0;
 					$sanitized['modestbranding'] = ( ! empty($options['modestbranding']) && $options['modestbranding'] ) ? 1 : 0;
+					$sanitized['hideanno']       = ( ! empty($options['hideanno']) && $options['hideanno'] ) ? 1 : 0;
+					$sanitized['hideinfo']       = ( ! empty($options['hideinfo']) && $options['hideinfo'] ) ? 1 : 0;
 				break; // Video
 
 				// --- Content ---
 				case 'ytc_content':
-					$sanitized['showtitle']  = ( ! empty($options['showtitle']) && $options['showtitle'] ) ? 1 : 0;
+					$sanitized['showtitle']  = ( ! empty($options['showtitle']) ) ? $options['showtitle'] : $this->defaults['showtitle'];
 					$sanitized['showdesc']   = ( ! empty($options['showdesc']) && $options['showdesc'] ) ? 1 : 0;
 					$sanitized['desclen']    = ( ! empty($options['desclen']) ) ? intval($options['desclen']) : $this->defaults['desclen'];
-					$sanitized['descappend'] = ( ! empty($options['descappend']) ) ? $options['descappend'] : $this->defaults['descappend'];
-					$sanitized['hideanno']   = ( ! empty($options['hideanno']) && $options['hideanno'] ) ? 1 : 0;
-					$sanitized['hideinfo']   = ( ! empty($options['hideinfo']) && $options['hideinfo'] ) ? 1 : 0;
 				break; // Content
 
 				// --- Link to Channel ---
 				case 'ytc_link':
-					$sanitized['showgoto']  = ( ! empty($options['showgoto']) && $options['showgoto'] ) ? 1 : 0;
+					$sanitized['link_to']    = ( isset($options['link_to']) ) ? intval($options['link_to']) : $this->defaults['link_to'];
 					$sanitized['goto_txt'] = ( ! empty($options['goto_txt']) ) ? $options['goto_txt'] : $this->defaults['goto_txt'];
 					$sanitized['popup_goto']    = ( isset($options['popup_goto']) ) ? intval($options['popup_goto']) : $this->defaults['popup_goto'];
-					$sanitized['link_to']    = ( isset($options['link_to']) ) ? intval($options['link_to']) : $this->defaults['link_to'];
 				break; // Link to Channel
 
 			} // switch

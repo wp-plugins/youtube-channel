@@ -1,0 +1,49 @@
+i.mce-i-ytc {
+	font: normal 20px/1 'dashicons';
+	padding: 0;
+	vertical-align: top;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin-left: -2px;
+	padding-right: 2px;
+
+	&:before {
+		content: '\f236';
+	}
+}
+div[id*='_youtube-channel-'] .widget-content p {
+	width: 100%;
+	clear: both;
+
+	&.half {
+		width: 49%;
+
+		&.left {
+			float: left;
+			clear: left;
+		}
+		&.right {
+			float: right;
+			clear: right;
+		}
+	}
+
+	&.glue-top {
+		margin-top: 0;
+	}
+	&.hidden {
+		display: none;
+	}
+	&.visible {
+		display: block;
+	}
+}
+@media screen and (max-width: 782px) {
+	div[id*='_youtube-channel-'] .widget-content p.half.left,
+	div[id*='_youtube-channel-'] .widget-content p.half.right {
+		width: 100%;
+		float: none;
+		clear: none;
+	}
+}

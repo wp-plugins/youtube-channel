@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.7.3
+Stable tag: 3.0.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,8 @@ You can use `style.css` from theme or other custom location to additionaly style
   * `.default` – for non-responsive block
   * `.responsive` – when you have enabled responsive option
 * `.ytc_title` – class of H3 tag for video title above thumbnail/video object
+  * `.ytc_title_above` - additional class for video title above video/thumbnail
+  * `.ytc_title_below` - additional class for video title below video/thumbnail
 * `.ytc_video_container` – class of container for single item, plus:
   * `.ytc_video_1`, `.ytc_video_2`, … – class of container for single item with ordering number of item in widget
   * `.ytc_video_first` – class of first container for single item
@@ -63,7 +65,7 @@ You can use `style.css` from theme or other custom location to additionaly style
 
 = Known Issues =
 
-* Video description for videos from playlist does not work.
+* Video title and description for embedded playlist mode does not work.
 * Removing YouTube logo from playback control bar does not work for all videos
 * Async HTML5 video does not work for 2nd same video on same page (two YTC blocks set to Async HTML5)
 
@@ -87,13 +89,13 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 * `class` (string) Set custom class if you wish to target special styling for specific YTC block
 * `channel` (string) ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)
 * `vanity` (string) part after www.youtube.com/c/ from [Custom URL](https://support.google.com/youtube/answer/2657968?hl=en)
+* `username` (string) Optional legacy YouTube username.
 * `playlist` (string) ID of preferred YouTube playlist.
 * `resource` (int) Resource to use for feed:
-  * `0` Channel
+  * `0` Channel (User uploads)
   * `1` Favorites (for defined channel)
   * `2` Playlist
   * `3` Liked Videos
-* `only_pl` (bool) If you set to use Playlist as resource, you can embed youtube playlist block instead single video from playlist. Simply set this option to true (1 or true)
 * `cache` (int) Period in seconds for caching feed. You can disable caching by setting this option to 0, but if you have a lot of visits, consider at least short caching (couple minutes).
 * `fetch` (int) Number of videos that will be used as stack for random pick (min 2, max 50)
 * `num` (int) Number of videos to display per YTC block.
@@ -110,6 +112,7 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
   * `thumbnail` Thumbnail will be used and video will be loaded in lightbox. (default)
   * `iframe` HTML5 (iframe)
   * `iframe2` HTML5 (iframe) with asynchronous loading - recommended
+  * `playlist` Embedded playlist (same behaviour as old function `only_pl`)
 * `no_thumb_title` (bool) By default YouTube thumbnail will have tooltip with info about video title and date of publishing. By setting this option to 1 or true you can hide tooltip
 * `themelight` (bool) By default YouTube have dark play controls theme. By setting this option to 1 or true you can get light theme in player (HTML5 and Flash)
 * `controls` (bool) Set this option to 1 or true to hide playback controls.
@@ -120,8 +123,10 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 
 **Content Layout**
 
-* `showtitle` (bool) Set to 1 or true to show video title.
-* `titlebelow` (bool) Set to 1 or true to move video title below video.
+* `showtitle` (string):
+  * `none` - Hide title
+  * `above` - Display title above video/thumbnail
+  * `below` - Display title below video/thumbnail
 * `showdesc` (bool) Set to 1 or true to show video description.
 * `desclen` (int) Set number of characters to cut down length of video description. Set to 0 to use full length description.
 * `noinfo` (bool) Set to 1 or true to hide overlay video infos (from embedded player)
@@ -129,16 +134,16 @@ Along to Widget, you can add YouTube Channel block inline by using shortcode `[y
 
 **Link to Channel**
 
-* `goto` (bool) Set to 1 or true to display link to channel at the bottom of YTC block.
 * `goto_txt` (string)
 * `popup` (int) Control where link to channel will be opened:
   * `0` open link in same window
   * `1` open link in new window with JavaScript
   * `2` open link in new window with target="_blank" anchor attribute
-* `link_to` (int) URL to link:
-  * `2` Vanity custom URL (default)
-  * `1` Channel page
-  * `0` Legacy username page
+* `link_to` (string) URL to link:
+  * `none` Hide link (defult)
+  * `vanity` Vanity custom URL
+  * `channel` Channel page
+  * `legacy` Legacy username page
 
 *Please note, to enhance plugin functionality, we can change some shortcode parameters in future.*
 
@@ -274,6 +279,32 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8 (2015-06-07) =
+* Fix: Undefined and deprecated global options
+* Add: Global option to disable builtin Lightbox (Video tab)
+* Add: Link to Support forums on Plugins page
+* Add: Visible error in YTC block for Administrator, Oops for visitors and lower members
+* Add: Filename of debug JSON
+* Add: Video title classes `ytc_title_above`/`ytc_title_below`
+* Add: Button `Clear All YTC Cache` on `Tools` tab to quick purge all cached YTC feeds
+* Improve: Do not include YT `iframe_api` if already included by other plugin and make YTC iframe2 to work even if other plugin uses `iframe_api`
+* Improve: Remove `Playlist Only` checkbox (`only_pl=1` shortcode parameter) and integrate as new Display:Embedded Playlist option (`display=playlist` shortcode parameter)
+* Improve: Remove `Show title below` checkbox (titlebelow) and integrate to `Show video title` (showtitle) as dropdown
+* Improve: Remove `Show link to channel` checkbox (showgoto) and integrate option `None` to `What to link` (link_to)
+* Improve: Move JS code to initiate Magnific popup to inline print on wp_footer
+* Improve: LESS stylesheet for easier maintenance
+* Remove: `Et cetera` (descappend) option and always use `...` for shortened description
+* Remove: Macro templates for Link to channel title
+* Change: Values for `showtitle` and `link_to` are changed from integer to string (check Shortcodes section)
+* Change: Move `Hide annotations` and `Hide video info` from `Content` to `Video` tab on settings page
+* Change: Play icon to be like original YT play shape
+* Change: Make responsive enabled by default in new widgets
+* Optimize: DRY of visible errors for Administrator and visitors (Oops message)
+* Optimize: Faster empty defaults for channel, vanity, legacy and playlist in global settings
+* Optimize: Minify inline JS code
+* Optimize: Remove call to fitVids() function
+* Cleanup: Remove $yt_url and $yt_video variables
+* Cleanup: Remove unused function to clean playlist ID
 
 = 3.0.7.3 (2015-05-29) =
 * Add: TinyMCE button to easy configure and insert shortcode to post/page content
@@ -383,224 +414,22 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 * Remove: Aspect Ration 16:10 (so support only 16:9 and 4:3, same as modern YouTube)
 * Remove: "Fix No Item" option - not required for YouTube API 3.0
 
-**OLD RELEASES**
-
-= 2.4.2.1 (2015-04-24) =
-* Fix: devicesupport workaround strip 1st video from playlist and favourites and apply only for channel
-
-= 2.4.2 (2015-04-22) =
-* Fix: Broken layout introduced by missing responsive for embedded playlist, iframe and iframe2
-* Fix: Replace amp's with HTML entity in thumbnail link
-* Add: Option to disable thumbnail tooltips (shortcode parameter no_thumb_title)
-* Add: List of Shortcode attributes to README file
-* Add: Danis localisation by GSAdev v. Georg Adamsen
-* Micro optimizations
-
-= 2.4.1.7 (2015-04-20) =
-* Quick Fix: strip 1st video from feed that provides notice "YouTube is upgrading to a newer version, which is not supported by this device or app." (more on www.youtube.com/devicesupport) until we finish YouTube Channel 3.0.0 (on the way)
-
-= 2.4.1.6 (2015-04-15) =
-* Fix: missing responsive support for embedded playlist, iframe and iframe2
-* Fix: missing support to hide playback controls, info and annotations for embedded playlist
-
-= 2.4.1.5 (2015-04-13) =
-* (2015-04-13) Change: Add dismiss link for Old PHP notice and lower suggested PHP version to 5.3.x
-* (2015-02-19) Fix: missing admin notices if ReduxFramework not active
-* (2015-02-10) Add: links to explanations for channel ID and vanity URL
-* (2015-02-10) Add: goto macro %vanity% to insert vanity ID
-* (2015-02-10) Add: field for vanity URL ID
-* (2015-02-10) Add: option to select link to user page, channel page or vanity URL for goto link
-* (2015-02-10) Remove: option to use channel instead user page for goto link
-
-= 2.4.1.4 (2015-04-09) =
-* (2015-04-09) Add: Notification about old PHP if lower than 5.3.29
-* (2015-04-09) Change: Run admin functions only in dashboard
-* (2015-02-09) Fix: strip whitespace from the beginngine/end of channel and playlist ID
-* (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
-* (2014-12-30) Fix: prevent Undefined Offset notice when on resource we get less items than user requested in shortcode/widget
-* (2014-12-30) Add: make fallback cache for every feed and use it if no item occurs to avoid No items
-
-= 2.4.1.3 (2014-12-10) =
-* Fix: previous release broke opening lightbox for thumbnails and load YouTube website.
-
-= 2.4.1.2 (2014-12-07) =
-* Add: Add support for hidden controls and YouTube logo in Thumbnail mode.
-* Change: Rename Magnific Popup function to prevent clash with original Modest Branding that does not have support for disabling related videos, player controls and YouTube logo.
-
-= 2.4.1.1 (2014-12-07) =
-* Change: Remove parameter `&rel=1` from thumbnail link because that is a default value and can prevent some lightboxes to load video.
-
-= 2.4.1 (2014-11-15) =
-* Fix: Typo in widget `Do not chache` [2014-10-03]
-* Fix: do not show global settings notice with link to settings page if not Redux Framerowk is active [2014-11-15]
-* Fix: Plugin name on Support tab in global plugin settings. [2014-11-15]
-* Change: Remove protocol from links and leave browser to decide should get resource from HTTP or HTTPS (depends on website protocol) [2014-10-03]
-* Change: Add height addition for `Fix height taken by controls` for embedded playlist and count control above video [2014-10-03]
-* Change: Move debug log from widget to downloadable dynamic JSON [2014-11-15]
-* Add: ModestBranding (remove YouTube logo from player control bar) [2014-10-03]
-* Add: Responsive (make video optionally responsive) [2014-10-04]
-* Add: Support for WordPress 4.1 [2014-11-15]
-
-= 2.4.0.2 (2014-10-02) =
-* Fix: light theme not applicable to embedded playlist [2014-10-01]
-* Fix: add clearfix after YTC widget to prevent jumping out of widget block on bad styled themes [2014-10-02]
-* Add: explanation that `What to embed` have no effect for embedded playlist (HTML5 always used) [2014-10-01]
-
-= 2.4.0.1 (2014-10-01) =
-* Fix: fatal error - broken execution for embedded playlist with enhanced privacy
-* Add: button to discard warning notice for Redux Framework
-
-= 2.4.0 (2014-10-01) =
-* Fix: false options set in shortcode had no effect to output box and default settings always used [20140924]
-* Fix: enabled checkbox in global settings could not be unticked (disabled) [20140924]
-* Fix: prevent array_slice notice if channel have no uploaded videos [20141001]
-* Add: fitVids for responsive videos [20140924]
-* Add: option for additional YTC box class in widget and shortcode [20140924]
-* Change: global settings page re-implemented with Redux Framework and requires Redux Framework Plugin [20140924]
-* Change: rewrite plugin to be more OOP [20140924]
-* Change: removed obsolete methods [20140924]
-* Change: default box width changed from 220 to 306px [20140924]
-* Change: YTC block and video pieces now floated left to enable horizontal stack [20140924]
-* Change: update localization support [20140926]
-* Change: updated Serbian localization [20140926]
-* Change: removed PayPal donation button from widget and moved to plugin Settings page [20141001]
-
-= 2.2.3 (2014-09-14) =
-* Add: option to disable related videos (not supported by chromeless player)
-* Enhance: added support for YouTube `rel` parameter in Magnific PopUp IFRAME module
-* Minified assets
-* Add plugin icon for WordPress 4.x plugin installer
-* Update plugin banner
-
-= 2.2.2 (2014-07-25) =
-* Add: admin notices after upgrade to prevent errors and avare users to do ReCache and prevent mixed json_decode / base64_encode strings for cached feeds
-* Change: moved ReCache part to Tools tab on settings page
-
-= 2.2.1 (2014-07-13) =
-* Fix: to prevent broken JSON feed, transient caching changed from plain serialized string to base64_encode
-* Add: URL parameter `ytc_force_recache` to force recache, also included on Help tab in plugin settings
-
-= 2.2.0 =
-* Add: open thumbnails in lightbox and stay on site, instead opening YouTube page (Magnific Popup jQuery library)
-* Add: make thumbnail responsive
-* Add: play indicator for thumbnails
-* Add: shortcode [youtube_channel]
-* Add: tabbed settings page for default options for shortcodes
-* Add: Help tab for shortcode parameters
-* Change: moved parts of code to helper functions
-
-= 2.1.0.2 =
-* Fix: remove embed object below old IFRAME implementation
-
-= 2.1.0.1 =
-* Change: add back old iframe functionality, second iframe option is async loading
-
-= 2.1.0 =
-* Change: iframe/HTML5 player inject with IFrame Player API https://developers.google.com/youtube/player_parameters#IFrame_Player_API
-* Change: use native WP remote file download function wp_remote_get to fetch feeds (prevent some permission errors on some hosts)
-* Change: removed height parameter so height is calculated by aspect ratio selection - 16:9 as default
-* Add: mute audio on autoplay if iframe/HTML5 is selected
-* Add: converter that will port pre-2.0.0 YTC widgets to 2.0.0+ version
-* Fix: playlist parser (now allowed dash and underscore in playlist ID)
-
-= 2.0.0 =
-* Fix: undefined vars notices
-* Fix: embedding default plugin playlist instead custom set for "Embed standard playlist"
-* Add: caching system
-* Add: option to link to channel instead to user
-* Add: support for enhanced privacy by YouTube
-* Enhance: RSS feed replaced with JSON
-* Enhance: better formatted debug info with site URL
-* Enhance: re-group widget options
-* Enhance: updated wording
-* Enhance: added tooltips for options
-* Enhance: playlist ID detection from URL
-* Remove: modified error_reporting
-
-= 1.5.1 =
-* Fix issue in widget settings when no apache_get_version() support on server
-* Fix validation errors for widget settings
-* Fix broken sidebar issue introduced in 1.5.0 release
-
-= 1.5.0 =
-* Add inline debug tracker
-* Fix deprecated functions - changed rss.php by feed.php and split() by extract()
-* Fix video description parser for new YouTube feed format
-* Fix autoplay for single video bug
-* Fix autoplay for multiple videos to play only first video
-* Code cleanup
-* Update compatibility to WordPress 3.5.1
-
-= 1.4.0 =
-* Added option to show preferred quantity of videos
-* Added option to embed classic playlist
-* Added class to video container: universal .ytc_video_container and selective (.ytc_video_first, .ytc_video_mid, .ytc_video_last)
-* Added class to video title .ytc_title
-* Added class to video description text .ytc_description
-* Added class to container for link to channel .ytc_link
-* Added routine to unique random video from channel if displayed more than one video
-* Added option to set `et cetera` string for shortened video description
-* Changed option for random video to use channel or playlist
-* Fields for width and height converted to number with spinner
-* Improved playlist ID handler
-
-= 1.3.3 =
-* Added Czech translation by Ladislav Drábek
-
-= 1.3.2 =
-* Add option to show video description below video
-* Add option to shorten video description to N characters
-* Add option to use light theme for controls instead of default dark theme (HTML5 iframe and flash object)
-* Add option to hide annotations from video
-
-= 1.3.1 =
-* Add support for playlist full URL
-* Fixed no random video for playlist
-
-= 1.3 =
-* Fixed z-index problem with flash and iframe object
-* Add option to try to fix 'No items' error
-* Add donate button in options dialog
-
-= 1.2 =
-* Fixed number of items for random video (min 1, max 50)
-* Fixed no-controls for HTML5 iframe
-
-= 1.1 =
-* Added option to use the playlist instead of channel (suggested by Stacy)
-
-= 1.0 =
-* Ported to WordPress 3.2.1
-* Added option to set maximum number of items for random video
-* Version changed from major.minor.micro to to major.minor format
-* Adds Spanish translation
-
-= 0.1.3 =
-* Uses selected() instead of if [dimadin]
-* Uses sprintf for better i18n [dimadin]
-* Wraps some strings in gettext [dimadin]
-* Adds textdomain and loads it [dimadin]
-* Adds target="_blank" for channel link [dimadin]
-* Adds option to open channel link in popup
-* Uses plugin_dir_url() instead of guessing of location [dimadin]
-* Loads widget in its own function [dimadin]
-* Adds Serbian translation
-
-= 0.1.2 =
-* Option to display random video from channel
-
-= 0.1.1 =
-* Fixed option to toggle video title visibility
-* Added option to hide controls for iframe and object videos
-* Added option to hide video info
-* Enabled autostart for iframe and object videos
-
-= 0.1.0 =
-* Initial release
-
 == Upgrade Notice ==
 
-Responsive, bug fixes, support for WordPress 4.1
+= 3.0.8 =
+Bugfixes, optimizations and improvements.
+
+= 3.0.7.3 =
+User experience improved with Shortcode generator for TinyMCE
+
+= 3.0.7.2 =
+Added report for user if any HTTP error occured
+
+= 3.0.7,1 =
+Quick fix for clearfix class
+
+= 3.0.7 =
+Cleanup and optimization release
 
 == Screenshots ==
 

@@ -57,7 +57,7 @@
 								{
 									type: 'textbox',
 									name: 'legacy',
-									label: 'Legacy username',
+									label: 'Legacy Username',
 									value: '',
 									// tooltip: ''
 								},
@@ -74,7 +74,7 @@
 									label: 'Resource to use',
 									tooltip: '',
 									values : [
-										{text: 'Channel', value: '0', selected: true},
+										{text: 'Channel (User Uploads)', value: '0', selected: true},
 										{text: 'Favourited videos', value: '1'},
 										{text: 'Liked videos', value: '3'},
 										{text: 'Playlist', value: '2'},
@@ -83,7 +83,7 @@
 								{
 									type: 'listbox',
 									name: 'cache',
-									label: 'Cache timeout',
+									label: 'Cache feed',
 									tooltip: '',
 									values : [
 										{text: 'Do not cache', value: '0'},
@@ -109,6 +109,7 @@
 										{text: '1 month', value: '2419200'},
 									]
 								},
+								/*
 								{
 									type: 'checkbox',
 									name: 'only_pl',
@@ -116,18 +117,19 @@
 									tooltip: 'Overrides random video option.',
 									checked: false
 								},
+								*/
 								{
 									type: 'checkbox',
 									name: 'privacy',
-									label: 'Use Enhanced Privacy ',
-									// tooltip: '',
+									label: 'Use Enhanced Privacy',
+									tooltip: 'Enable this option to protect your visitors privacy',
 									checked: false
 								},
 								{
 									type: 'checkbox',
 									name: 'random',
 									label: 'Random video',
-									tooltip: 'Show random video from resource (Have no effect if \"Embed resource as playlist\" is enabled)',
+									tooltip: 'Show random video from resource (Have no effect if \"What to show?\" has been set to \"Embedded Playlist\")',
 									checked: false
 								},
 								{
@@ -146,6 +148,7 @@
 								},
 							]
 						},
+
 						{
 							title: 'Video Settings',
 							type: 'form',
@@ -170,9 +173,9 @@
 								{
 									type: 'textbox',
 									name: 'width',
-									label: 'Width (px)',
+									label: 'Initial width (px)',
 									value: '306',
-									tooltip: 'Set video or thumbnail width in pixels'
+									tooltip: 'Set initial width for video or thumbnail (in pixels)'
 								},
 								{
 									type: 'listbox',
@@ -183,8 +186,19 @@
 										{text: 'Thumbnail', value: 'thumbnail'},
 										{text: 'HTML5 (iframe)', value: 'iframe'},
 										{text: 'HTML5 (iframe) Asynchronous', value: 'iframe2'},
+										{text: 'Embedded Playlist', value: 'playlist'},
+										// {text: 'Gallery', value: 'gallery'},
 									]
 								},
+								/*
+								{
+									type: 'textbox',
+									name: 'cols',
+									label: 'Columns in Gallery',
+									value: '3',
+									tooltip: 'Set number of columns for gallery display mode (min 1, max 8)'
+								},
+								*/
 								{
 									type: 'checkbox',
 									name: 'no_thumb_title',
@@ -212,7 +226,7 @@
 								},
 								{
 									type: 'checkbox',
-									name: 'autoplay_mute',
+									name: 'mute',
 									label: 'Mute video on autoplay',
 									checked: false
 								},
@@ -224,28 +238,29 @@
 								},
 								{
 									type: 'checkbox',
-									name: 'modestbranding',
+									name: 'nobrand',
 									label: 'Hide YT Logo',
 									tooltip: 'Does not work for all videos',
 									checked: true
 								},
 							]
 						},
+
 						{
 							title: 'Content Layout',
 							type: 'form',
 							items: [
+
 								{
-									type: 'checkbox',
+									type: 'listbox',
 									name: 'showtitle',
 									label: 'Show video title',
-									checked: false
-								},
-								{
-									type: 'checkbox',
-									name: 'titlebelow',
-									label: 'Move title below video',
-									checked: false
+									tooltip: '',
+									values : [
+										{text: 'Hide title', value: 'none', selected: true},
+										{text: 'Above video/thumbnail', value: 'above'},
+										{text: 'Below video/thumbnail', value: 'below'},
+									]
 								},
 								{
 									type: 'checkbox',
@@ -262,45 +277,40 @@
 								},
 								{
 									type: 'checkbox',
-									name: 'hideanno',
+									name: 'noanno',
 									label: 'Hide annotations',
-									checked: false
+									checked: true
 								},
 								{
 									type: 'checkbox',
-									name: 'hideinfo',
+									name: 'noinfo',
 									label: 'Hide video info',
-									checked: false
+									checked: true
 								},
 							]
 						},
+
 						{
 							title: 'Link to Channel',
 							type: 'form',
 							items: [
-								{
-									type: 'checkbox',
-									name: 'showgoto',
-									label: 'Show link',
-									tooltip: 'Display link to channel below videos or thumbnails',
-									checked: false
-								},
-								{
-									type: 'textbox',
-									name: 'goto_txt',
-									label: 'Title for link',
-									value: 'Visit our YouTube channel',
-								},
 								{
 									type: 'listbox',
 									name: 'link_to',
 									label: 'Link to',
 									// tooltip: '',
 									values : [
-										{text: 'Vanity/Custom URL', value: '2', selected: true},
-										{text: 'Channel page URL', value: '1'},
-										{text: 'Legacy username URL', value: '0'},
+										{text: 'Hide link', value: 'none', selected: true},
+										{text: 'Vanity/Custom URL', value: 'vanity'}, // ex 2
+										{text: 'Channel page URL', value: 'channel'}, // ex 1
+										{text: 'Legacy username URL', value: 'legacy'}, // ex 0
 									]
+								},
+								{
+									type: 'textbox',
+									name: 'goto_txt',
+									label: 'Title for link',
+									value: 'Visit our YouTube channel',
 								},
 							]
 						}
@@ -318,7 +328,6 @@
 						if ( e.data.playlist ) shortcode += ' playlist=' + e.data.playlist +'';
 						if ( e.data.resource ) shortcode += ' resource=' + e.data.resource +'';
 						if ( e.data.cache ) shortcode += ' cache=' + e.data.cache +'';
-						if ( e.data.only_pl ) shortcode += ' only_pl=1';
 						if ( e.data.privacy ) shortcode += ' privacy=1';
 						if ( e.data.random ) shortcode += ' random=1';
 						if ( e.data.fetch ) shortcode += ' fetch=' + e.data.fetch +'';
@@ -329,26 +338,25 @@
 						if ( e.data.responsive ) shortcode += ' responsive=1';
 						if ( e.data.width ) shortcode += ' width=' + e.data.width + '';
 						if ( e.data.display ) shortcode += ' display=' + e.data.display + '';
+						// if ( e.data.cols ) shortcode += ' cols=' + e.data.cols + '';
 						if ( e.data.no_thumb_title ) shortcode += ' no_thumb_title=1';
 						if ( e.data.themelight ) shortcode += ' themelight=1';
 						if ( e.data.controls ) shortcode += ' controls=1';
 						if ( e.data.autoplay ) shortcode += ' autoplay=1';
-						if ( e.data.autoplay_mute ) shortcode += ' autoplay_mute=1';
+						if ( e.data.mute ) shortcode += ' mute=1';
 						if ( e.data.norel ) shortcode += ' norel=1';
-						if ( e.data.modestbranding ) shortcode += ' modestbranding=1';
+						if ( e.data.nobrand ) shortcode += ' nobrand=1';
 
 						// Content Layout
-						if ( e.data.showtitle ) shortcode += ' showtitle=1';
-						if ( e.data.titlebelow ) shortcode += ' titlebelow=1';
+						if ( e.data.showtitle ) shortcode += ' showtitle=' + e.data.showtitle + '';
 						if ( e.data.showdesc ) shortcode += ' showdesc=1';
 						if ( e.data.desclen ) shortcode += ' desclen=' + e.data.desclen + '';
-						if ( e.data.hideanno ) shortcode += ' hideanno=1';
-						if ( e.data.hideinfo ) shortcode += ' hideinfo=1';
+						if ( e.data.noanno ) shortcode += ' noanno=1';
+						if ( e.data.noinfo ) shortcode += ' noinfo=1';
 
 						// Link to Channel
-						if ( e.data.showgoto ) shortcode += ' showgoto=1';
-						if ( e.data.goto_txt ) shortcode += ' goto_txt=\"' + e.data.goto_txt + '\"';
 						if ( e.data.link_to ) shortcode += ' link_to=' + e.data.link_to + '';
+						if ( e.data.goto_txt ) shortcode += ' goto_txt=\"' + e.data.goto_txt + '\"';
 
 						// Global
 						if ( e.data.class ) shortcode += ' class=' + e.data.class + '';
