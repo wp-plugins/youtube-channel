@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
 Author: Aleksandar Urošević
-Version: 3.0.8
+Version: 3.0.8.1
 Author URI: http://urosevic.net/
 */
 
@@ -16,8 +16,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 10;
-		const VER = '3.0.8';
+		const DB_VER = 11;
+		const VER = '3.0.8.1';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -251,6 +251,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				$dismissed_notices['vanity_option'] = 1;
 				update_option('youtube_channel_dismissed_notices', $dismissed_notices);
 			}
+			if ( ! empty($_GET['ytc_dismiss_notice_changed_shortcode_308']) ) {
+				$dismissed_notices['changed_shortcode_308'] = 1;
+				update_option('youtube_channel_dismissed_notices', $dismissed_notices);
+			}
 
 			// Prepare vars for notices
 			$settings_page = 'options-general.php?page=youtube-channel';
@@ -301,6 +305,16 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				 );
 			}
 
+			// v3.0.8.1 shortcode changes from v3.0.8
+			if ( empty($dismissed_notices) || ( ! empty($dismissed_notices) && empty($dismissed_notices['changed_shortcode_308']) ) ) {
+				$notice['warning'] .= sprintf(
+					__('<p><strong>%s</strong> changed shortcode parameters by removing <code>only_pl</code> and <code>showgoto</code>, and combining with parameters <code>display</code> and <code>link_to</code> respectively. Please check out <a href="%s&tab=help">%s</a> and update your shortcodes. <a href="%s" class="dismiss">Dismiss</a>', 'youtube-channel'),
+					$this->plugin_name,
+					$settings_page,
+					'Help: How to use shortcode',
+					'?ytc_dismiss_notice_changed_shortcode_308=1'
+				 );
+			}
 			foreach ( $notice as $type => $message ) {
 				if ( ! empty($message) ) {
 					echo "<div class=\"notice notice-{$type}\">{$message}</div>";
@@ -757,6 +771,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 						// (deprecated?) Non existing Channel ID set
 						elseif ( $json_output->error->errors[0]->reason == 'invalidChannelId' ) {
 							$error_msg = sprintf(__("You have set wrong Channel ID. Fix that in General plugin settings, Widget and/or shortcode. Read <a href=\"%s\" target=\"_blank\">FAQ</a> document."), 'https://wordpress.org/plugins/youtube-channel/faq/');
+						}
+						// Forbidden access to resource
+						elseif ( $json_output->error->errors[0]->reason == 'playlistItemsNotAccessible' ) {
+							$error_msg = sprintf(__("You do not have permission to access ressource <strong>%s</strong> (it's maybe set to private or even does not exists!)"), $resource_id);
 						}
 
 					} else { // ELSE ! empty($json_output->error->errors)

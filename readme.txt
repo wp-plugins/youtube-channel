@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.8
+Stable tag: 3.0.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -279,6 +279,11 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.1 (2015-06-07) =
+* Fix: Migrate deprecated widget options
+* Add: Notice about changed shortcode parameters
+* Add: Message if access to resource is forbidden (private Liked or Favourited videos)
+
 = 3.0.8 (2015-06-07) =
 * Fix: Undefined and deprecated global options
 * Add: Global option to disable builtin Lightbox (Video tab)
