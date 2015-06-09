@@ -279,6 +279,12 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.4 (2015-06-09) =
+* Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
+* Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
+* Cleanup: Removed unused modules from MagnificPopup library
+* Change: Change lightbox classes by prepending `ytc-` in front of all MagnificPopup classes
+
 = 3.0.8.3 (2015-06-09) =
 * Add: Support for enhanced privacy videos in lightbox (MagnificPopupAU tweak)
 

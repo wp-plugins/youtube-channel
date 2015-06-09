@@ -385,4 +385,22 @@ function au_youtube_channel_update_routine_11() {
 	} // END 	foreach ( $ytc_widgets as $widget_id => $widget_data )
 
 	update_option('widget_youtube-channel', $ytc_widgets);
-} //END function au_youtube_channel_update_routine_11()
+} // END function au_youtube_channel_update_routine_11()
+
+
+/**
+ * Add default value for new global option playsinline
+ */
+function au_youtube_channel_update_routine_14() {
+
+	// get options from DB
+	$defaults = get_option('youtube_channel_defaults');
+
+	$defaults['playsinline'] = 0;
+
+	if ( isset($defaults) ) {
+		update_option('youtube_channel_defaults', $defaults);
+		unset($defaults);
+	}
+
+} // END function au_youtube_channel_update_routine_14()

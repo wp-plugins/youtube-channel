@@ -4,7 +4,7 @@ Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
 Author: Aleksandar Urošević
-Version: 3.0.8.3
+Version: 3.0.8.4
 Author URI: http://urosevic.net/
 */
 
@@ -16,8 +16,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 	class WPAU_YOUTUBE_CHANNEL
 	{
 
-		const DB_VER = 13;
-		const VER = '3.0.8.3';
+		const DB_VER = 14;
+		const VER = '3.0.8.4';
 
 		public $plugin_name   = "YouTube Channel";
 		public $plugin_slug   = "youtube-channel";
@@ -116,7 +116,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'autoplay'       => 0,
 				'autoplay_mute'  => 0,
 				'norel'          => 0,
-
+				'playsinline'    => 0, // play video on mobile devices inline instead in native device player
 				'showtitle'      => 'none',
 				'showdesc'       => 0,
 				'desclen'        => 0,
@@ -390,9 +390,9 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				$js .= "
 					jQuery(document).ready(function($){
 						$('.ytc-lightbox').magnificPopupAU({
-							disableOn:700,
+							disableOn:320,
 							type:'iframe',
-							mainClass:'mfp-fade',
+							mainClass:'ytc-mfp-lightbox',
 							removalDelay:160,
 							preloader:false,
 							fixedContentPos:false
@@ -458,6 +458,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 						'autoplay'       => $instance['autoplay'],
 						'mute'           => $instance['autoplay_mute'],
 						'norel'          => $instance['norel'],
+						'playsinline'    => $instance['playsinline'], // play video on mobile devices inline instead in native device player
 
 						'showtitle'      => $instance['showtitle'], // none, above, below
 						'showdesc'       => $instance['showdesc'], // ex showvidesc
@@ -513,6 +514,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$instance['autoplay']       = $autoplay; // autoplay disabled by default
 			$instance['autoplay_mute']  = $mute; // mute sound on autoplay - disabled by default
 			$instance['norel']          = $norel; // hide related videos
+			$instance['playsinline']    = $playsinline; // inline plaer for iOS
 
 			// Content Layout
 			$instance['showtitle']      = $showtitle; // show video title, disabled by default
@@ -1071,6 +1073,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				if ( ! empty($instance['hideanno']) ) $output[] = "&amp;iv_load_policy=3";
 				if ( ! empty($instance['themelight']) ) $output[] = "&amp;theme=light";
 				if ( ! empty($instance['modestbranding']) ) $output[] = "&amp;modestbranding=1";
+				if ( ! empty($instance['playsinline']) ) $output[] = "&amp;playsinline=1";
 
 				$output[] = "\" style=\"border:0;\" allowfullscreen id=\"ytc_{$yt_id}\"></iframe>";
 
@@ -1089,6 +1092,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				$js_vars .= ( ! empty($instance['controls']) ) ? "controls:0," : '';
 				$js_vars .= ( ! empty($instance['themelight']) ) ? "theme:'light'," : '';
 				$js_vars .= ( ! empty($instance['modestbranding']) ) ? "modestbranding:1," : '';
+				$js_vars .= ( ! empty($instance['playsinline']) ) ? "playsinline:1," : '';
 				$js_vars .= "wmmode:'opaque'";
 				$js_vars = rtrim($js_vars, ",");
 
@@ -1135,6 +1139,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 					if ( ! empty($instance['norel']) ) $p .= '&amp;rel=0';
 					if ( ! empty($instance['modestbranding']) ) $p .= "&amp;modestbranding=1";
 					if ( ! empty($instance['controls']) ) $p .= "&amp;controls=0";
+					if ( ! empty($instance['playsinline']) ) $p .= "&amp;playsinline=1";
 				}
 
 				// Do we need thumbnail w/ or w/o tooltip
@@ -1180,6 +1185,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$theme          = (empty($instance['themelight'])) ? '' : '&theme=light';
 			$modestbranding = (empty($instance['modestbranding'])) ? '' : '&modestbranding=1';
 			$rel            = (empty($instance['norel'])) ? '' : '&rel=0';
+			$playsinline    = (empty($instance['playsinline'])) ? '' : '&playsinline=1';
 
 			// enhanced privacy
 			$youtube_domain = $this->youtube_domain($instance);
@@ -1409,3 +1415,5 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 global $WPAU_YOUTUBE_CHANNEL;
 if ( empty($WPAU_YOUTUBE_CHANNEL) )
 	$WPAU_YOUTUBE_CHANNEL = new WPAU_YOUTUBE_CHANNEL();
+
+

@@ -303,6 +303,27 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['responsive'],
 				) // args
 			);
+
+			// Plays Inline
+			add_settings_field(
+				$this->option_name . 'playsinline', // id
+				__('Play inline on iOS', 'wpsk'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[playsinline]",
+					'description' => sprintf(
+						__(
+							'Enable this option to override fullscreen playback on iOS, and force inline playback on page and in lightbox. Learn more <a href="%s">here</a>.',
+							'https://developers.google.com/youtube/player_parameters#playsinline'
+						),
+						'wpsk'
+					),
+					'class'       => 'checkbox',
+					'value'       => ( isset($this->defaults['playsinline']) ) ? $this->defaults['playsinline'] : '',
+				) // args
+			);
 			// No Lightbox
 			add_settings_field(
 				$this->option_name . 'nolightbox', // id
@@ -312,11 +333,12 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[nolightbox]",
-					'description' => __("Enable this option to disable built-in lightbox for thumbnails.", 'wpsk'),
+					'description' => __("Enable this option to disable built-in lightbox for thumbnails (in case that you have youtube links lightbox trigger in theme or other plugin).", 'wpsk'),
 					'class'       => 'checkbox',
 					'value'       => ( isset($this->defaults['nolightbox']) ) ? $this->defaults['nolightbox'] : '',
 				) // args
 			);
+
 			// Light Theme
 			add_settings_field(
 				$this->option_name . 'themelight', // id
@@ -811,6 +833,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['ratio']          = ( isset($options['ratio']) ) ? intval($options['ratio']) : $this->defaults['ratio'];
 					$sanitized['display']        = ( ! empty($options['display']) ) ? trim($options['display']) : $this->defaults['display'];
 					$sanitized['responsive']     = ( ! empty($options['responsive']) && $options['responsive'] ) ? 1 : 0;
+					$sanitized['playsinline']     = ( ! empty($options['playsinline']) && $options['playsinline'] ) ? 1 : 0;
 					$sanitized['nolightbox']     = ( ! empty($options['nolightbox']) && $options['nolightbox'] ) ? 1 : 0;
 
 					$sanitized['themelight']     = ( ! empty($options['themelight']) && $options['themelight'] ) ? 1 : 0;
