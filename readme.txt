@@ -284,6 +284,7 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 * Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
 * Cleanup: Removed unused modules from MagnificPopup library
 * Change: Change lightbox classes by prepending `ytc-` in front of all MagnificPopup classes
+* Change: Reduce minimal screen width from 700px to 320px when lightbox will not be used and will open video directly on YouTube website.
 
 = 3.0.8.3 (2015-06-09) =
 * Add: Support for enhanced privacy videos in lightbox (MagnificPopupAU tweak)
