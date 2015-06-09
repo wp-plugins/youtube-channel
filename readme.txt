@@ -448,3 +448,4 @@ Cleanup and optimization release
 2. YouTube Channel customized widget settings
 3. YouTube Channel in WP Customizer and Dynamic Wall layout
 4. How to add YouTube Data API Key to YouTube Channel
+5. TinyMCE form to easy configure YouTube Channel shortcode for content
