@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.2.2
-Stable tag: 3.0.8.2
+Stable tag: 3.0.8.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -279,6 +279,9 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.3 (2015-06-09) =
+* Add: Support for enhanced privacy videos in lightbox (MagnificPopupAU tweak)
+
 = 3.0.8.2 (2015-06-08) =
 * Fix: Async HTML5 has broken when debug is disabled because single comments before JS code compression
 

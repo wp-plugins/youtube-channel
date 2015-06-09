@@ -1,6 +1,7 @@
-/*! Magnific Popup - v0.9.9.2 - 2014-09-06
+/*! Magnific Popup - v0.9.9.3 - 2015-06-09
 * Mod v0.9.9.1 - 2014-09-14 Aleksandar Urosevic (YT rel)
 * Mod v0.9.9.2 - 2014-12-07 Aleksandar Urosevic (YT controls, modestbranding)
+* Mod v0.9.9.3 - 2015-06-09 Aleksandar Urosevic (YT noccookie support)
 * http://dimsemenov.com/plugins/magnific-popup/
 * Copyright (c) 2014 Dmitry Semenov; */
 ;(function($) {
@@ -1613,6 +1614,15 @@ $.magnificPopupAU.registerModule(IFRAME_NS, {
 				theme: 'theme=',
 				controls: 'controls=',
 				src: '//www.youtube.com/embed/%id%?autoplay=1&rel=%rel%&modestbranding=%modestbranding%&controls=%controls%'
+			},
+			youtubenocookie: {
+				index: 'youtube-nocookie.com',
+				id: 'v=',
+				rel: 'rel=',
+				modestbranding: 'modestbranding=',
+				theme: 'theme=',
+				controls: 'controls=',
+				src: '//www.youtube-nocookie.com/embed/%id%?autoplay=1&rel=%rel%&modestbranding=%modestbranding%&controls=%controls%'
 			},
 			vimeo: {
 				index: 'vimeo.com/',
