@@ -264,26 +264,32 @@ function au_youtube_channel_update_routine_10() {
 	} else {
 		switch ($defaults['link_to']) {
 			case 2:
+			case 'vanity':
 				$defaults['link_to'] = 'vanity';
 				break;
 			case 1:
+			case 'channel':
 				$defaults['link_to'] = 'channel';
 				break;
 			case 0:
+			case 'legacy':
 				$defaults['link_to'] = 'legacy';
 				break;
+			case 'none':
 			default:
 				$defaults['link_to'] = 'none';
 		}
 	}
 
-	// Show title migration
-	if ( isset($defaults['showtitle']) ) {
-		if ( isset($defaults['titlebelow']) ) {
+	// Migrate showbelow and showtitle in options
+	if ( ! empty($defaults['showtitle']) ) {
+		if ( ! empty($defaults['titlebelow']) ) {
 			$defaults['showtitle'] = 'below';
-			unset($defaults['titlebelow']);
 		} else {
 			$defaults['showtitle'] = 'above';
+		}
+		if ( isset($defaults['titlebelow']) ) {
+			unset($defaults['titlebelow']);
 		}
 	} else {
 		$defaults['showtitle'] = 'none';
@@ -338,32 +344,32 @@ function au_youtube_channel_update_routine_11() {
 		if ( $widget_id != '_multiwidget' ) {
 
 			// migrate only_pl to display
-			if ( isset($widget_data['only_pl']) ) {
+			if ( isset($widget_data['only_pl']) && ! empty($widget_data['only_pl']) ) {
 				$ytc_widgets[ $widget_id ]['display'] = 'playlist';
 			}
 
-			// migrate showbelow and showtitle
-			if ( isset($widget_data['showtitle']) && $widget_data['showtitle'] ) {
-				if ( isset($widget_data['titlebelow']) ) {
-					$ytc_widgets[ $widget_id ]['showtitle'] = 'above';
-				} else {
+			// Migrate showbelow and showtitle in widgets
+			if ( ! empty($widget_data['showtitle']) ) {
+				if ( ! empty($widget_data['titlebelow']) ) {
 					$ytc_widgets[ $widget_id ]['showtitle'] = 'below';
+				} else {
+					$ytc_widgets[ $widget_id ]['showtitle'] = 'above';
 				}
 			} else {
 				$ytc_widgets[ $widget_id ]['showtitle'] = 'none';
 			}
 
 			// migrate link_to
-			if ( isset($widget_data['showgoto']) ) {
+			if ( ! empty($widget_data['showgoto']) ) {
 
 				if ( isset($widget_data['link_to']) ) {
-					if ( $widget_data['link_to'] == 0 ) {
+					if ( $widget_data['link_to'] == 0 || $widget_data['link_to'] == 'legacy' ) {
 						$ytc_widgets[ $widget_id ]['link_to'] = 'legacy';
 					}
-					elseif ( $widget_data['link_to'] == 1 ) {
+					elseif ( $widget_data['link_to'] == 1 || $widget_data['link_to'] == 'channel' ) {
 						$ytc_widgets[ $widget_id ]['link_to'] = 'channel';
 					}
-					elseif ( $widget_data['link_to'] == 2 ) {
+					elseif ( $widget_data['link_to'] == 2 || $widget_data['link_to'] == 'vanity' ) {
 						$ytc_widgets[ $widget_id ]['link_to'] = 'vanity';
 					}
 				} else {
