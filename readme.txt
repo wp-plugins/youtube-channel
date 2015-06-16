@@ -298,11 +298,14 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 * Fix: Lost some settings during igration from old to new options in settings and widgets
 * Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
 * Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
-* Add: Default option settings for nolightbox and playsinline
+* Add: Default option settings for nolightbox and
 * Cleanup: Removed unused modules from MagnificPopup library
+* Change: Help tab now have shortcode parameters distributed to subtabs
 * Change: Lightbox classes by prepending `ytc-` in front of all MagnificPopup classes
 * Change: Reduce minimal screen width from 700px to 320px when lightbox will not be used and will open video directly on YouTube website.
-* Update FAQ with new question about play button on thumbnails
+* Improve: Updated strings for localization support
+* Improve: Updated FAQ with new question about play button on thumbnails
+* Updated Serbian localization
 
 = 3.0.8.3 (2015-06-09) =
 * Add: Support for enhanced privacy videos in lightbox (MagnificPopupAU tweak)

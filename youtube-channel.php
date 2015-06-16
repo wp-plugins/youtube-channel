@@ -213,7 +213,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			global $pagenow;
 
 			// Enqueue only on widget or post pages
-			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' ) {
+			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' && $pagenow !== 'options-general.php' ) {
 				return;
 			}
 

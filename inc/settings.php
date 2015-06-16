@@ -50,13 +50,23 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				array(
 					'field'       => $this->option_name . '[apikey]',
 					'description' => sprintf(
-						"<strong>[%s]</strong> " .
-						__(
-							'Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)',
-							'youtube-channel'
-						),
-						__('Required'),
-						'https://console.developers.google.com/project'
+						"<strong>[%s]</strong> %s",
+						__('Required', 'youtube-channel'),
+						sprintf(
+							wp_kses(
+								__(
+									'Your YouTube Data API Key (get it from <a href="%s" target="_blank">%s</a>)',
+									'youtube-channel'
+								),
+								array(
+									'a' => array(
+										'href' => array()
+									)
+								)
+							),
+							esc_url( 'https://console.developers.google.com/project' ),
+							__('Google Developers Console', 'youtube-channel')
+						)
 					),
 					'class'       => 'regular-text password',
 					'value'       => $this->defaults['apikey'],
@@ -71,7 +81,25 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[channel]',
-					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'youtube-channel'), __('Required'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf(
+						"<strong>[%s]</strong> %s",
+						__('Required', 'youtube-channel'),
+						sprintf(
+							wp_kses(
+								__(
+									'Your YouTube Channel ID (get it from <a href="%s" target="_blank">%s</a>)',
+									'youtube-channel'
+								),
+								array(
+									'a' => array(
+										'href' => array()
+									)
+								)
+							),
+							esc_url( 'https://www.youtube.com/account_advanced' ),
+							__('YouTube Account Overview', 'youtube-channel')
+						)
+					),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['channel'],
 				) // args
@@ -85,7 +113,25 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[vanity]",
-					'description' => sprintf("[%s] " . __('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'youtube-channel'), __('Optional'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf(
+						"[%s] %s",
+							__('Optional', 'youtube-channel'),
+							sprintf(
+								wp_kses(
+									__(
+										'Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">%s</a>)',
+										'youtube-channel'
+									),
+									array(
+										'a' => array(
+											'href' => array()
+										)
+									)
+								),
+								esc_url( 'https://www.youtube.com/account_advanced'),
+								__('YouTube Account Overview', 'youtube-channel')
+							)
+						),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['vanity'],
 				) // args
@@ -99,7 +145,11 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[username]",
-					'description' => sprintf("[%s] %s", __('Optional'), __('Your YouTube legacy username', 'youtube-channel') ),
+					'description' => sprintf(
+						"[%s] %s",
+						__('Optional', 'youtube-channel'),
+						__('Your YouTube legacy username', 'youtube-channel')
+					),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['username'],
 				) // args
@@ -113,7 +163,11 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[playlist]",
-					'description' => sprintf("[%s] %s", __('Optional'), __('Enter default playlist ID (not playlist name)', 'youtube-channel') ),
+					'description' => sprintf(
+						"[%s] %s",
+						__('Optional', 'youtube-channel'),
+						__('Enter default playlist ID (not playlist name)', 'youtube-channel')
+						),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['playlist'],
 				) // args
@@ -132,10 +186,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['resource'],
 					'items'       => array(
-						'0' => 'Channel',
-						'1' => 'Favourites',
-						'3' => 'Linked Video',
-						'2' => 'Playlist'
+						'0' => __('Channel', 'youtube-channel'),
+						'1' => __('Favourites', 'youtube-channel'),
+						'3' => __('Liked Video', 'youtube-channel'),
+						'2' => __('Playlist', 'youtube-channel')
 					)
 				) // args
 			);
@@ -219,7 +273,21 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[privacy]",
-					'description' => __(sprintf('Enable this option to protect your visitors privacy. <a href="%s" target="_blank">Learn more here</a>', 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'), 'youtube-channel'),
+					'description' => sprintf(
+						wp_kses(
+							__(
+								'Enable this option to protect your visitors privacy. <a href="%s" target="_blank">%s</a>',
+								'youtube-channel'
+							),
+							array(
+								'a' => array(
+									'href' => array()
+								)
+							)
+						),
+						esc_url('http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'),
+						__('Learn more here', 'youtube-channel')
+					),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['privacy'],
 				) // args
@@ -289,10 +357,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['display'],
 					'items'       => array(
-						'thumbnail' => 'Thumbnail',
-						'iframe'    => 'HTML5 (iframe)',
-						'iframe2'   => 'HTML5 (iframe) Asynchronous',
-						'playlist'  => 'Embedded Playlist',
+						'thumbnail' => __('Thumbnail', 'youtube-channel'),
+						'iframe'    => __('HTML5 (iframe)', 'youtube-channel'),
+						'iframe2'   => __('HTML5 (iframe) Asynchronous', 'youtube-channel'),
+						'playlist'  => __('Embedded Playlist', 'youtube-channel'),
 						// 'gallery'   => 'Gallery'
 					)
 				) // args
@@ -489,9 +557,9 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['showtitle'],
 					'items'       => array(
-						'none'    => 'Hide title',
-						'above'  => 'Above video/thumbnail',
-						'below' => 'Below video/thumbnail',
+						'none'  => __('Hide title', 'youtube-channel'),
+						'above' => __('Above video/thumbnail', 'youtube-channel'),
+						'below' => __('Below video/thumbnail', 'youtube-channel'),
 					)
 				) // args
 			);
@@ -557,10 +625,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['link_to'],
 					'items'       => array(
-						'none'    => 'Hide link',
-						'vanity'  => 'Vanity custom URL',
-						'channel' => 'Channel page URL',
-						'legacy'  => 'Legacy username page'
+						'none'    => __('Hide link', 'youtube-channel'),
+						'vanity'  => __('Vanity custom URL', 'youtube-channel'),
+						'channel' => __('Channel page URL', 'youtube-channel'),
+						'legacy'  => __('Legacy username page', 'youtube-channel')
 					)
 				) // args
 			);
@@ -578,9 +646,9 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['popup_goto'],
 					'items'       => array(
-						'0' => 'same window',
-						'1' => 'new window (JavaScript)',
-						'2' => 'new window (target="_blank")'
+						'0' => __('same window', 'youtube-channel'),
+						'1' => __('new window (JavaScript)', 'youtube-channel'),
+						'2' => __('new window (target="_blank")', 'youtube-channel')
 					)
 				) // args
 			);
@@ -594,7 +662,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 				array(
 					'field'       => $this->option_name . "[goto_txt]",
 					'class'       => 'regular-text',
-					'description' => 'Set default title for link',
+					'description' => __('Set default title for link', 'youtube-channel'),
 					'value'       => $this->defaults['goto_txt'],
 				) // args
 			);
@@ -629,22 +697,54 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 		// --- Section desciptions ---
 		public function settings_general_section_description() {
 		?>
-			<p>Configure general defaults for YouTube Channel used as fallback options in widget or shortcodes. To get Channel ID and Vanity/Custom URL visit <a href="https://www.youtube.com/account_advanced" target="_blank">YouTube Account Overview</a>.</p>
+			<p><?php
+			printf(
+				wp_kses(
+					__(
+						'Configure general defaults for %s used as fallback options in widget or shortcodes. To get Channel ID and Vanity/Custom URL visit <a href="%s" target="_blank">%s</a>.',
+						'youtube-channel'
+					),
+					array(
+						'a' => array(
+							'href' => array()
+						)
+					)
+				),
+				__('YouTube Channel', 'youtube-channel'),
+				esc_url( 'https://www.youtube.com/account_advanced' ),
+				__('YouTube Account Overview', 'youtube-channel')
+			)
+			?></p>
 		<?php
 		} // eom settings_general_section_description()
 		public function settings_video_section_description() {
 		?>
-			<p>Configure video specific defaults for YouTube Channel used as fallback options in widget or shortcodes.</p>
+			<p><?php
+			printf(
+				__('Configure video specific defaults for %s used as fallback options in widget or shortcodes.', 'youtube-channel'),
+				__('YouTube Channel', 'youtube-channel')
+			);
+			?></p>
 		<?php
 		} // eom settings_video_section_description() {
 		public function settings_content_section_description() {
 		?>
-			<p>Configure defaults of content around and over videos for YouTube Channel used as fallback options in widget or shortcodes.</p>
+			<p><?php
+			printf(
+				__('Configure defaults of content around and over videos for %s used as fallback options in widget or shortcodes.', 'youtube-channel'),
+				__('YouTube Channel', 'youtube-channel')
+			);
+			?></p>
 		<?php
 		} // eom settings_content_section_description() {
 		public function settings_link_section_description() {
 		?>
-		<p>Configure defaults for link to channel below YouTube Channel block used as fallback options in widget or shortcodes.</p>
+		<p><?php
+			printf(
+				__('Configure defaults for link to channel below %s block used as fallback options in widget or shortcodes.', 'youtube-channel'),
+				__('YouTube Channel', 'youtube-channel')
+			);
+			?></p>
 		<?php
 		} // eom settings_link_section_description() {
 

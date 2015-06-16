@@ -47,3 +47,34 @@ div[id*='_youtube-channel-'] .widget-content p {
 		clear: none;
 	}
 }
+
+/* Settings tabs */
+.nav-tab.nav-tab-hidden {
+	display: none;
+}
+.subnav-tab-wrapper {
+	margin-bottom: 0;
+
+	& .nav-tab {
+		-webkit-user-select: none;  /* Chrome all / Safari all */
+		-moz-user-select: none;     /* Firefox all */
+		-ms-user-select: none;      /* IE 10+ */
+		user-select: none;          /* Likely future */
+
+		&:focus {
+			-webkit-box-shadow: initial;
+			box-shadow: initial;
+		}
+	}
+}
+.tab-content {
+	display: none;
+
+	&.tab-content-active {
+		display: block;
+		border-color: #ccc;
+		border-width: 0 1px 1px 1px;
+		border-style: solid;
+		padding: 10px;
+	}
+}
