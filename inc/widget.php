@@ -9,7 +9,12 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 		parent::__construct(
 			$WPAU_YOUTUBE_CHANNEL->plugin_slug,
 			__( 'Youtube Channel' , 'youtube-channel' ),
-			array( 'description' => __( 'Serve YouTube videos from channel or playlist right to widget area', 'youtube-channel' ) )
+			array(
+				'description' => __(
+					'Serve YouTube videos from channel or playlist right to widget area',
+					'youtube-channel'
+				)
+			)
 		);
 	}
 

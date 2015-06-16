@@ -35,7 +35,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// --- Add settings section General so we can add fields to it ---
 			add_settings_section(
 				'ytc_general', // Section Name
-				__('General', 'wpsk'), // Section Title
+				__('General', 'youtube-channel'), // Section Title
 				array(&$this, 'settings_general_section_description'), // Section Callback Function
 				$this->slug . '_general' // Page Name
 			);
@@ -43,13 +43,21 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// YouTube Data API Key
 			add_settings_field(
 				$this->option_name . 'apikey', // Setting Slug
-				__('YouTube Data API Key', 'wpsk'), // Title
+				__('YouTube Data API Key', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_password'), // Callback
 				$this->slug . '_general', // Page Name
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[apikey]',
-					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)', 'wpsk'), __('Required'), 'https://console.developers.google.com/project'),
+					'description' => sprintf(
+						"<strong>[%s]</strong> " .
+						__(
+							'Your YouTube Data API Key (get it from <a href="%s" target="_blank">Google Developers Console</a>)',
+							'youtube-channel'
+						),
+						__('Required'),
+						'https://console.developers.google.com/project'
+					),
 					'class'       => 'regular-text password',
 					'value'       => $this->defaults['apikey'],
 				) // args
@@ -57,13 +65,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Channel ID
 			add_settings_field(
 				$this->option_name . 'channel', // Setting Slug
-				__('YouTube Channel ID', 'wpsk'), // Title
+				__('YouTube Channel ID', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_general', // Page Name
 				'ytc_general', // Section Name
 				array(
 					'field'       => $this->option_name . '[channel]',
-					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), __('Required'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf("<strong>[%s]</strong> " . __('Your YouTube Channel ID (get it from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'youtube-channel'), __('Required'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['channel'],
 				) // args
@@ -71,13 +79,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Vanity
 			add_settings_field(
 				$this->option_name . 'vanity', // id
-				__('YouTube Vanity Name', 'wpsk'), // Title
+				__('YouTube Vanity Name', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[vanity]",
-					'description' => sprintf("[%s] " . __('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'wpsk'), __('Optional'), 'https://www.youtube.com/account_advanced'),
+					'description' => sprintf("[%s] " . __('Your YouTube Custom Name (get only part after www.youtube.com/c/ instead whole URL from <a href="%s" target="_blank">YouTube Account Overview</a>)', 'youtube-channel'), __('Optional'), 'https://www.youtube.com/account_advanced'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['vanity'],
 				) // args
@@ -85,13 +93,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Username
 			add_settings_field(
 				$this->option_name . 'username', // id
-				__('Legacy YouTube Username', 'wpsk'), // Title
+				__('Legacy YouTube Username', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[username]",
-					'description' => sprintf("[%s] %s", __('Optional'), __('Your YouTube legacy username', 'wpsk') ),
+					'description' => sprintf("[%s] %s", __('Optional'), __('Your YouTube legacy username', 'youtube-channel') ),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['username'],
 				) // args
@@ -99,13 +107,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Default Playlist
 			add_settings_field(
 				$this->option_name . 'playlist', // id
-				__('Default Playlist ID', 'wpsk'), // Title
+				__('Default Playlist ID', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[playlist]",
-					'description' => sprintf("[%s] %s", __('Optional'), __('Enter default playlist ID (not playlist name)', 'wpsk') ),
+					'description' => sprintf("[%s] %s", __('Optional'), __('Enter default playlist ID (not playlist name)', 'youtube-channel') ),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['playlist'],
 				) // args
@@ -113,14 +121,14 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Resource
 			add_settings_field(
 				$this->option_name . 'resource', // id
-				__('Resource to use', 'wpsk'), // Title
+				__('Resource to use', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[resource]",
-					'label' => __('Resource:', 'wpsk'),
-					'description' => __('What to use as resource for feeds', 'wpsk'),
+					'label' => __('Resource:', 'youtube-channel'),
+					'description' => __('What to use as resource for feeds', 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['resource'],
 					'items'       => array(
@@ -134,13 +142,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Cache
 			add_settings_field(
 				$this->option_name . 'cache', // id
-				__('Cache Timeout','wpsk'),
+				__('Cache Timeout','youtube-channel'),
 				array(&$this, 'settings_field_select'),
 				$this->slug . '_general',
 				'ytc_general',
 				array(
 					'field'       => $this->option_name . "[cache]",
-					'description' => __('Define caching timeout for YouTube feeds, in seconds', 'wpsk'),
+					'description' => __('Define caching timeout for YouTube feeds, in seconds', 'youtube-channel'),
 					'class'       => 'wide-text',
 					'value'       => $this->defaults['cache'],
 					'items'       => array(
@@ -171,13 +179,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Fetch
 			add_settings_field(
 				$this->option_name . 'fetch', // id
-				__('Fetch', 'wpsk'), // Title
+				__('Fetch', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_number'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[fetch]",
-					'description' => __('Number of videos that will be used for random pick (min 2, max 50, default 25)', 'wpsk'),
+					'description' => __('Number of videos that will be used for random pick (min 2, max 50, default 25)', 'youtube-channel'),
 					'class'       => 'num',
 					'value'       => $this->defaults['fetch'],
 					'min'         => 1,
@@ -188,13 +196,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Show
 			add_settings_field(
 				$this->option_name . 'num', // id
-				__('Show', 'wpsk'), // Title
+				__('Show', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_number'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[num]",
-					'description' => __('Number of videos to display', 'wpsk'),
+					'description' => __('Number of videos to display', 'youtube-channel'),
 					'class'       => 'num',
 					'value'       => $this->defaults['num'],
 					'min'         => 1,
@@ -205,13 +213,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Enhanced privacy
 			add_settings_field(
 				$this->option_name . 'privacy', // id
-				__('Use Enhanced privacy', 'wpsk'), // Title
+				__('Use Enhanced privacy', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
 				array(
 					'field'       => $this->option_name . "[privacy]",
-					'description' => __(sprintf('Enable this option to protect your visitors privacy. <a href="%s" target="_blank">Learn more here</a>', 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'), 'wpsk'),
+					'description' => __(sprintf('Enable this option to protect your visitors privacy. <a href="%s" target="_blank">Learn more here</a>', 'http://support.google.com/youtube/bin/answer.py?hl=en-GB&answer=171780'), 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['privacy'],
 				) // args
@@ -227,7 +235,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// --- Add settings section Video so we can add fields to it ---
 			add_settings_section(
 				'ytc_video', // Section Name
-				__('Video Tweaks', 'wpsk'), // Section Title
+				__('Video Tweaks', 'youtube-channel'), // Section Title
 				array(&$this, 'settings_video_section_description'), // Section Callback Function
 				$this->slug . '_video' // Page Name
 			);
@@ -235,13 +243,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Width
 			add_settings_field(
 				$this->option_name . 'width', // id
-				__('Initial Width', 'wpsk'), // Title
+				__('Initial Width', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_number'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[width]",
-					'description' => __('Set default width for displayed video, in pixels', 'wpsk'),
+					'description' => __('Set default width for displayed video, in pixels', 'youtube-channel'),
 					'class'       => 'num',
 					'value'       => $this->defaults['width'],
 					'min'         => 120,
@@ -252,14 +260,14 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Aspect Ratio
 			add_settings_field(
 				$this->option_name . 'ratio', // id
-				__('Aspect ratio', 'wpsk'), // Title
+				__('Aspect ratio', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[ratio]",
-					// 'label' => __('Ratio:', 'wpsk'),
-					'description' => __('Select aspect ratio for displayed video', 'wpsk'),
+					// 'label' => __('Ratio:', 'youtube-channel'),
+					'description' => __('Select aspect ratio for displayed video', 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['ratio'],
 					'items'       => array(
@@ -271,13 +279,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Display
 			add_settings_field(
 				$this->option_name . 'display', // id
-				__('What to show?', 'wpsk'), // Title
+				__('What to show?', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[display]",
-					'description' => __('Choose how to embed video block', 'wpsk'),
+					'description' => __('Choose how to embed video block', 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['display'],
 					'items'       => array(
@@ -292,13 +300,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Responsive
 			add_settings_field(
 				$this->option_name . 'responsive', // id
-				__('Enable Responsive', 'wpsk'), // Title
+				__('Enable Responsive', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[responsive]",
-					'description' => __("Enable this option to make YTC videos and thumbnails responsive by default. Please note, this option will set videos and thumbnail to full width relative to parent container, and disable more than one video per row.", 'wpsk'),
+					'description' => __("Enable this option to make YTC videos and thumbnails responsive by default. Please note, this option will set videos and thumbnail to full width relative to parent container, and disable more than one video per row.", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['responsive'],
 				) // args
@@ -307,7 +315,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Plays Inline
 			add_settings_field(
 				$this->option_name . 'playsinline', // id
-				__('Play inline on iOS', 'wpsk'), // Title
+				__('Play inline on iOS', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
@@ -318,7 +326,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 							'Enable this option to override fullscreen playback on iOS, and force inline playback on page and in lightbox. Learn more <a href="%s">here</a>.',
 							'https://developers.google.com/youtube/player_parameters#playsinline'
 						),
-						'wpsk'
+						'youtube-channel'
 					),
 					'class'       => 'checkbox',
 					'value'       => ( isset($this->defaults['playsinline']) ) ? $this->defaults['playsinline'] : '',
@@ -327,13 +335,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// No Lightbox
 			add_settings_field(
 				$this->option_name . 'nolightbox', // id
-				__('Disable Lightbox', 'wpsk'), // Title
+				__('Disable Lightbox', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[nolightbox]",
-					'description' => __("Enable this option to disable built-in lightbox for thumbnails (in case that you have youtube links lightbox trigger in theme or other plugin).", 'wpsk'),
+					'description' => __("Enable this option to disable built-in lightbox for thumbnails (in case that you have youtube links lightbox trigger in theme or other plugin).", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => ( isset($this->defaults['nolightbox']) ) ? $this->defaults['nolightbox'] : '',
 				) // args
@@ -342,13 +350,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Light Theme
 			add_settings_field(
 				$this->option_name . 'themelight', // id
-				__('Light Theme', 'wpsk'), // Title
+				__('Light Theme', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[themelight]",
-					'description' => __("Enable this option to use light theme for playback controls instead dark.", 'wpsk'),
+					'description' => __("Enable this option to use light theme for playback controls instead dark.", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['themelight'],
 				) // args
@@ -356,13 +364,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// No Player Controls
 			add_settings_field(
 				$this->option_name . 'controls', // id
-				__('Hide Player Controls', 'wpsk'), // Title
+				__('Hide Player Controls', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[controls]",
-					'description' => __("Enable this option to hide playback controls", 'wpsk'),
+					'description' => __("Enable this option to hide playback controls", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['controls'],
 				) // args
@@ -371,13 +379,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Autoplay
 			add_settings_field(
 				$this->option_name . 'autoplay', // id
-				__('Autoplay video or playlist', 'wpsk'), // Title
+				__('Autoplay video or playlist', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[autoplay]",
-					'description' => __("Enable this option to start video playback right after block is rendered", 'wpsk'),
+					'description' => __("Enable this option to start video playback right after block is rendered", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['autoplay'],
 				) // args
@@ -385,13 +393,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Mute on autoplay
 			add_settings_field(
 				$this->option_name . 'autoplay_mute', // id
-				__('Mute video on autoplay', 'wpsk'), // Title
+				__('Mute video on autoplay', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[autoplay_mute]",
-					'description' => __("Enable this option to mute video when start autoplay", 'wpsk'),
+					'description' => __("Enable this option to mute video when start autoplay", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['autoplay_mute'],
 				) // args
@@ -399,13 +407,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// No related videos
 			add_settings_field(
 				$this->option_name . 'norel', // id
-				__('Hide related videos', 'wpsk'), // Title
+				__('Hide related videos', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[norel]",
-					'description' => __("Enable this option to hide related videos after finished playback", 'wpsk'),
+					'description' => __("Enable this option to hide related videos after finished playback", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['norel'],
 				) // args
@@ -413,13 +421,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Hide YT logo
 			add_settings_field(
 				$this->option_name . 'modestbranding', // id
-				__('Hide YT logo', 'wpsk'), // Title
+				__('Hide YT logo', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[modestbranding]",
-					'description' => __("Enable this option to hide YouTube logo from playback control bar. Does not work for all videos.", 'wpsk'),
+					'description' => __("Enable this option to hide YouTube logo from playback control bar. Does not work for all videos.", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['modestbranding'],
 				) // args
@@ -427,13 +435,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Hide Annotations
 			add_settings_field(
 				$this->option_name . 'hideanno', // id
-				__('Hide video annotations', 'wpsk'), // Title
+				__('Hide video annotations', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[hideanno]",
-					'description' => __("Enable this option to hide video annotations (custom text set by uploader over video during playback)", 'wpsk'),
+					'description' => __("Enable this option to hide video annotations (custom text set by uploader over video during playback)", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['hideanno'],
 				) // args
@@ -441,13 +449,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Hide Video Info
 			add_settings_field(
 				$this->option_name . 'hideinfo', // id
-				__('Hide video info', 'wpsk'), // Title
+				__('Hide video info', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_video', // Page
 				'ytc_video', // section
 				array(
 					'field'       => $this->option_name . "[hideinfo]",
-					'description' => __("Enable this option to hide informations about video before play start (video title and uploader in overlay)", 'wpsk'),
+					'description' => __("Enable this option to hide informations about video before play start (video title and uploader in overlay)", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['hideinfo'],
 				) // args
@@ -463,7 +471,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// --- Add settings section Content so we can add fields to it ---
 			add_settings_section(
 				'ytc_content', // Section Name
-				__('Content Tweaks', 'wpsk'), // Section Title
+				__('Content Tweaks', 'youtube-channel'), // Section Title
 				array(&$this, 'settings_content_section_description'), // Section Callback Function
 				$this->slug . '_content' // Page Name
 			);
@@ -471,13 +479,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Video Title
 			add_settings_field(
 				$this->option_name . 'showtitle', // id
-				__('Show video title', 'wpsk'), // Title
+				__('Show video title', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_content', // Page
 				'ytc_content', // section
 				array(
 					'field'       => $this->option_name . "[showtitle]",
-					'description' => __("Select should we and where display title of video", 'wpsk'),
+					'description' => __("Select should we and where display title of video", 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['showtitle'],
 					'items'       => array(
@@ -490,13 +498,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Video Description
 			add_settings_field(
 				$this->option_name . 'showdesc', // id
-				__('Show video description', 'wpsk'), // Title
+				__('Show video description', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_content', // Page
 				'ytc_content', // section
 				array(
 					'field'       => $this->option_name . "[showdesc]",
-					'description' => __("Enable this option to display description for video", 'wpsk'),
+					'description' => __("Enable this option to display description for video", 'youtube-channel'),
 					'class'       => 'checkbox',
 					'value'       => $this->defaults['showdesc'],
 				) // args
@@ -504,13 +512,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Description length
 			add_settings_field(
 				$this->option_name . 'desclen', // id
-				__('Description length', 'wpsk'), // Title
+				__('Description length', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_number'), // Callback
 				$this->slug . '_content', // Page
 				'ytc_content', // section
 				array(
 					'field'       => $this->option_name . "[desclen]",
-					'description' => __('Enter length for video description in characters (0 for full length)', 'wpsk'),
+					'description' => __('Enter length for video description in characters (0 for full length)', 'youtube-channel'),
 					'class'       => 'num',
 					'value'       => $this->defaults['desclen'],
 					'min'         => 0,
@@ -530,7 +538,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// --- Add settings section Link to Channel so we can add fields to it ---
 			add_settings_section(
 				'ytc_link', // Section Name
-				__('Link to Channel', 'wpsk'), // Section Title
+				__('Link to Channel', 'youtube-channel'), // Section Title
 				array(&$this, 'settings_link_section_description'), // Section Callback Function
 				$this->slug . '_link' // Page Name
 			);
@@ -538,14 +546,14 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Link to...
 			add_settings_field(
 				$this->option_name . 'link_to', // id
-				__('Link to...', 'wpsk'), // Title
+				__('Link to...', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_link', // Page
 				'ytc_link', // section
 				array(
 					'field'       => $this->option_name . "[link_to]",
-					// 'label' => __('Ratio:', 'wpsk'),
-					'description' => __('Set where link will lead visitors', 'wpsk'),
+					// 'label' => __('Ratio:', 'youtube-channel'),
+					'description' => __('Set where link will lead visitors', 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['link_to'],
 					'items'       => array(
@@ -559,14 +567,14 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Open in...
 			add_settings_field(
 				$this->option_name . 'popup_goto', // id
-				__('Open link in...', 'wpsk'), // Title
+				__('Open link in...', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_select'), // Callback
 				$this->slug . '_link', // Page
 				'ytc_link', // section
 				array(
 					'field'       => $this->option_name . "[popup_goto]",
-					// 'label' => __('Ratio:', 'wpsk'),
-					'description' => __('Set where link will be opened', 'wpsk'),
+					// 'label' => __('Ratio:', 'youtube-channel'),
+					'description' => __('Set where link will be opened', 'youtube-channel'),
 					'class'       => 'regular-text',
 					'value'       => $this->defaults['popup_goto'],
 					'items'       => array(
@@ -579,7 +587,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// Visit channel text
 			add_settings_field(
 				$this->option_name . 'goto_txt', // id
-				__('Text for Visit channel link', 'wpsk'), // Title
+				__('Text for Visit channel link', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_input_text'), // Callback
 				$this->slug . '_link', // Page
 				'ytc_link', // section
@@ -607,8 +615,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 
 			// Add a page to manage this plugin's settings
 			add_options_page(
-				__('YouTube Channel', 'wpsk'),
-				__('YouTube Channel','wpsk'),
+				__('YouTube Channel', 'youtube-channel'),
+				__('YouTube Channel','youtube-channel'),
 				'manage_options',
 				$this->slug,
 				array(&$this, 'plugin_settings_page')

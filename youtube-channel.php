@@ -3,9 +3,10 @@
 Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
-Author: Aleksandar Urošević
 Version: 3.0.8.4
+Author: Aleksandar Urošević
 Author URI: http://urosevic.net/
+Text Domain: youtube-channel
 */
 
 // Exit if accessed directly
@@ -195,7 +196,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			if ($file === 'youtube-channel/youtube-channel.php') {
 				return array_merge(
 					$links,
-					array( sprintf( '<a href="https://wordpress.org/support/plugin/youtube-channel" target="_blank">%s</a>', __('Support') ) )
+					array( sprintf(
+						'<a href="https://wordpress.org/support/plugin/youtube-channel" target="_blank">%s</a>',
+						__('Support')
+					) )
 				);
 			}
 			return $links;
@@ -265,7 +269,13 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			);
 
 			// Inform if PHP version is lower than 5.3
-			if ( version_compare(PHP_VERSION, "5.3", "<") && ( empty($dismissed_notices) || ( ! empty($dismissed_notices) && empty($dismissed_notices['old_php']) ) ) ) {
+			if (
+				version_compare(PHP_VERSION, "5.3", "<") &&
+				(
+					empty($dismissed_notices) ||
+					( ! empty($dismissed_notices) && empty($dismissed_notices['old_php']) )
+				)
+			) {
 				$notice['info'] .= sprintf(
 					__('<p>Your website running on web server with PHP version %s. Please note that <strong>%s</strong> requires PHP at least 5.3 or newer to work properly. <a href="%s" class="dismiss">Dismiss</a></p>', 'youtube-channel'),
 					PHP_VERSION,
@@ -275,7 +285,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			}
 
 			// Inform if YOUTUBE_DATA_API_KEY is still in wp-config.php
-			if ( defined('YOUTUBE_DATA_API_KEY') && empty($dismissed_notices['apikey_wpconfig']) ) {
+			if (
+				defined('YOUTUBE_DATA_API_KEY') &&
+				empty($dismissed_notices['apikey_wpconfig'])
+			) {
 				$notice['info'] .= sprintf(
 					__('<p>Since <strong>%s</strong> v3.0.6 we store <strong>YouTube Data API Key</strong> in plugin settings. So, you can safely remove %s define line from your <strong>wp-config.php</strong> file. <a href="%s" class="dismiss">Dismiss</a></p>', 'youtube-channel'),
 					$this->plugin_name,
@@ -295,7 +308,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				);
 			}
 
-			if ( empty($dismissed_notices) || ( ! empty($dismissed_notices) && empty($dismissed_notices['vanity_option']) ) ) {
+			if (
+				empty($dismissed_notices) ||
+				( ! empty($dismissed_notices) && empty($dismissed_notices['vanity_option']) )
+			) {
 				$notice['warning'] .= sprintf(
 					__('<p><strong>%s</strong> since version 2.4 supports linking to channel through <em>Vanity/Custom</em> URL. Please review <a href="%s">global</a> and <a href="%s">widgets</a> settings. <a href="%s" class="dismiss">Dismiss</a>', 'youtube-channel'),
 					$this->plugin_name,
@@ -306,7 +322,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			}
 
 			// v3.0.8.1 shortcode changes from v3.0.8
-			if ( empty($dismissed_notices) || ( ! empty($dismissed_notices) && empty($dismissed_notices['changed_shortcode_308']) ) ) {
+			if (
+				empty($dismissed_notices) ||
+				( ! empty($dismissed_notices) && empty($dismissed_notices['changed_shortcode_308']) )
+			) {
 				$notice['warning'] .= sprintf(
 					__('<p><strong>%s</strong> changed shortcode parameters by removing <code>only_pl</code> and <code>showgoto</code>, and combining with parameters <code>display</code> and <code>link_to</code> respectively. Please check out <a href="%s&tab=help">%s</a> and update your shortcodes. <a href="%s" class="dismiss">Dismiss</a>', 'youtube-channel'),
 					$this->plugin_name,
@@ -345,12 +364,34 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 			// Do we need our own lightbox?
 			if ( empty($this->defaults['nolightbox']) ) {
-				wp_enqueue_style( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__), array(), self::VER );
-				wp_enqueue_script( 'magnific-popup-au', plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__), array('jquery'), self::VER, true );
+				wp_enqueue_style(
+					'magnific-popup-au',
+					plugins_url('assets/lib/magnific-popup/magnific-popup.min.css', __FILE__),
+					array(),
+					self::VER
+				);
+				wp_enqueue_script(
+					'magnific-popup-au',
+					plugins_url('assets/lib/magnific-popup/jquery.magnific-popup.min.js', __FILE__),
+					array('jquery'),
+					self::VER,
+					true
+				);
 			}
 
-			wp_enqueue_style( 'youtube-channel', plugins_url('assets/css/youtube-channel.css', __FILE__), array(), self::VER );
-			wp_enqueue_script( 'youtube-channel', plugins_url('assets/js/youtube-channel.min.js', __FILE__), array('jquery'), self::VER, true );
+			wp_enqueue_style(
+				'youtube-channel',
+				plugins_url('assets/css/youtube-channel.css', __FILE__),
+				array(),
+				self::VER
+			);
+			wp_enqueue_script(
+				'youtube-channel',
+				plugins_url('assets/js/youtube-channel.min.js', __FILE__),
+				array('jquery'),
+				self::VER,
+				true
+			);
 
 		} // end function enqueue_scripts
 
@@ -387,9 +428,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 			// Print Magnific Popup if not disabled
 			if ( empty($this->defaults['nolightbox']) ) {
+				/*jQuery(document).ready(function($){*/
 				$js .= "
-					jQuery(document).ready(function($){
-						$('.ytc-lightbox').magnificPopupAU({
+					jQuery(window).on('load',function(){
+						jQuery('.ytc-lightbox').magnificPopupAU({
 							disableOn:320,
 							type:'iframe',
 							mainClass:'ytc-mfp-lightbox',

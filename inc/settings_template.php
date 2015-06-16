@@ -3,7 +3,7 @@
 ?>
 <div class="wrap" id="youtube_channel_settings">
 <p style="float:right;text-align:center;"><small>Support YTC developer</small><br><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6" target="_blank" title="Donate via PayPal - The safer, easier way to pay online!"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" style="width:147px;height:47px;border:0" alt="PayPal - The safer, easier way to pay online!"></a></p>
-	<h2><?php _e( $WPAU_YOUTUBE_CHANNEL->plugin_name . ' Settings', 'wpsk' ); ?></h2>
+	<h2><?php _e( $WPAU_YOUTUBE_CHANNEL->plugin_name . ' Settings', 'youtube-channel' ); ?></h2>
 <?php
 
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';
@@ -11,13 +11,13 @@
 
 	// define available tabs
 	$tabs = array(
-		'general' => 'General',
-		'video'   => 'Video',
-		'content' => 'Content',
-		'link'    => 'Link to Channel',
-		'tools'   => 'Tools',
-		'help'    => 'Help',
-		'support' => 'Support'
+		'general' => __('General', 'youtube-channel'),
+		'video'   => __('Video', 'youtube-channel'),
+		'content' => __('Content', 'youtube-channel'),
+		'link'    => __('Link to Channel', 'youtube-channel'),
+		'tools'   => __('Tools', 'youtube-channel'),
+		'help'    => __('Help', 'youtube-channel'),
+		'support' => __('Support', 'youtube-channel')
 	);
 ?>
 <h2 class="nav-tab-wrapper">

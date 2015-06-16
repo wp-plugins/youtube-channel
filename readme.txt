@@ -272,6 +272,20 @@ and custom CSS code added to theme style.css or similar customization:
 
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
 
+
+= How to reduce size of/remove thumbnail Play button? =
+
+Since v3.0.8 we changed how thumnail Play button is embedded. If you wish to reduce button size, tune transform CSS property in theme's style.css, like this:
+`.youtube_channel .ytc_thumb>span:before {
+  transform: scale(.65);
+}`
+
+If you wish to remove (hide) play button from thumbnails, simply set display property to none, like this:
+
+`.youtube_channel .ytc_thumb>span:before {
+  display: none !important;
+}`
+
 = Your plugin does not support *THIS* or *THAT* =
 
 If you really need that missing feature ASAP, feel free to [contact me](urosevic.net/wordpress/contact/). Select *Subject* option "Quote For New Feature in YouTube Channel", provide detailed explanation of feature you need, also provide some example if there is such, and I'll send you price for implementation.
@@ -279,13 +293,16 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
-= 3.0.8.4 (2015-06-10) =
+= 3.0.8.4 (2015-06-10/16) =
+* Fix: Initiate .MagnificPopupAU() on window load event, not on DOM ready
 * Fix: Lost some settings during igration from old to new options in settings and widgets
 * Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
 * Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
+* Add: Default option settings for nolightbox and playsinline
 * Cleanup: Removed unused modules from MagnificPopup library
 * Change: Lightbox classes by prepending `ytc-` in front of all MagnificPopup classes
 * Change: Reduce minimal screen width from 700px to 320px when lightbox will not be used and will open video directly on YouTube website.
+* Update FAQ with new question about play button on thumbnails
 
 = 3.0.8.3 (2015-06-09) =
 * Add: Support for enhanced privacy videos in lightbox (MagnificPopupAU tweak)
