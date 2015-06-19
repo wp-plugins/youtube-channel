@@ -293,9 +293,13 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
-= 3.0.8.4 (2015-06-10/16) =
-* Fix: Initiate .MagnificPopupAU() on window load event, not on DOM ready
+= 3.0.8.4 (2015-06-10/16/17/18/19) =
+* Fix: (19) Undefined notice for apikey
+* Fix: (18) Wrong name of widgets page on Help tab
+* Fix: (17) Do not load empty JS asset to prevent clash with VisualComposer and invisible rows wit enabled strtching
+* Fix: (16) Initiate .MagnificPopupAU() on window load event, not on DOM ready event
 * Fix: Lost some settings during igration from old to new options in settings and widgets
+* Add: (18) Support to initiate .MagnificPopupAU() on .ajaxComplete() and support dynamically loaded YTC within AJAX
 * Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
 * Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
 * Add: Default option settings for nolightbox and

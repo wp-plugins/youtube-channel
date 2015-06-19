@@ -1,6 +1,24 @@
-<h3>How to use YouTube Channel</h3>
-<p>You can insert YouTube Channel in couple different ways.</p>
+<h3><?php _e('How to use YouTube Channel', 'youtube-channel'); ?></h3>
+<p><?php _e('You can insert YouTube Channel in couple different ways.', 'youtube-channel'); ?></p>
 <ol>
-<li>Insert <a href="widget.php">YouTube Channel Widget</a> in preferred Widget Area, and configure it there.</li>
-<li>Insert shortcode <code>[youtube_channel]</code> to your page or text widget, and even modify default settings by shortcode parameters listed in section below.</li>
+<li><?php
+printf(
+	__(
+		'Add %s to preferred %s, and configure it there.',
+		'youtube-channel'
+	),
+	__('YouTube Channel Widget', 'youtube-channel'),
+	sprintf(
+		'<a href="widgets.php">%s</a>',
+		__('Widget Area', 'youtube-channel')
+	)
+); ?></li>
+<li><?php
+printf(
+	__(
+		'Insert shortcode %s to your page or text widget, and even modify default settings by shortcode parameters listed in section below.',
+		'youtube_channel'
+	),
+	'<code>[youtube_channel]</code>'
+); ?></li>
 </ol>

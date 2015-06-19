@@ -300,11 +300,27 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			// No YouTube DATA Api Key?
 			if ( empty($this->defaults['apikey']) ) {
 				$notice['error'] .= sprintf(
-					__('<p>Please note, to make <strong>%s</strong> plugin v3+ work, generate <strong>YouTube Data API Key</strong> as explained <a href="%s" target="_blank">here</a> and add it at <a href="%s">General plugin settings tab</a>.<br><br>If you have any issue with new version of plugin, please ask for help on official <a href="%s" target="_blank">support forum</a>.<br>This notice will disappear when you add missing key as mentioned above!</p>', 'youtube-channel'),
+					wp_kses(
+						__(
+							'<p>Please note, to make <strong>%1$s</strong> plugin v3+ work, generate <strong>%2$s</strong> in <a href="%3$s" target="_blank">%4$s</a>, as explained <a href="%5$s" target="_blank">here</a>, then add it to <a href="%6$s">%7$s</a>.<br><br>If you have any issue with new version of plugin, please ask for help on official <a href="%8$s" target="_blank">%9$s</a>.<br>This notice will disappear when you add missing key as mentioned above!</p>',
+							'youtube-channel'
+						),
+						array(
+							'a' => array( 'href' => array(), 'target' => array('_blank') ),
+							'p' => array(),
+							'strong' => array(),
+							'br' => array(),
+						)
+					),
 					$this->plugin_name,
-					'http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key',
-					'options-general.php?page=youtube-channel&tab=general',
-					'https://wordpress.org/support/plugin/youtube-channel'
+					__('YouTube Data API Key', 'youtube-channel'),
+					esc_url('https://console.developers.google.com/project'),
+					__('Google Developers Console', 'youtube-channel'),
+					esc_url('http://urosevic.net/wordpress/plugins/youtube-channel/#youtube_data_api_key'),
+					esc_url('options-general.php?page=youtube-channel&tab=general'),
+					__('General Settings', 'youtube-channel'),
+					esc_url('https://wordpress.org/support/plugin/youtube-channel'),
+					__('support forum', 'youtube-channel')
 				);
 			}
 
@@ -385,6 +401,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				array(),
 				self::VER
 			);
+			/* Not needed for v3.0.8.x
 			wp_enqueue_script(
 				'youtube-channel',
 				plugins_url('assets/js/youtube-channel.min.js', __FILE__),
@@ -392,7 +409,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				self::VER,
 				true
 			);
-
+			*/
 		} // end function enqueue_scripts
 
 		/**
@@ -428,9 +445,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 			// Print Magnific Popup if not disabled
 			if ( empty($this->defaults['nolightbox']) ) {
-				/*jQuery(document).ready(function($){*/
 				$js .= "
-					jQuery(window).on('load',function(){
+					function ytc_init_MPAU() {
 						jQuery('.ytc-lightbox').magnificPopupAU({
 							disableOn:320,
 							type:'iframe',
@@ -439,6 +455,12 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 							preloader:false,
 							fixedContentPos:false
 						});
+					}
+					jQuery(window).on('load',function(){
+						ytc_init_MPAU();
+					});
+					jQuery(document).ajaxComplete(function(){
+						ytc_init_MPAU();
 					});
 				";
 			} // END if ( empty($this->defaults['nolightbox']) )

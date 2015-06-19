@@ -96,7 +96,20 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id('class'); ?>" name="<?php echo $this->get_field_name('class'); ?>" value="<?php echo $class; ?>" title="<?php _e('Enter custom class for YTC block, if you wish to target block styling', 'youtube-channel'); ?>" />
 			</label>
 		</p>
-		<p>Get your Channel ID and Custom ID from <a href="https://www.youtube.com/account_advanced" target="_blank">here</a>.</p>
+		<p><?php
+		printf(
+			wp_kses(
+				__(
+						'Get your %1$s and %2$s from <a href="%3$s" target="_blank">here</a>.',
+						'youtube-channel'
+					),
+				array( 'a' => array( 'href' => array() ) )
+			),
+			__('Channel ID', 'youtube-channel'),
+			__('Custom ID', 'youtube-channel'),
+			'https://www.youtube.com/account_advanced'
+		);
+		?></p>
 		<p class="half left glue-top">
 			<label for="<?php echo $this->get_field_id('vanity'); ?>"><?php _e('Vanity/Custom ID', 'youtube-channel'); ?>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id('vanity'); ?>" name="<?php echo $this->get_field_name('vanity'); ?>" value="<?php echo $vanity; ?>" title="<?php _e('YouTube Vanity/Custom ID from URL (part after /c/)', 'youtube-channel'); ?>" />
@@ -183,9 +196,9 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 				<?php _e('Show video title', 'youtube-channel'); ?>
 			</label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'showtitle' ); ?>" name="<?php echo $this->get_field_name( 'showtitle' ); ?>">
-				<option value="none"<?php selected( $showtitle, 'none' ); ?>>Hide title</option>
-				<option value="above"<?php selected( $showtitle, 'above' ); ?>>Above video/thumbnail</option>
-				<option value="below"<?php selected( $showtitle, 'below' ); ?>>Below video/thumbnail</option>
+				<option value="none"<?php selected( $showtitle, 'none' ); ?>><?php _e('Hide title', 'youtube-channel'); ?></option>
+				<option value="above"<?php selected( $showtitle, 'above' ); ?>><?php _e('Above video/thumbnail', 'youtube-channel'); ?></option>
+				<option value="below"<?php selected( $showtitle, 'below' ); ?>><?php _e('Below video/thumbnail', 'youtube-channel'); ?></option>
 			</select><br />
 			<label for="<?php echo $this->get_field_id( 'showdesc' ); ?>">
 				<input class="checkbox" type="checkbox" <?php checked( (bool) $showdesc, true ); ?> id="<?php echo $this->get_field_id('showdesc'); ?>" name="<?php echo $this->get_field_name( 'showdesc' ); ?>" /> <?php _e('Show video description', 'youtube-channel'); ?>
@@ -223,10 +236,17 @@ class WPAU_YOUTUBE_CHANNEL_Widget extends WP_Widget {
 
 		<h4><?php _e('Does not work?', 'youtube-channel'); ?></h4>
 		<p>
-			<small><?php printf(__(
-				'Carefully read <a href="%s" target="_faq">FAQ</a> before you contact us. If that does not help, <a href="%s" target="_blank">get JSON file</a> and send it to <a href="%s" target="_support">support forum</a> along with other details noted in <a href="%s" target=_blank">this article</a>.', 'youtube-channel'
+			<small><?php
+			printf(
+				wp_kses(
+					__(
+					'Carefully read <a href="%1$s" target="_faq">%2$s</a> before you contact us. If that does not help, <a href="%3$s" target="_blank">get JSON file</a> and send it to <a href="%4$s" target="_support">support forum</a> along with other details noted in <a href="%5$s" target=_blank">this article</a>.',
+					'youtube-channel'
+					),
+					array(  'a' => array( 'href' => array() ) )
 				),
 				'https://wordpress.org/plugins/youtube-channel/faq/',
+				__('FAQ', 'youtube-channel'),
 				"?ytc_debug_json_for={$this->number}",
 				'http://wordpress.org/support/plugin/youtube-channel',
 				'https://wordpress.org/support/topic/ytc3-read-before-you-post-support-question-or-report-bug'

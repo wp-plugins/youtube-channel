@@ -1,5 +1,12 @@
-<h3>How to use shortcode</h3>
-<p>You can use shortcode <code>[youtube_channel]</code> with options listed below (all options are optional if you have set defaults in global plugin settings):</p>
+<h3><?php _e('How to use shortcode', 'youtube-channel'); ?></h3>
+<p><?php
+printf(
+	__(
+		'You can use shortcode %s with options listed below (all options are optional if you have set defaults in global plugin settings).',
+		'youtube-channel'
+	),
+	'<code>[youtube_channel]</code>'
+); ?></p>
 
 <h3 class="nav-tab-wrapper subnav-tab-wrapper">
 	<a href="#ytc-general-settings" class="nav-tab nav-tab-active"><?php _e('General Settings', 'youtube-channel'); ?></a>
@@ -88,8 +95,25 @@
 </ul>
 </div>
 
-<p>Please note, you can exclude all options listed above, and then we'll use default options from Settings page.</p>
-<p>YTC blocks inserted through widget have own settings.</p>
+<p><?php
+printf(
+	__(
+		'Please note, you can omit all options listed above, and then will be used plugin defaults customized on tabs %1$s, %2$s, %3$s and %4$s.',
+		'youtube-chanel'
+	),
+	__('General', 'youtube-channel'),
+	__('Video', 'youtube-channel'),
+	__('Content', 'youtube-channel'),
+	__('Link to Channel', 'youtube-channel')
+); ?></p>
+<p><?php
+printf(
+	__(
+		'Important note: %s blocks inserted through widget have their own settings.',
+		'youtube-channel'
+	),
+	__('YouTube Channel', 'youtube-channel')
+); ?></p>
 
 <script>
 jQuery(document).ready(function($){

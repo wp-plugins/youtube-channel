@@ -69,7 +69,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 						)
 					),
 					'class'       => 'regular-text password',
-					'value'       => $this->defaults['apikey'],
+					'value'       => ! empty($this->defaults['apikey']) ? $this->defaults['apikey'] : '',
 				) // args
 			);
 			// Channel ID
@@ -701,16 +701,19 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			printf(
 				wp_kses(
 					__(
-						'Configure general defaults for %s used as fallback options in widget or shortcodes. To get Channel ID and Vanity/Custom URL visit <a href="%s" target="_blank">%s</a>.',
+						'Configure general defaults for %1$s used as fallback options in widget or shortcodes. To get %2$s and %3$s visit <a href="%4$s" target="_blank">%5$s</a>.',
 						'youtube-channel'
 					),
 					array(
 						'a' => array(
-							'href' => array()
+							'href' => array(),
+							'target' => array('_blank')
 						)
 					)
 				),
 				__('YouTube Channel', 'youtube-channel'),
+				__('Channel ID', 'youtube-channel'),
+				__('Vanity URL', 'youtube-channel'),
 				esc_url( 'https://www.youtube.com/account_advanced' ),
 				__('YouTube Account Overview', 'youtube-channel')
 			)
