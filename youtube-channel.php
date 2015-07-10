@@ -113,6 +113,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 				'responsive'     => 1,
 				'display'        => 'thumbnail', // thumbnail, iframe, iframe2, playlist (deprecated: chromeless, object)
 				'themelight'     => 0,
+				'fullscreen'     => 0,
 				'controls'       => 0,
 				'autoplay'       => 0,
 				'autoplay_mute'  => 0,
@@ -1257,6 +1258,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$output[] = "<div class=\"ytc_video_container ytc_video_1 ytc_video_single ytc_playlist_only {$arclass}\">";
 			$output[] = "<div class=\"fluid-width-video-wrapper\">";
 			$output[] = "<iframe src=\"//{$youtube_domain}/embed/videoseries?list={$resource_id}{$autoplay}{$theme}{$modestbranding}{$rel}\"";
+			if ( ! empty($instance['fullscreen']) ) $output[] = " allowfullscreen";
 			$output[] = " width=\"{$width}\" height=\"{$height}\" frameborder=\"0\"></iframe>";
 			$output[] = "</div><!-- .fluid-width-video-wrapper -->";
 			$output[] = "</div><!-- .ytc_video_container -->";

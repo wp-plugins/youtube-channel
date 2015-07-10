@@ -408,6 +408,10 @@ function au_youtube_channel_update_routine_14() {
 	if ( ! isset($defaults['nolightbox']) ) {
 		$defaults['nolightbox'] = 0;
 	}
+
+	// add new default option `fullscreen`
+	$defaults['fullscreen'] = 0;
+
 	if ( isset($defaults) ) {
 		update_option('youtube_channel_defaults', $defaults);
 		unset($defaults);

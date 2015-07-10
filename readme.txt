@@ -3,7 +3,7 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
-Tested up to: 4.2.2
+Tested up to: 4.3
 Stable tag: 3.0.8.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -183,6 +183,8 @@ You can get **Channel ID** from page [Account Advanced](https://www.youtube.com/
 
 == Frequently Asked Questions ==
 
+Please note, latest FAQ you can find [on our website](http://urosevic.net/wordpress/plugins/youtube-channel/faq/). This section on WordPress.org has been updated only on plugin version release, so questions answered between releases are not visible here.
+
 = How to get that YouTube Data API Key? =
 
 Please folllow [Installation](https://wordpress.org/plugins/youtube-channel/installation/) instructions.
@@ -205,7 +207,7 @@ If there is no `YTC ERROR` code in HTML source, visit [Google API Explorer](http
 * for videos from channel replace **UC** with **UU** in Channel ID (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *UURPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Favourited videos replace **UC** with **FL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *FLRPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Liked Videos replace **UC** with **LL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *LLRPqmcpGcJ_gFtTmN_a4aVA*)
-* for videos from Playlist simply use Playlist ID (like *PLEC850BE962234400*)
+* for videos from Playlist simply use Playlist ID (like *PLEC850BE962234400* or *RDMMjUe8uoKdHao*)
 
 Note that all four resources are *playlists* (including channel), so append mentioned ID to field **playlistId** (not to **id**), and click **Execute** button at the bottom of that page.
 
@@ -234,7 +236,7 @@ Check out [Channel custom URL](https://support.google.com/youtube/answer/2657968
 
 = Where to find Playlist ID? =
 
-Playlist ID can be manualy extracted from YouTube playlist URL. Part of strings after `&list=` that begins with uppercase letters **PL** represent Playlist ID (not full URL).
+Playlist ID can be manually extracted from YouTube playlist URL. Just look for string after `&list=` parameter in URL which can contain lowercase and uppercase letters, dash and underscore characters. Regular playlists starts with uppercase letters **PL** (like *PLEC850BE962234400*), but Playlist ID for YouTube mixes start with uppercase **RD** (like *RDCfMMlT8Lyns*).
 
 = How to force embeding 320p video with better audio quality? =
 
@@ -253,21 +255,22 @@ You can try with shortcode combination:
 
 and custom CSS code added to theme style.css or similar customization:
 `.youtube_channel.ytc_wall_1-6 .ytc_video_container {
-	padding: 5px;
-	box-sizing: border-box;
+    padding: 5px;
+    box-sizing: border-box;
+    max-width: 33.333%;
 }
-.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
-	max-width: 33.333%;
+.youtube_channel.ytc_wall_1-6 .ytc_video_container.ytc_video_1 {
+    max-width: 100%;
 }
 @media screen and (max-width: 768px) {
-	.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
-		max-width: 50%;
-	}
+    .youtube_channel.ytc_wall_1-6 .ytc_video_container:not(.ytc_video_1) {
+        max-width: 50%;
+    }
 }
 @media screen and (max-width: 480px) {
-	.youtube_channel.ytc_wall_1-6 .ytc_video_container:not(:first-child) {
-		max-width: 100%;
-	}
+    .youtube_channel.ytc_wall_1-6 .ytc_video_container:not(.ytc_video_1) {
+        max-width: 100%;
+    }
 }`
 
 So, we display thumbnails for 7 random videos from default (global) playlist, and distribute small thumbnails to 3 columns on wide screens, 2 columns under 768px and single thumbnail per row under 480px.
@@ -293,13 +296,14 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
-= 3.0.8.4 (2015-06-10/16/17/18/19) =
-* Fix: (19) Undefined notice for apikey
-* Fix: (18) Wrong name of widgets page on Help tab
-* Fix: (17) Do not load empty JS asset to prevent clash with VisualComposer and invisible rows wit enabled strtching
-* Fix: (16) Initiate .MagnificPopupAU() on window load event, not on DOM ready event
+= 3.0.8.4 (2015-06-10/16/17/18/19-07/10) =
+* Fix: (6/19) Undefined notice for apikey
+* Fix: (6/18) Wrong name of widgets page on Help tab
+* Fix: (6/17) Do not load empty JS asset to prevent clash with VisualComposer and invisible rows wit enabled strtching
+* Fix: (6/16) Initiate .MagnificPopupAU() on window load event, not on DOM ready event
 * Fix: Lost some settings during igration from old to new options in settings and widgets
-* Add: (18) Support to initiate .MagnificPopupAU() on .ajaxComplete() and support dynamically loaded YTC within AJAX
+* Add: (7/10) New global option **Enable Full Screen** added to **Video** tab. Disabled by default, enable fullscreen option for embedded playlist
+* Add: (6/18) Support to initiate .MagnificPopupAU() on .ajaxComplete() and support dynamically loaded YTC within AJAX
 * Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
 * Add: Support for (playsinline)[https://developers.google.com/youtube/player_parameters#playsinline] player option in MagnificPopup library to play video on mobile devices in page instead in device player (disabled by default)
 * Add: Default option settings for nolightbox and

@@ -414,6 +414,20 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => ( isset($this->defaults['nolightbox']) ) ? $this->defaults['nolightbox'] : '',
 				) // args
 			);
+			// Full Screen
+			add_settings_field(
+				$this->option_name . 'fullscreen', // id
+				__('Enable Full Screen', 'youtube-channel'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_video', // Page
+				'ytc_video', // section
+				array(
+					'field'       => $this->option_name . "[fullscreen]",
+					'description' => __("Enable this option to make available Full Screen button for embedded playlists.", 'youtube-channel'),
+					'class'       => 'checkbox',
+					'value'       => $this->defaults['fullscreen'],
+				) // args
+			);
 
 			// Light Theme
 			add_settings_field(
@@ -946,6 +960,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['responsive']     = ( ! empty($options['responsive']) && $options['responsive'] ) ? 1 : 0;
 					$sanitized['playsinline']     = ( ! empty($options['playsinline']) && $options['playsinline'] ) ? 1 : 0;
 					$sanitized['nolightbox']     = ( ! empty($options['nolightbox']) && $options['nolightbox'] ) ? 1 : 0;
+					$sanitized['fullscreen']     = ( ! empty($options['fullscreen']) && $options['fullscreen'] ) ? 1 : 0;
 
 					$sanitized['themelight']     = ( ! empty($options['themelight']) && $options['themelight'] ) ? 1 : 0;
 					$sanitized['controls']       = ( ! empty($options['controls']) && $options['controls'] ) ? 1 : 0;
