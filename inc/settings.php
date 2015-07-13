@@ -292,6 +292,23 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					'value'       => $this->defaults['privacy'],
 				) // args
 			);
+			// TinyMCE icon
+			add_settings_field(
+				$this->option_name . 'tinymce', // id
+				__('Disable TinyMCE button', 'youtube-channel'), // Title
+				array(&$this, 'settings_field_checkbox'), // Callback
+				$this->slug . '_general', // Page
+				'ytc_general', // section
+				array(
+					'field'       => $this->option_name . "[tinymce]",
+					'description' => sprintf(
+						__('Disable this option to hide %s button from TinyMCE toolbar on post and page editor.', 'youtube-channel'),
+						__('YouTube Channel', 'youtube-channel')
+					),
+					'class'       => 'checkbox',
+					'value'       => $this->defaults['tinymce'],
+				) // args
+			);
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
 				'ytc_general', // Setting group
@@ -950,6 +967,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 					$sanitized['fetch']    = ( ! empty($options['fetch']) ) ? intval($options['fetch']) : $this->defaults['fetch'];
 					$sanitized['num']      = ( ! empty($options['num']) ) ? intval($options['num']) : $this->defaults['num'];
 					$sanitized['privacy']  = ( ! empty($options['privacy']) && $options['privacy'] ) ? 1 : 0;
+					$sanitized['tinymce']  = ( ! empty($options['tinymce']) && $options['tinymce'] ) ? 1 : 0;
 				break; // General
 
 				// --- Video ---

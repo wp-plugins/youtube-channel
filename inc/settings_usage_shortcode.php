@@ -15,7 +15,7 @@ printf(
 	<a href="#ytc-link-settings" class="nav-tab"><?php _e('Link to Channel', 'youtube-channel'); ?></a>
 </h3>
 
-<div class="tab-content tab-content-active" id="ytc-general-settings">
+<div class="tab-content-ytc tab-content-active" id="ytc-general-settings">
 <ul>
 	<li><code>channel</code> <em>(string)</em> ID of preferred YouTube channel. Do not set full URL to channel, but just last part from URL - ID (name)</li>
 	<li><code>vanity</code> <em>(string)</em> Vanity name.</li>
@@ -37,7 +37,7 @@ printf(
 </ul>
 </div>
 
-<div class="tab-content" id="ytc-video-settings">
+<div class="tab-content-ytc" id="ytc-video-settings">
 <ul>
 	<li><code>ratio</code> <em>(int)</em> Set preferred aspect ratio for thumbnail and video. You can use:
 	<ul>
@@ -64,7 +64,7 @@ printf(
 </ul>
 </div>
 
-<div class="tab-content" id="ytc-content-settings">
+<div class="tab-content-ytc" id="ytc-content-settings">
 <ul>
 	<li><code>showtitle</code> <em>(string)</em> Set to <code>none</code> to hide title; <code>above</code> to show video title above video/thumbnail, or <code>below</code> to show video title below video/thumbnail.</li>
 	<li><code>showdesc</code> <em>(bool)</em> Set to <code>1</code> or <code>true</code> to show video description.</li>
@@ -74,7 +74,7 @@ printf(
 </ul>
 </div>
 
-<div class="tab-content" id="ytc-link-settings">
+<div class="tab-content-ytc" id="ytc-link-settings">
 <ul>
 	<li><code>goto_txt</code> <em>(string)</em></li>
 	<li><code>popup</code> <em>(int)</em> Control where link to channel will be opened:
@@ -122,7 +122,7 @@ jQuery(document).ready(function($){
 		var target = $(this).attr('href');
 		$('.subnav-tab-wrapper .nav-tab').removeClass('nav-tab-active');
 		$(this).addClass('nav-tab-active');
-		$('.tab-content').removeClass('tab-content-active');
+		$('.tab-content-ytc').removeClass('tab-content-active');
 		$(target).addClass('tab-content-active');
 	});
 });

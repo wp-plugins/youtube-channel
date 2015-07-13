@@ -48,8 +48,10 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			$this->defaults = self::defaults();
 
 			// TinyMCE AddOn
-			add_filter( 'mce_external_plugins', array($this, 'mce_external_plugins'), 998 );
-			add_filter( 'mce_buttons', array($this, "mce_buttons"), 999 );
+			if ( ! empty($this->defaults['tinymce']) ) {
+				add_filter( 'mce_external_plugins', array($this, 'mce_external_plugins'), 998 );
+				add_filter( 'mce_buttons', array($this, "mce_buttons"), 999 );
+			}
 
 			if ( is_admin() ) {
 
@@ -128,7 +130,8 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 
 				'goto_txt'       => 'Visit our channel',
 				'popup_goto'     => 0, // 0 same window, 1 new window JS, 2 new window target
-				'link_to'        => 'none' // 0 legacy username, 1 channel, 2 vanity
+				'link_to'        => 'none', // 0 legacy username, 1 channel, 2 vanity
+				'tinymce'        => 1 // show TInyMCE button by default
 			);
 
 			add_option('youtube_channel_version', self::VER, '', 'no');
@@ -214,7 +217,12 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL') )
 			global $pagenow;
 
 			// Enqueue only on widget or post pages
-			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'post.php' && $pagenow !== 'options-general.php' ) {
+			if( $pagenow !== 'widgets.php' && $pagenow !== 'customize.php' && $pagenow !== 'options-general.php' && $pagenow !== 'post.php' ) {
+				return;
+			}
+
+			// Enqueue on post page only if tinymce is enabled
+			if ( $pagenow == 'post.php' && empty($this->defaults['tinymce']) ) {
 				return;
 			}
 

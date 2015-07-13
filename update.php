@@ -412,6 +412,9 @@ function au_youtube_channel_update_routine_14() {
 	// add new default option `fullscreen`
 	$defaults['fullscreen'] = 0;
 
+	// add new default option `tinymce`
+	$defaults['tinymce'] = 1;
+
 	if ( isset($defaults) ) {
 		update_option('youtube_channel_defaults', $defaults);
 		unset($defaults);

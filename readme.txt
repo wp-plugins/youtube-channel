@@ -31,6 +31,7 @@ For manual set of videos from YouTube check out [Easy YouTube Gallery](https://w
 * Thumbnail mode opens video in lightbox
 * Custom feed caching timeout
 * Optional video autoplay with optional muted audio
+* Optional TinyMCE button on post/page edit (can be disabled on General plugin settings page)
 * Show customized link to channel/vanity/legacy username below videos
 * Final look is highly customizable thanks to predefined classes for each element of YTC block!
 
@@ -302,6 +303,7 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 * Fix: (6/17) Do not load empty JS asset to prevent clash with VisualComposer and invisible rows wit enabled strtching
 * Fix: (6/16) Initiate .MagnificPopupAU() on window load event, not on DOM ready event
 * Fix: Lost some settings during igration from old to new options in settings and widgets
+* Add: (7/13) New global option **Disable TinyMCE** added to **General** tab. Enabled by default, disable to remove TinyMCE icon from post/page Visual Editor
 * Add: (7/10) New global option **Enable Full Screen** added to **Video** tab. Disabled by default, enable fullscreen option for embedded playlist
 * Add: (6/18) Support to initiate .MagnificPopupAU() on .ajaxComplete() and support dynamically loaded YTC within AJAX
 * Add: New global option **Play inline on iOS** added to **Video** tab. Disabled by default, provide support for playsinline parameter.
