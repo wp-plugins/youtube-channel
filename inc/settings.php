@@ -295,7 +295,7 @@ if ( ! class_exists('WPAU_YOUTUBE_CHANNEL_SETTINGS') ) {
 			// TinyMCE icon
 			add_settings_field(
 				$this->option_name . 'tinymce', // id
-				__('Disable TinyMCE button', 'youtube-channel'), // Title
+				__('Enable TinyMCE button', 'youtube-channel'), // Title
 				array(&$this, 'settings_field_checkbox'), // Callback
 				$this->slug . '_general', // Page
 				'ytc_general', // section
