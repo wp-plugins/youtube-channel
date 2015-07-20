@@ -239,6 +239,16 @@ Check out [Channel custom URL](https://support.google.com/youtube/answer/2657968
 
 Playlist ID can be manually extracted from YouTube playlist URL. Just look for string after `&list=` parameter in URL which can contain lowercase and uppercase letters, dash and underscore characters. Regular playlists starts with uppercase letters **PL** (like *PLEC850BE962234400*), but Playlist ID for YouTube mixes start with uppercase **RD** (like *RDCfMMlT8Lyns*).
 
+= Video titles missing after plugin update =
+
+If you inserted videos by shortcode previous v3.0.8 then you probably have set parameter `showtitle=1`.
+
+Since version v3.0.8 of plugin this parameter has been changed to accept values `none`, `above` and `below`, depending do you wish to hide video title, or to display them above/below video thumbnail.
+
+So, you can:
+1. Remove `showtitle` parameter from shortcode and set **Show title** global plugin option on **Content** tab, or
+1. Change parameter `showtitle` to `above` or `below`.
+
 = How to force embeding 320p video with better audio quality? =
 
 YouTube provide 320p videos if height of embeded video is set to 320 or more. If you use small YTC video size, 240p will be loaded instead. So, you could not force 720p in tiny YTC.
