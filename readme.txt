@@ -216,6 +216,44 @@ Note that all four resources are *playlists* (including channel), so append ment
 1. If there is no error but you do not get any video in results - contact Google Support.
 1. If there are video results but not displayed with YouTube Channel plugin - [contact us](https://wordpress.org/support/plugin/youtube-channel)
 
+= What this YTC ERROR/HTTP Error means? =
+
+You will be able to reproduce HTTP Error w/o WordPress if you have SSH access to server where you host your website. Simply login to shell and run following command:
+
+`curl https://www.googleapis.com/youtube/v3/playlistItems`
+
+If you do not receive response like one below, then you'll receive HTTP Error from curl command.
+
+`{
+ "error": {
+  "errors": [
+   {
+    "domain": "global",
+    "reason": "required",
+    "message": "Required parameter: part",
+    "locationType": "parameter",
+    "location": "part"
+   }
+  ],
+  "code": 400,
+  "message": "Required parameter: part"
+ }
+}`
+
+Known HTTP Errors:
+
+**error:0D0890A1:asn1 encoding routines:ASN1_verify:unknown message digest algorithm**
+
+The remote connection software you are using on your server might be compiled with a very old version of OpenSSL that does not take certificates signed with sha256-With-RSA-Encryption into account. It requires at least OpenSSL 0.9.8o for a total management of SHA256.
+
+Please contact your server admin or hosting provider about this issue.
+
+**Problem with the SSL CA cert (path? access rights?)**
+
+This is a server related issue (not related to YouTube Channel or WordPress).
+
+To resolve the issue, you’ll need to restart Apache (or nginx). If that doesn’t fix the problem, you’ll need to restart your entire server. Or simply contact server support.
+
 = Where to find correct Channel ID and/or Vanity custom Name? =
 
 Login to your YouTube account and visit page [Account Advanced](https://www.youtube.com/account_advanced).
