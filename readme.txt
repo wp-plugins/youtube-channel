@@ -345,6 +345,11 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.5 =
+* Enhanced: Settings page made compliant to WordPress Core Coding Standard
+* Fix: Wrong links to external resources on Settings page
+* Fix: Opening external resources links on Settings page in new tab
+
 = 3.0.8.4 (2015-06-10/16/17/18/19-07/10) =
 * Fix: (6/19) Undefined notice for apikey
 * Fix: (6/18) Wrong name of widgets page on Help tab
