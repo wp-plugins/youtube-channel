@@ -1,10 +1,10 @@
 === YouTube Channel ===
 Contributors: urkekg
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
+Donate link: http://urosevic.net/wordpress/donate/?donate_for=youtube-channel
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.3
-Stable tag: 3.0.8.4
+Stable tag: 3.0.8.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -203,18 +203,20 @@ Do exactly what message says - check and correct Channel ID in default settings/
 1. Try to remove restrictions by referer or IP in your **YouTube Data API Key** and refresh page after couple minutes.
 1. If that does not help, please try to create new API Key for Server w/o restrictions (not to regenerate existing one).
 
-If there is no `YTC ERROR` code in HTML source, visit [Google API Explorer](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.playlistItems.list?part=snippet&maxResults=5&playlistId=) and append:
+= How to use Google APIs Explorer to verify YouTube feeds? =
+
+If there is no `YTC ERROR` code in HTML source, visit [Google API Explorer](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.playlistItems.list?part=snippet&maxResults=5&playlistId=) and append to the end of URL one of resource ID’s based on your Channel ID:
 
 * for videos from channel replace **UC** with **UU** in Channel ID (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *UURPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Favourited videos replace **UC** with **FL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *FLRPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Liked Videos replace **UC** with **LL** (so *UCRPqmcpGcJ_gFtTmN_a4aVA* becomes *LLRPqmcpGcJ_gFtTmN_a4aVA*)
 * for videos from Playlist simply use Playlist ID (like *PLEC850BE962234400* or *RDMMjUe8uoKdHao*)
 
-Note that all four resources are *playlists* (including channel), so append mentioned ID to field **playlistId** (not to **id**), and click **Execute** button at the bottom of that page.
+Note that all four resources are *playlists* (including uploads to channel), so append mentioned ID to field **playlistId** (not to **id**), and click **Execute** button at the bottom of that page.
 
-1. If you receive some error, fix settings.
-1. If there is no error but you do not get any video in results - contact Google Support.
-1. If there are video results but not displayed with YouTube Channel plugin - [contact us](https://wordpress.org/support/plugin/youtube-channel)
+1. If you receive some error in results, tune parameters in APIs Explorer.
+1. If there is no error but you do not get any video in results, and you are sure that there is public videos in selected resource – contact Google Support.
+1. If there are video results but not displayed with YouTube Channel plugin – check topic [Read before you post support question or report bug](https://wordpress.org/support/topic/ytc3-read-before-you-post-support-question-or-report-bug) and then [start your own support topic](https://wordpress.org/support/plugin/youtube-channel#postform).
 
 = What this YTC ERROR/HTTP Error means? =
 
@@ -345,10 +347,14 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.6 =
+* Enhanced: Finished making code compliant to WordPress Core coding standards
+
 = 3.0.8.5 =
 * Enhanced: Settings page made compliant to WordPress Core Coding Standard
 * Fix: Wrong links to external resources on Settings page
 * Fix: Opening external resources links on Settings page in new tab
+* Change: Replace PayPal donation links to prevent account limitations if plugin is used on website that violates PayPal's Acceptable Use Policy
 
 = 3.0.8.4 (2015-06-10/16/17/18/19-07/10) =
 * Fix: (6/19) Undefined notice for apikey

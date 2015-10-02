@@ -70,7 +70,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL_SETTINGS' ) ) {
 						)
 					),
 					'class'       => 'regular-text password',
-					'value'       => $this->defaults['apikey'],
+					'value'       => isset( $this->defaults['apikey'] ) ? $this->defaults['apikey'] : '',
 				) // args
 			);
 			// Channel ID
@@ -311,7 +311,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL_SETTINGS' ) ) {
 						__( 'YouTube Channel', 'youtube-channel' )
 					),
 					'class'       => 'checkbox',
-					'value'       => $this->defaults['tinymce'],
+					'value'       => isset( $this->defaults['tinymce'] ) ? $this->defaults['tinymce'] : false,
 				) // args
 			);
 			// --- Register setting General so $_POST handling is done ---
@@ -455,7 +455,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL_SETTINGS' ) ) {
 					'field'       => $this->option_name . '[fullscreen]',
 					'description' => __( 'Enable this option to make available Full Screen button for embedded playlists.', 'youtube-channel' ),
 					'class'       => 'checkbox',
-					'value'       => $this->defaults['fullscreen'],
+					'value'       => isset( $this->defaults['fullscreen'] ) ? $this->defaults['fullscreen'] : false,
 				) // args
 			);
 
@@ -969,7 +969,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL_SETTINGS' ) ) {
 			}
 
 			// Render the settings template
-			require_once( 'settings_template.php' );
+			require_once( 'settings-template.php' );
 
 		} // eom plugin_settings_page()
 

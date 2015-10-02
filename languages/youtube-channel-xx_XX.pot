@@ -2,14 +2,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: YouTube Channel\n"
-"POT-Creation-Date: 2015-06-19 21:15+0100\n"
+"POT-Creation-Date: 2015-10-03 01:17+0200\n"
 "PO-Revision-Date: 2015-06-19 21:15+0100\n"
 "Last-Translator: Aleksandar Urošević <urke.kg@gmail.com>\n"
 "Language-Team: Aleksandar Urošević <urke.kg@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: youtube-channel.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -19,482 +19,592 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: inc/settings.php:38 inc/settings_template.php:14
-#: inc/settings_usage_shortcode.php:104
+#: inc/settings-template.php:6
+msgid " Settings"
+msgstr ""
+
+#: inc/settings-template.php:12 inc/settings-usage-shortcode.php:104
+#: inc/settings.php:38
 msgid "General"
 msgstr ""
 
-#: inc/settings.php:46 youtube-channel.php:316
+#: inc/settings-template.php:13 inc/settings-usage-shortcode.php:105
+msgid "Video"
+msgstr ""
+
+#: inc/settings-template.php:14 inc/settings-usage-shortcode.php:106
+msgid "Content"
+msgstr ""
+
+#: inc/settings-template.php:15 inc/settings-usage-shortcode.php:15
+#: inc/settings-usage-shortcode.php:107 inc/settings.php:653 inc/widget.php:217
+msgid "Link to Channel"
+msgstr ""
+
+#: inc/settings-template.php:16
+msgid "Tools"
+msgstr ""
+
+#: inc/settings-template.php:17
+msgid "Help"
+msgstr ""
+
+#: inc/settings-template.php:18 youtube-channel.php:208
+msgid "Support"
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:1
+msgid "How to use shortcode"
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:5
+#, php-format
+msgid ""
+"You can use shortcode %s with options listed below (all options are optional "
+"if you have set defaults in global plugin settings)."
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:12 youtube-channel.php:334
+msgid "General Settings"
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:13 inc/widget.php:163
+msgid "Video Settings"
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:14 inc/widget.php:193
+msgid "Content Layout"
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:101
+#, php-format
+msgid ""
+"Please note, you can omit all options listed above, and then will be used "
+"plugin defaults customized on tabs %1$s, %2$s, %3$s and %4$s."
+msgstr ""
+
+#: inc/settings-usage-shortcode.php:112
+#, php-format
+msgid ""
+"Important note: %s blocks inserted through widget have their own settings."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: inc/settings-usage-shortcode.php:115 inc/settings.php:311
+#: inc/settings.php:730 inc/settings.php:731 inc/settings.php:758
+#: inc/settings.php:772 inc/settings.php:782 inc/settings.php:792
+#: inc/widget.php:11
+msgid "YouTube Channel"
+msgstr ""
+
+#: inc/settings-usage.php:1
+msgid "How to use YouTube Channel"
+msgstr ""
+
+#: inc/settings-usage.php:2
+msgid "You can insert YouTube Channel in couple different ways."
+msgstr ""
+
+#: inc/settings-usage.php:7
+#, php-format
+msgid "Add %s to preferred %s, and configure it there."
+msgstr ""
+
+#: inc/settings-usage.php:10
+msgid "YouTube Channel Widget"
+msgstr ""
+
+#: inc/settings-usage.php:13
+msgid "Widget Area"
+msgstr ""
+
+#: inc/settings-usage.php:19
+#, php-format
+msgid ""
+"Insert shortcode %s to your page or text widget, and even modify default "
+"settings by shortcode parameters listed in section below."
+msgstr ""
+
+#: inc/settings.php:46 youtube-channel.php:329
 msgid "YouTube Data API Key"
 msgstr ""
 
-#: inc/settings.php:54 inc/settings.php:86
+#: inc/settings.php:54 inc/settings.php:87
 msgid "Required"
 msgstr ""
 
 #: inc/settings.php:58
 #, php-format
 msgid ""
-"Your YouTube Data API Key (get it from <a href=\"%s\" target=\"_blank\">%s</"
-"a>)"
+"Your YouTube Data API Key (get it from <a href=\"%1$s\" target=\"_blank\">"
+"%2$s</a>)"
 msgstr ""
 
-#: inc/settings.php:68 youtube-channel.php:318
+#: inc/settings.php:69 youtube-channel.php:331
 msgid "Google Developers Console"
 msgstr ""
 
-#: inc/settings.php:78
+#: inc/settings.php:79
 msgid "YouTube Channel ID"
 msgstr ""
 
-#: inc/settings.php:90
+#: inc/settings.php:91
 #, php-format
 msgid ""
-"Your YouTube Channel ID (get it from <a href=\"%s\" target=\"_blank\">%s</a>)"
+"Your YouTube Channel ID (get it from <a href=\"%1$s\" target=\"_blank\">"
+"%2$s</a>)"
 msgstr ""
 
-#: inc/settings.php:100 inc/settings.php:132 inc/settings.php:718
+#: inc/settings.php:102 inc/settings.php:136 inc/settings.php:762
 msgid "YouTube Account Overview"
 msgstr ""
 
-#: inc/settings.php:110
+#: inc/settings.php:112
 msgid "YouTube Vanity Name"
 msgstr ""
 
-#: inc/settings.php:118 inc/settings.php:150 inc/settings.php:168
+#: inc/settings.php:120 inc/settings.php:154 inc/settings.php:172
 msgid "Optional"
 msgstr ""
 
-#: inc/settings.php:122
+#: inc/settings.php:124
 #, php-format
 msgid ""
-"Your YouTube Custom Name (get only part after www.youtube.com/c/ instead "
-"whole URL from <a href=\"%s\" target=\"_blank\">%s</a>)"
+"Your YouTube Custom Name (get only part after %1$s instead whole URL from <a "
+"href=\"%2$s\" target=\"_blank\">%3$s</a>)"
 msgstr ""
 
-#: inc/settings.php:142
+#: inc/settings.php:146
 msgid "Legacy YouTube Username"
 msgstr ""
 
-#: inc/settings.php:151
+#: inc/settings.php:155
 msgid "Your YouTube legacy username"
 msgstr ""
 
-#: inc/settings.php:160
+#: inc/settings.php:164
 msgid "Default Playlist ID"
 msgstr ""
 
-#: inc/settings.php:169
+#: inc/settings.php:173
 msgid "Enter default playlist ID (not playlist name)"
 msgstr ""
 
-#: inc/settings.php:178 inc/widget.php:134
+#: inc/settings.php:182 inc/widget.php:134
 msgid "Resource to use"
 msgstr ""
 
-#: inc/settings.php:184
+#: inc/settings.php:188
 msgid "Resource:"
 msgstr ""
 
-#: inc/settings.php:185
+#: inc/settings.php:189
 msgid "What to use as resource for feeds"
 msgstr ""
 
-#: inc/settings.php:189
+#: inc/settings.php:193
 msgid "Channel"
 msgstr ""
 
-#: inc/settings.php:190 inc/widget.php:137
+#: inc/settings.php:194 inc/widget.php:137
 msgid "Favourites"
 msgstr ""
 
-#: inc/settings.php:191
+#: inc/settings.php:195
 msgid "Liked Video"
 msgstr ""
 
-#: inc/settings.php:192 inc/widget.php:139
+#: inc/settings.php:196 inc/widget.php:139
 msgid "Playlist"
 msgstr ""
 
-#: inc/settings.php:199
+#: inc/settings.php:203
 msgid "Cache Timeout"
 msgstr ""
 
-#: inc/settings.php:205
+#: inc/settings.php:209
 msgid "Define caching timeout for YouTube feeds, in seconds"
 msgstr ""
 
-#: inc/settings.php:209
+#: inc/settings.php:213
 msgid "Do not chache"
 msgstr ""
 
-#: inc/settings.php:210 youtube-channel.php:1273
+#: inc/settings.php:214 youtube-channel.php:1276
 msgid "1 minute"
 msgstr ""
 
-#: inc/settings.php:211 youtube-channel.php:1274
+#: inc/settings.php:215 youtube-channel.php:1277
 msgid "5 minutes"
 msgstr ""
 
-#: inc/settings.php:212 youtube-channel.php:1275
+#: inc/settings.php:216 youtube-channel.php:1278
 msgid "15 minutes"
 msgstr ""
 
-#: inc/settings.php:213 youtube-channel.php:1276
+#: inc/settings.php:217 youtube-channel.php:1279
 msgid "30 minutes"
 msgstr ""
 
-#: inc/settings.php:214 youtube-channel.php:1279
+#: inc/settings.php:218 youtube-channel.php:1282
 msgid "1 hour"
 msgstr ""
 
-#: inc/settings.php:215 youtube-channel.php:1280
+#: inc/settings.php:219 youtube-channel.php:1283
 msgid "2 hours"
 msgstr ""
 
-#: inc/settings.php:216 youtube-channel.php:1281
+#: inc/settings.php:220 youtube-channel.php:1284
 msgid "5 hours"
 msgstr ""
 
-#: inc/settings.php:217 youtube-channel.php:1282
+#: inc/settings.php:221 youtube-channel.php:1285
 msgid "10 hours"
 msgstr ""
 
-#: inc/settings.php:218 youtube-channel.php:1283
+#: inc/settings.php:222 youtube-channel.php:1286
 msgid "12 hours"
 msgstr ""
 
-#: inc/settings.php:219 youtube-channel.php:1284
+#: inc/settings.php:223 youtube-channel.php:1287
 msgid "18 hours"
 msgstr ""
 
-#: inc/settings.php:220 youtube-channel.php:1287
+#: inc/settings.php:224 youtube-channel.php:1290
 msgid "1 day"
 msgstr ""
 
-#: inc/settings.php:221 youtube-channel.php:1288
+#: inc/settings.php:225 youtube-channel.php:1291
 msgid "2 days"
 msgstr ""
 
-#: inc/settings.php:222 youtube-channel.php:1289
+#: inc/settings.php:226 youtube-channel.php:1292
 msgid "3 days"
 msgstr ""
 
-#: inc/settings.php:223 youtube-channel.php:1290
+#: inc/settings.php:227 youtube-channel.php:1293
 msgid "4 days"
 msgstr ""
 
-#: inc/settings.php:224 youtube-channel.php:1291
+#: inc/settings.php:228 youtube-channel.php:1294
 msgid "5 days"
 msgstr ""
 
-#: inc/settings.php:225 youtube-channel.php:1292
+#: inc/settings.php:229 youtube-channel.php:1295
 msgid "6 days"
 msgstr ""
 
-#: inc/settings.php:226 youtube-channel.php:1295
+#: inc/settings.php:230 youtube-channel.php:1298
 msgid "1 week"
 msgstr ""
 
-#: inc/settings.php:227 youtube-channel.php:1296
+#: inc/settings.php:231 youtube-channel.php:1299
 msgid "2 weeks"
 msgstr ""
 
-#: inc/settings.php:228 youtube-channel.php:1297
+#: inc/settings.php:232 youtube-channel.php:1300
 msgid "3 weeks"
 msgstr ""
 
-#: inc/settings.php:229 youtube-channel.php:1298
+#: inc/settings.php:233 youtube-channel.php:1301
 msgid "1 month"
 msgstr ""
 
-#: inc/settings.php:236 inc/widget.php:152
+#: inc/settings.php:240 inc/widget.php:152
 msgid "Fetch"
 msgstr ""
 
-#: inc/settings.php:242 inc/widget.php:152
+#: inc/settings.php:246 inc/widget.php:152
 msgid ""
 "Number of videos that will be used for random pick (min 2, max 50, default "
 "25)"
 msgstr ""
 
-#: inc/settings.php:253 inc/widget.php:155
+#: inc/settings.php:257 inc/widget.php:155
 msgid "Show"
 msgstr ""
 
-#: inc/settings.php:259 inc/widget.php:155
+#: inc/settings.php:263 inc/widget.php:155
 msgid "Number of videos to display"
 msgstr ""
 
-#: inc/settings.php:270
+#: inc/settings.php:274
 msgid "Use Enhanced privacy"
 msgstr ""
 
-#: inc/settings.php:279
+#: inc/settings.php:283
 #, php-format
 msgid ""
-"Enable this option to protect your visitors privacy. <a href=\"%s\" target="
-"\"_blank\">%s</a>"
+"Enable this option to protect your visitors privacy. <a href=\"%1$s\" target="
+"\"_blank\">%2$s</a>"
 msgstr ""
 
-#: inc/settings.php:289
+#: inc/settings.php:294 inc/settings.php:427
 msgid "Learn more here"
 msgstr ""
 
-#: inc/settings.php:306
+#: inc/settings.php:303
+msgid "Enable TinyMCE button"
+msgstr ""
+
+#: inc/settings.php:310
+#, php-format
+msgid ""
+"Disable this option to hide %s button from TinyMCE toolbar on post and page "
+"editor."
+msgstr ""
+
+#: inc/settings.php:328
 msgid "Video Tweaks"
 msgstr ""
 
-#: inc/settings.php:314
+#: inc/settings.php:336
 msgid "Initial Width"
 msgstr ""
 
-#: inc/settings.php:320
+#: inc/settings.php:342
 msgid "Set default width for displayed video, in pixels"
 msgstr ""
 
-#: inc/settings.php:331 inc/widget.php:164
+#: inc/settings.php:353 inc/widget.php:164
 msgid "Aspect ratio"
 msgstr ""
 
-#: inc/settings.php:338
+#: inc/settings.php:359
 msgid "Select aspect ratio for displayed video"
 msgstr ""
 
-#: inc/settings.php:350
+#: inc/settings.php:371
 msgid "What to show?"
 msgstr ""
 
-#: inc/settings.php:356
+#: inc/settings.php:377
 msgid "Choose how to embed video block"
 msgstr ""
 
-#: inc/settings.php:360 inc/widget.php:179
+#: inc/settings.php:381 inc/widget.php:179
 msgid "Thumbnail"
 msgstr ""
 
-#: inc/settings.php:361 inc/widget.php:180
+#: inc/settings.php:382 inc/widget.php:180
 msgid "HTML5 (iframe)"
 msgstr ""
 
-#: inc/settings.php:362 inc/widget.php:181
+#: inc/settings.php:383 inc/widget.php:181
 msgid "HTML5 (iframe) Asynchronous"
 msgstr ""
 
-#: inc/settings.php:363 inc/widget.php:182
+#: inc/settings.php:384 inc/widget.php:182
 msgid "Embedded Playlist"
 msgstr ""
 
-#: inc/settings.php:371
+#: inc/settings.php:392
 msgid "Enable Responsive"
 msgstr ""
 
-#: inc/settings.php:377
+#: inc/settings.php:398
 msgid ""
 "Enable this option to make YTC videos and thumbnails responsive by default. "
 "Please note, this option will set videos and thumbnail to full width "
 "relative to parent container, and disable more than one video per row."
 msgstr ""
 
-#: inc/settings.php:386
+#: inc/settings.php:407
 msgid "Play inline on iOS"
 msgstr ""
 
-#: inc/settings.php:394
+#: inc/settings.php:416
 #, php-format
 msgid ""
 "Enable this option to override fullscreen playback on iOS, and force inline "
-"playback on page and in lightbox. Learn more <a href=\"%s\">here</a>."
+"playback on page and in lightbox. <a href=\"%1$s\" target=\"_blank\">%2$s</a>"
 msgstr ""
 
-#: inc/settings.php:406
+#: inc/settings.php:436
 msgid "Disable Lightbox"
 msgstr ""
 
-#: inc/settings.php:412
+#: inc/settings.php:442
 msgid ""
 "Enable this option to disable built-in lightbox for thumbnails (in case that "
 "you have youtube links lightbox trigger in theme or other plugin)."
 msgstr ""
 
-#: inc/settings.php:421
-msgid "Light Theme"
-msgstr ""
-
-#: inc/settings.php:427
-msgid ""
-"Enable this option to use light theme for playback controls instead dark."
-msgstr ""
-
-#: inc/settings.php:435
-msgid "Hide Player Controls"
-msgstr ""
-
-#: inc/settings.php:441
-msgid "Enable this option to hide playback controls"
-msgstr ""
-
-#: inc/settings.php:450 inc/widget.php:187
-msgid "Autoplay video or playlist"
+#: inc/settings.php:450
+msgid "Enable Full Screen"
 msgstr ""
 
 #: inc/settings.php:456
 msgid ""
+"Enable this option to make available Full Screen button for embedded "
+"playlists."
+msgstr ""
+
+#: inc/settings.php:465
+msgid "Light Theme"
+msgstr ""
+
+#: inc/settings.php:471
+msgid ""
+"Enable this option to use light theme for playback controls instead dark."
+msgstr ""
+
+#: inc/settings.php:479
+msgid "Hide Player Controls"
+msgstr ""
+
+#: inc/settings.php:485
+msgid "Enable this option to hide playback controls"
+msgstr ""
+
+#: inc/settings.php:494 inc/widget.php:187
+msgid "Autoplay video or playlist"
+msgstr ""
+
+#: inc/settings.php:500
+msgid ""
 "Enable this option to start video playback right after block is rendered"
 msgstr ""
 
-#: inc/settings.php:464 inc/widget.php:188
+#: inc/settings.php:508 inc/widget.php:188
 msgid "Mute video on autoplay"
 msgstr ""
 
-#: inc/settings.php:470
+#: inc/settings.php:514
 msgid "Enable this option to mute video when start autoplay"
 msgstr ""
 
-#: inc/settings.php:478 inc/widget.php:189
+#: inc/settings.php:522 inc/widget.php:189
 msgid "Hide related videos"
 msgstr ""
 
-#: inc/settings.php:484
+#: inc/settings.php:528
 msgid "Enable this option to hide related videos after finished playback"
 msgstr ""
 
-#: inc/settings.php:492
+#: inc/settings.php:536
 msgid "Hide YT logo"
 msgstr ""
 
-#: inc/settings.php:498
+#: inc/settings.php:542
 msgid ""
 "Enable this option to hide YouTube logo from playback control bar. Does not "
 "work for all videos."
 msgstr ""
 
-#: inc/settings.php:506
+#: inc/settings.php:550
 msgid "Hide video annotations"
 msgstr ""
 
-#: inc/settings.php:512
+#: inc/settings.php:556
 msgid ""
 "Enable this option to hide video annotations (custom text set by uploader "
 "over video during playback)"
 msgstr ""
 
-#: inc/settings.php:520 inc/widget.php:213
+#: inc/settings.php:564 inc/widget.php:213
 msgid "Hide video info"
 msgstr ""
 
-#: inc/settings.php:526
+#: inc/settings.php:570
 msgid ""
 "Enable this option to hide informations about video before play start (video "
 "title and uploader in overlay)"
 msgstr ""
 
-#: inc/settings.php:542
+#: inc/settings.php:586
 msgid "Content Tweaks"
 msgstr ""
 
-#: inc/settings.php:550 inc/widget.php:196
+#: inc/settings.php:594 inc/widget.php:196
 msgid "Show video title"
 msgstr ""
 
-#: inc/settings.php:556
+#: inc/settings.php:600
 msgid "Select should we and where display title of video"
 msgstr ""
 
-#: inc/settings.php:560 inc/widget.php:199
+#: inc/settings.php:604 inc/widget.php:199
 msgid "Hide title"
 msgstr ""
 
-#: inc/settings.php:561 inc/widget.php:200
+#: inc/settings.php:605 inc/widget.php:200
 msgid "Above video/thumbnail"
 msgstr ""
 
-#: inc/settings.php:562 inc/widget.php:201
+#: inc/settings.php:606 inc/widget.php:201
 msgid "Below video/thumbnail"
 msgstr ""
 
-#: inc/settings.php:569 inc/widget.php:204
+#: inc/settings.php:613 inc/widget.php:204
 msgid "Show video description"
 msgstr ""
 
-#: inc/settings.php:575
+#: inc/settings.php:619
 msgid "Enable this option to display description for video"
 msgstr ""
 
-#: inc/settings.php:583 inc/widget.php:206
+#: inc/settings.php:627 inc/widget.php:206
 msgid "Description length"
 msgstr ""
 
-#: inc/settings.php:589
+#: inc/settings.php:633
 msgid "Enter length for video description in characters (0 for full length)"
 msgstr ""
 
-#: inc/settings.php:609 inc/settings_template.php:17
-#: inc/settings_usage_shortcode.php:15 inc/settings_usage_shortcode.php:107
-#: inc/widget.php:217
-msgid "Link to Channel"
-msgstr ""
-
-#: inc/settings.php:617
+#: inc/settings.php:661
 msgid "Link to..."
 msgstr ""
 
-#: inc/settings.php:624
+#: inc/settings.php:668
 msgid "Set where link will lead visitors"
 msgstr ""
 
-#: inc/settings.php:628 inc/widget.php:223
+#: inc/settings.php:672 inc/widget.php:223
 msgid "Hide link"
 msgstr ""
 
-#: inc/settings.php:629
+#: inc/settings.php:673
 msgid "Vanity custom URL"
 msgstr ""
 
-#: inc/settings.php:630
+#: inc/settings.php:674
 msgid "Channel page URL"
 msgstr ""
 
-#: inc/settings.php:631
+#: inc/settings.php:675
 msgid "Legacy username page"
 msgstr ""
 
-#: inc/settings.php:638
+#: inc/settings.php:682
 msgid "Open link in..."
 msgstr ""
 
-#: inc/settings.php:645
+#: inc/settings.php:689
 msgid "Set where link will be opened"
 msgstr ""
 
-#: inc/settings.php:649
+#: inc/settings.php:693
 msgid "same window"
 msgstr ""
 
-#: inc/settings.php:650
+#: inc/settings.php:694
 msgid "new window (JavaScript)"
 msgstr ""
 
-#: inc/settings.php:651
+#: inc/settings.php:695
 msgid "new window (target=\"_blank\")"
 msgstr ""
 
-#: inc/settings.php:658
+#: inc/settings.php:702
 msgid "Text for Visit channel link"
 msgstr ""
 
-#: inc/settings.php:665
+#: inc/settings.php:709
 msgid "Set default title for link"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-#: inc/settings.php:686 inc/settings.php:687 inc/settings.php:714
-#: inc/settings.php:728 inc/settings.php:738 inc/settings.php:748
-#: inc/settings_usage_shortcode.php:115 inc/widget.php:11
-msgid "YouTube Channel"
-msgstr ""
-
-#: inc/settings.php:704
+#: inc/settings.php:748
 #, php-format
 msgid ""
 "Configure general defaults for %1$s used as fallback options in widget or "
@@ -502,125 +612,37 @@ msgid ""
 "%5$s</a>."
 msgstr ""
 
-#: inc/settings.php:715 inc/widget.php:108 inc/widget.php:119
+#: inc/settings.php:759 inc/widget.php:108 inc/widget.php:119
 msgid "Channel ID"
 msgstr ""
 
-#: inc/settings.php:716
+#: inc/settings.php:760
 msgid "Vanity URL"
 msgstr ""
 
-#: inc/settings.php:727
+#: inc/settings.php:771
 #, php-format
 msgid ""
 "Configure video specific defaults for %s used as fallback options in widget "
 "or shortcodes."
 msgstr ""
 
-#: inc/settings.php:737
+#: inc/settings.php:781
 #, php-format
 msgid ""
 "Configure defaults of content around and over videos for %s used as fallback "
 "options in widget or shortcodes."
 msgstr ""
 
-#: inc/settings.php:747
+#: inc/settings.php:791
 #, php-format
 msgid ""
 "Configure defaults for link to channel below %s block used as fallback "
 "options in widget or shortcodes."
 msgstr ""
 
-#: inc/settings.php:908
+#: inc/settings.php:968
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: inc/settings_template.php:6
-msgid " Settings"
-msgstr ""
-
-#: inc/settings_template.php:15 inc/settings_usage_shortcode.php:105
-msgid "Video"
-msgstr ""
-
-#: inc/settings_template.php:16 inc/settings_usage_shortcode.php:106
-msgid "Content"
-msgstr ""
-
-#: inc/settings_template.php:18
-msgid "Tools"
-msgstr ""
-
-#: inc/settings_template.php:19
-msgid "Help"
-msgstr ""
-
-#: inc/settings_template.php:20 youtube-channel.php:201
-msgid "Support"
-msgstr ""
-
-#: inc/settings_usage.php:1
-msgid "How to use YouTube Channel"
-msgstr ""
-
-#: inc/settings_usage.php:2
-msgid "You can insert YouTube Channel in couple different ways."
-msgstr ""
-
-#: inc/settings_usage.php:7
-#, php-format
-msgid "Add %s to preferred %s, and configure it there."
-msgstr ""
-
-#: inc/settings_usage.php:10
-msgid "YouTube Channel Widget"
-msgstr ""
-
-#: inc/settings_usage.php:13
-msgid "Widget Area"
-msgstr ""
-
-#: inc/settings_usage.php:19
-#, php-format
-msgid ""
-"Insert shortcode %s to your page or text widget, and even modify default "
-"settings by shortcode parameters listed in section below."
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:1
-msgid "How to use shortcode"
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:5
-#, php-format
-msgid ""
-"You can use shortcode %s with options listed below (all options are optional "
-"if you have set defaults in global plugin settings)."
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:12 youtube-channel.php:321
-msgid "General Settings"
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:13 inc/widget.php:163
-msgid "Video Settings"
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:14 inc/widget.php:193
-msgid "Content Layout"
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:101
-#, php-format
-msgid ""
-"Please note, you can omit all options listed above, and then will be used "
-"plugin defaults customized on tabs %1$s, %2$s, %3$s and %4$s."
-msgstr ""
-
-#: inc/settings_usage_shortcode.php:112
-#, php-format
-msgid ""
-"Important note: %s blocks inserted through widget have their own settings."
 msgstr ""
 
 #: inc/widget.php:14
@@ -783,7 +805,7 @@ msgid ""
 "%channel% and %username%."
 msgstr ""
 
-#: inc/widget.php:219 youtube-channel.php:1043
+#: inc/widget.php:219 youtube-channel.php:1049
 msgid "Visit our YouTube channel"
 msgstr ""
 
@@ -829,11 +851,11 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: youtube-channel.php:179
+#: youtube-channel.php:185
 msgid "Settings"
 msgstr ""
 
-#: youtube-channel.php:280
+#: youtube-channel.php:293
 #, php-format
 msgid ""
 "<p>Your website running on web server with PHP version %s. Please note that "
@@ -841,7 +863,7 @@ msgid ""
 "href=\"%s\" class=\"dismiss\">Dismiss</a></p>"
 msgstr ""
 
-#: youtube-channel.php:293
+#: youtube-channel.php:306
 #, php-format
 msgid ""
 "<p>Since <strong>%s</strong> v3.0.6 we store <strong>YouTube Data API Key</"
@@ -850,7 +872,7 @@ msgid ""
 "\">Dismiss</a></p>"
 msgstr ""
 
-#: youtube-channel.php:305
+#: youtube-channel.php:318
 #, php-format
 msgid ""
 "<p>Please note, to make <strong>%1$s</strong> plugin v3+ work, generate "
@@ -862,11 +884,11 @@ msgid ""
 "mentioned above!</p>"
 msgstr ""
 
-#: youtube-channel.php:323
+#: youtube-channel.php:336
 msgid "support forum"
 msgstr ""
 
-#: youtube-channel.php:332
+#: youtube-channel.php:345
 #, php-format
 msgid ""
 "<p><strong>%s</strong> since version 2.4 supports linking to channel through "
@@ -875,7 +897,7 @@ msgid ""
 "a>"
 msgstr ""
 
-#: youtube-channel.php:346
+#: youtube-channel.php:359
 #, php-format
 msgid ""
 "<p><strong>%s</strong> changed shortcode parameters by removing "
@@ -885,21 +907,21 @@ msgid ""
 "<a href=\"%s\" class=\"dismiss\">Dismiss</a>"
 msgstr ""
 
-#: youtube-channel.php:609
+#: youtube-channel.php:622
 #, php-format
 msgid ""
 "<strong>%s</strong> version 3+ requires <strong>YouTube DATA API Key</"
 "strong> to work. <a href=\"%s\" target=\"_blank\">Learn more here</a>."
 msgstr ""
 
-#: youtube-channel.php:782
+#: youtube-channel.php:796
 #, php-format
 msgid ""
 "You have set to display videos from %s [resource list ID: %s], but there "
 "have no public videos in that resouce."
 msgstr ""
 
-#: youtube-channel.php:786
+#: youtube-channel.php:799
 #, php-format
 msgid ""
 "We have empty record for this feed. Please read <a href=\"%s\" target="
@@ -907,7 +929,7 @@ msgid ""
 "\"_blank\">support</a>."
 msgstr ""
 
-#: youtube-channel.php:828
+#: youtube-channel.php:841
 #, php-format
 msgid ""
 "Double check <em>YouTube Data API Key</em> on <em>General</em> plugin tab "
@@ -915,29 +937,29 @@ msgid ""
 "\">Installation</a> document."
 msgstr ""
 
-#: youtube-channel.php:836
+#: youtube-channel.php:847
 #, php-format
 msgid ""
 "You have set wrong Channel ID. Fix that in General plugin settings, Widget "
 "and/or shortcode. Read <a href=\"%s\" target=\"_blank\">FAQ</a> document."
 msgstr ""
 
-#: youtube-channel.php:840
+#: youtube-channel.php:850
 #, php-format
 msgid ""
 "You do not have permission to access ressource <strong>%s</strong> (it's "
 "maybe set to private or even does not exists!)"
 msgstr ""
 
-#: youtube-channel.php:964
+#: youtube-channel.php:971
 msgid "Oops, something went wrong."
 msgstr ""
 
-#: youtube-channel.php:1046
+#: youtube-channel.php:1052
 msgid "in new window/tab"
 msgstr ""
 
-#: youtube-channel.php:1198
+#: youtube-channel.php:1202
 #, php-format
 msgid "Watch video %1$s published on %2$s"
 msgstr ""
