@@ -347,6 +347,9 @@ If you really need that missing feature ASAP, feel free to [contact me](urosevic
 If you don't wish to pay for enhancements (then you don't care would that be implemented in a week, month, year or so), then send new [Support topic](https://wordpress.org/support/plugin/youtube-channel) with *Topic title* in format **[Feature Request] ...**
 
 == Changelog ==
+= 3.0.8.7 =
+* Enhance: Merge two improvements for MagnificPopupAU fork from core library (commit 60d5aa4 and 1d0f697)
+
 = 3.0.8.6 =
 * Fix: Broken Enhanced Privacy on small screens in forked MagnificPopupAU library
 * Enhanced: Finished making code compliant to WordPress Core coding standards

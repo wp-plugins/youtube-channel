@@ -1,9 +1,12 @@
-/*! Magnific Popup - v1.0.0.2 - 2015-10-04
+/*! Magnific Popup - v1.0.0.3 - 2015-10-04
 * Mod v0.9.9.1 - 2014-09-14 Aleksandar Urosevic (YT rel)
 * Mod v0.9.9.2 - 2014-12-07 Aleksandar Urosevic (YT controls, modestbranding)
 * Mod v0.9.9.3 - 2015-06-09 Aleksandar Urosevic (YT noccookie support)
 * Mod v1.0.0.1 - 2015-06-09 Aleksandar Urosevic (sync to MagnificPopup v1.0.0; remove all modules except iframe; add YT playsinline parameter support)
 * Mod v1.0.0.2 - 2015-10-04 Aleksandar Urosevic (fix broken nocookie functionality on small screens)
+* Mod v1.0.0.3 - 2015-10-04 Aleksandar Urosevic
+*                * Update core.js to Support for Shift + Click which opens href into new window https://github.com/dimsemenov/Magnific-Popup/commit/60d5aa40930511ce141659a89e74d8b2ac955458
+*                * Changed &times; to &#215; https://github.com/dimsemenov/Magnific-Popup/commit/1d0f6973dfc40483e5571ad892949675e6df1ae2
 * http://dimsemenov.com/plugins/magnific-popup/
 * Copyright (c) 2015 Dmitry Semenov; */
 ;(function (factory) {
@@ -647,7 +650,7 @@ MagnificPopupAU.prototype = {
 		var midClick = options.midClick !== undefined ? options.midClick : $.magnificPopupAU.defaults.midClick;
 
 
-		if(!midClick && ( e.which === 2 || e.ctrlKey || e.metaKey ) ) {
+		if(!midClick && ( e.which === 2 || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey ) ) {
 			return;
 		}
 
@@ -890,7 +893,7 @@ $.magnificPopupAU = {
 		fixedContentPos: 'auto',
 		fixedBgPos: 'auto',
 		overflowY: 'auto',
-		closeMarkup: '<button title="%title%" type="button" class="ytc-mfp-close">&times;</button>',
+		closeMarkup: '<button title="%title%" type="button" class="ytc-mfp-close">&#215;</button>',
 		tClose: 'Close (Esc)',
 		tLoading: 'Loading...'
 
