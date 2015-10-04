@@ -3,8 +3,8 @@ Contributors: urkekg
 Donate link: http://urosevic.net/wordpress/donate/?donate_for=youtube-channel
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
-Tested up to: 4.3
-Stable tag: 3.0.8.5
+Tested up to: 4.3.2
+Stable tag: 3.0.8.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -348,6 +348,7 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 
 == Changelog ==
 = 3.0.8.6 =
+* Fix: Broken Enhanced Privacy on small screens in forked MagnificPopupAU library
 * Enhanced: Finished making code compliant to WordPress Core coding standards
 
 = 3.0.8.5 =

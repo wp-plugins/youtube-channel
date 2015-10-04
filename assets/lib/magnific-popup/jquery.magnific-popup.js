@@ -1,8 +1,9 @@
-/*! Magnific Popup - v1.0.0.1 - 2015-06-09
+/*! Magnific Popup - v1.0.0.2 - 2015-10-04
 * Mod v0.9.9.1 - 2014-09-14 Aleksandar Urosevic (YT rel)
 * Mod v0.9.9.2 - 2014-12-07 Aleksandar Urosevic (YT controls, modestbranding)
 * Mod v0.9.9.3 - 2015-06-09 Aleksandar Urosevic (YT noccookie support)
 * Mod v1.0.0.1 - 2015-06-09 Aleksandar Urosevic (sync to MagnificPopup v1.0.0; remove all modules except iframe; add YT playsinline parameter support)
+* Mod v1.0.0.2 - 2015-10-04 Aleksandar Urosevic (fix broken nocookie functionality on small screens)
 * http://dimsemenov.com/plugins/magnific-popup/
 * Copyright (c) 2015 Dmitry Semenov; */
 ;(function (factory) {
@@ -1013,17 +1014,8 @@ $.magnificPopupAU.registerModule(IFRAME_NS, {
 				theme: 'theme=',
 				controls: 'controls=',
 				playsinline: 'playsinline=',
+				enhanceprivacy: 'enhanceprivacy=',
 				src: '//www.youtube.com/embed/%id%?autoplay=1&rel=%rel%&modestbranding=%modestbranding%&controls=%controls%&playsinline=%playsinline%'
-			},
-			youtubenocookie: {
-				index: 'youtube-nocookie.com',
-				id: 'v=',
-				rel: 'rel=',
-				modestbranding: 'modestbranding=',
-				theme: 'theme=',
-				controls: 'controls=',
-				playsinline: 'playsinline=',
-				src: '//www.youtube-nocookie.com/embed/%id%?autoplay=1&rel=%rel%&modestbranding=%modestbranding%&controls=%controls%&playsinline=%playsinline%'
 			},
 			vimeo: {
 				index: 'vimeo.com/',
@@ -1059,17 +1051,28 @@ $.magnificPopupAU.registerModule(IFRAME_NS, {
 		},
 
 		getIframe: function(item, template) {
-			var embedSrc = item.src;
-			var embedRel = item.src;
-			var embedMB = item.src;
+			var embedSrc      = item.src;
+			var embedRel      = item.src;
+			var embedMB       = item.src;
 			var embedControls = item.src;
-			var embedPI = item.src;
-			var iframeSt = mfp.st.iframe;
+			var embedPI       = item.src;
+			var iframeSt      = mfp.st.iframe;
 
 			$.each(iframeSt.patterns, function() {
 				if(embedSrc.indexOf( this.index ) > -1) {
 
-					eSrc = embedSrc;
+					if(this.enhanceprivacy) {
+						if(typeof this.enhanceprivacy === 'string' && embedSrc.indexOf(this.enhanceprivacy) > 0) {
+							enhancePrivacy = embedSrc.substr(embedSrc.lastIndexOf(this.enhanceprivacy)+this.enhanceprivacy.length, embedSrc.length);
+							if ( enhancePrivacy.indexOf('&') > 0 ) {
+								enhancePrivacy = enhancePrivacy.substr(0, enhancePrivacy.indexOf('&'));
+							}
+							if ( enhancePrivacy == 1 && this.src.indexOf('youtube.com') > 0 ) {
+								this.src = this.src.replace('youtube.com', 'youtube-nocookie.com');
+							}
+						}
+					}
+
 					if(this.id) {
 						if(typeof this.id === 'string') {
 							embedSrc = embedSrc.substr(embedSrc.lastIndexOf(this.id)+this.id.length, embedSrc.length);

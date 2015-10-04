@@ -19,7 +19,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 	{
 
 		const DB_VER = 14;
-		const VER = '3.0.8.5';
+		const VER = '3.0.8.6';
 
 		public $plugin_name   = 'YouTube Channel';
 		public $plugin_slug   = 'youtube-channel';
@@ -230,13 +230,6 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 				return;
 			}
 
-			/*
-			wp_enqueue_script(
-				$this->plugin_slug . '-admin',
-				plugins_url( 'assets/js/admin.min.js', __FILE__ ),
-				array('jquery'),
-				self::VER
-			);*/
 			wp_enqueue_style(
 				$this->plugin_slug . '-admin',
 				plugins_url( 'assets/css/admin.css', __FILE__ ),
@@ -1208,11 +1201,13 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 					if ( ! empty( $instance['modestbranding'] ) ) { $p .= '&amp;modestbranding=1'; }
 					if ( ! empty( $instance['controls'] ) ) { $p .= '&amp;controls=0'; }
 					if ( ! empty( $instance['playsinline'] ) ) { $p .= '&amp;playsinline=1'; }
+					if ( ! empty( $instance['privacy'] ) ) { $p .= '&amp;enhanceprivacy=1'; }
 				}
 
 				// Do we need thumbnail w/ or w/o tooltip
 				$tag_title = ( empty( $instance['no_thumb_title'] ) ) ? $tag_title = "title=\"{$yt_title}\"" : '';
-				$output[] = "<a href=\"//${youtube_domain}/watch?v=${yt_id}${p}\" ${tag_title} class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" ${tag_title} id=\"ytc_{$yt_id}\"></span></a>";
+				$output[] = "<a href=\"//www.youtube.com/watch?v=${yt_id}${p}\" ${tag_title} class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" ${tag_title} id=\"ytc_{$yt_id}\"></span></a>";
+				// $output[] = "<a href=\"//${youtube_domain}/watch?v=${yt_id}${p}\" ${tag_title} class=\"ytc_thumb ytc-lightbox {$arclass}\"><span style=\"background-image: url({$yt_thumb});\" ${tag_title} id=\"ytc_{$yt_id}\"></span></a>";
 
 			} // what to show conditions
 
