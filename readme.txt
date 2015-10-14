@@ -349,6 +349,8 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 == Changelog ==
 = 3.0.8.7 =
 * Enhance: Merge two improvements for MagnificPopupAU fork from core library (commit 60d5aa4 and 1d0f697)
+* Fix: Strip non-number characters entered in shortcode TinyMCE creator for Fetch, Show, Initial Width and Description length attributes.
+* Fix: make sure that Initial Width is always in pixels (if user enter width in percentage, strip percent sign and threat value as pixel value)
 
 = 3.0.8.6 =
 * Fix: Broken Enhanced Privacy on small screens in forked MagnificPopupAU library

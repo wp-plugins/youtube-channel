@@ -3,7 +3,7 @@
 Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
-Version: 3.0.8.6
+Version: 3.0.8.7
 Author: Aleksandar Urošević
 Author URI: http://urosevic.net/
 Text Domain: youtube-channel
@@ -19,7 +19,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 	{
 
 		const DB_VER = 14;
-		const VER = '3.0.8.6';
+		const VER = '3.0.8.7';
 
 		public $plugin_name   = 'YouTube Channel';
 		public $plugin_slug   = 'youtube-channel';
@@ -567,14 +567,14 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			$instance['cache']          = $cache; // in seconds, def 5min - settings?
 			$instance['privacy']        = $privacy; // enhanced privacy
 
-			$instance['fetch']          = $fetch;
-			$instance['num']            = $num; // num: 1
+			$instance['fetch']          = (int) $fetch;
+			$instance['num']            = (int) $num; // num: 1
 
 			$instance['random']         = $random; // use embedded playlist - false by default
 
 			// Video Settings
 			$instance['ratio']          = $ratio; // aspect ratio: 3 - 16:9, 2 - 16:10, 1 - 4:3
-			$instance['width']          = $width; // 306
+			$instance['width']          = (int) $width; // 306
 			$instance['responsive']     = $responsive; // enable responsivenes?
 			$instance['display']        = $display; // thumbnail, iframe, iframe2, playlist
 			$instance['no_thumb_title'] = $no_thumb_title; // hide tooltip for thumbnails
@@ -590,7 +590,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			$instance['showtitle']      = $showtitle; // show video title, disabled by default
 			$instance['showdesc']       = $showdesc; // show video description, disabled by default
 			$instance['modestbranding'] = $nobrand; // hide YT logo
-			$instance['desclen']        = $desclen; // cut video description, number of characters
+			$instance['desclen']        = (int) $desclen; // cut video description, number of characters
 			$instance['hideinfo']       = $noinfo; // hide info by default
 			$instance['hideanno']       = $noanno; // hide annotations, false by default
 

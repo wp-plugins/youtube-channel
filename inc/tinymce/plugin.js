@@ -330,13 +330,13 @@
 						if ( e.data.cache ) shortcode += ' cache=' + e.data.cache +'';
 						if ( e.data.privacy ) shortcode += ' privacy=1';
 						if ( e.data.random ) shortcode += ' random=1';
-						if ( e.data.fetch ) shortcode += ' fetch=' + e.data.fetch +'';
-						if ( e.data.num ) shortcode += ' num=' + e.data.num +'';
+						if ( e.data.fetch ) shortcode += ' fetch=' + e.data.fetch.replace(/[^0-9.]/g, '') +'';
+						if ( e.data.num ) shortcode += ' num=' + e.data.num.replace(/[^0-9.]/g, '') +'';
 
 						// Video Settings
 						if ( e.data.ratio ) shortcode += ' ratio=' + e.data.ratio + '';
 						if ( e.data.responsive ) shortcode += ' responsive=1';
-						if ( e.data.width ) shortcode += ' width=' + e.data.width + '';
+						if ( e.data.width ) shortcode += ' width=' + e.data.width.replace(/[^0-9.]/g, '') + '';
 						if ( e.data.display ) shortcode += ' display=' + e.data.display + '';
 						// if ( e.data.cols ) shortcode += ' cols=' + e.data.cols + '';
 						if ( e.data.no_thumb_title ) shortcode += ' no_thumb_title=1';
@@ -350,7 +350,7 @@
 						// Content Layout
 						if ( e.data.showtitle ) shortcode += ' showtitle=' + e.data.showtitle + '';
 						if ( e.data.showdesc ) shortcode += ' showdesc=1';
-						if ( e.data.desclen ) shortcode += ' desclen=' + e.data.desclen + '';
+						if ( e.data.desclen ) shortcode += ' desclen=' + e.data.desclen.replace(/[^0-9.]/g, '') + '';
 						if ( e.data.noanno ) shortcode += ' noanno=1';
 						if ( e.data.noinfo ) shortcode += ' noinfo=1';
 
