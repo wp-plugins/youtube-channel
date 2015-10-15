@@ -3,7 +3,7 @@
 Plugin Name: YouTube Channel
 Plugin URI: http://urosevic.net/wordpress/plugins/youtube-channel/
 Description: Quick and easy embed latest or random videos from YouTube channel (user uploads, liked or favourited videos) or playlist. Use <a href="widgets.php">widget</a> for sidebar or shortcode for content. Works with <em>YouTube Data API v3</em>.
-Version: 3.0.8.7
+Version: 3.0.8.8
 Author: Aleksandar Urošević
 Author URI: http://urosevic.net/
 Text Domain: youtube-channel
@@ -19,7 +19,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 	{
 
 		const DB_VER = 14;
-		const VER = '3.0.8.7';
+		const VER = '3.0.8.8';
 
 		public $plugin_name   = 'YouTube Channel';
 		public $plugin_slug   = 'youtube-channel';
@@ -625,6 +625,9 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			// 1) Get resource from widget/shortcode
 			// 2) If not set, get global default
 			// 3) if no global, get plugin's default
+			if ( empty( $instance['resource'] ) ) {
+				$instance['resource'] = $this->defaults['resource'];
+			}
 			$resource = intval( $instance['resource'] );
 			if ( empty( $resource ) && 0 !== $resource ) {
 				$resource = intval( $this->defaults['resource'] );
@@ -682,7 +685,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			/* OK, we have required resource (Playlist or Channel ID), so we can proceed to real job */
 
 			// Set custom class and responsive if needed
-			$class = $instance['class'] ? $instance['class'] : 'default';
+			$class = ( ! empty( $instance['class'] ) ) ? $instance['class'] : 'default';
 			if ( ! empty( $instance['responsive'] ) ) {
 				$class .= ' responsive';
 			}
@@ -713,6 +716,9 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 
 			$output[] = "<div class=\"youtube_channel {$class}\">";
 
+			if ( empty( $instance['display'] ) ) {
+				$instance['display'] = $this->defaults['display'];
+			}
 			if ( 'playlist' == $instance['display'] ) { // Insert as Embedded playlist
 
 				$output = array_merge( $output, self::embed_playlist( $resource_id, $instance ) );
@@ -720,7 +726,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			} else { // Individual videos from channel, favourites, liked or playlist
 
 				// Get max items for random video
-				$fetch = $instance['fetch'];
+				$fetch = ( empty( $instance['fetch'] ) ) ? $this->defaults['fetch'] : $instance['fetch'];
 				if ( $fetch < 1 ) { $fetch = 10; } // default 10
 				elseif ( $fetch > 50 ) { $fetch = 50; } // max 50
 
@@ -730,7 +736,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 				$cache_key_fallback = 'ytc_' . md5( $resource_key ) . '_fallback';
 
 				// Do cache magic
-				if ( $instance['cache'] > 0 ) {
+				if ( ! empty( $instance['cache'] ) && $instance['cache'] > 0 ) {
 
 					// generate feed cache key for caching time
 					$cache_key = 'ytc_' . md5( $resource_key ) . '_' . $instance['cache'];
@@ -800,7 +806,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 					// Sort by date uploaded
 					$json_entry = $json_output->items;
 
-					$num = $instance['num'];
+					$num = ( empty( $instance['num'] ) ) ? $this->defaults['num'] : $instance['num'];
 					if ( $num > $fetch ) { $fetch = $num; }
 					$max_items = ( $fetch > sizeof( $json_entry ) ) ? sizeof( $json_entry ) : $fetch;
 
@@ -1011,7 +1017,11 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 					case 'vanity':
 						$vanity   = trim( $instance['vanity'] );
 						if ( empty( $vanity ) ) {
-							return array( '<!-- YTC ERROR: Selected Vanity custom URL to be linked but no Vanity Name provided! -->' );
+							if ( empty( $this->defaults['vanity'] ) ) {
+								return array( '<!-- YTC ERROR: Selected Vanity custom URL to be linked but no Vanity Name provided! -->' );
+							}
+							// Get vanity from defaults if not set in instance
+							$vanity = $this->defaults['vanity'];
 						}
 						// sanity vanity content (strip all in front of last slash to cleanup vanity ID only)
 						if ( ! empty( $vanity ) && false !== strpos( $vanity, 'youtube.com' ) ) {
@@ -1023,7 +1033,10 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 					case 'legacy':
 						$username = trim( $instance['username'] );
 						if ( empty( $username ) ) {
-							return array( '<!-- YTC ERROR: Selected Legacy username to be linked but no Legacy username provided! -->' );
+							if ( empty( $this->defaults['username'] ) ) {
+								return array( '<!-- YTC ERROR: Selected Legacy username to be linked but no Legacy username provided! -->' );
+							}
+							$username = $this->defaults['username'];
 						}
 						$goto_url .= "user/$username";
 						break;
@@ -1031,7 +1044,10 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 					case 'channel':
 						$channel  = trim( $instance['channel'] );
 						if ( empty( $channel ) ) {
-							return array( '<!-- YTC ERROR: Selected Channel page to be linked but no Channel ID provided! -->' );
+							if ( empty( $this->defaults['channel'] ) ) {
+								return array( '<!-- YTC ERROR: Selected Channel page to be linked but no Channel ID provided! -->' );
+							}
+							$channel = $this->defaults['channel'];
 						}
 						$goto_url .= "channel/$channel";
 						break;
@@ -1078,6 +1094,9 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 			// Calculate width and height
 			if ( empty( $instance['width'] ) ) {
 				$instance['width'] = $this->defaults['width'];
+			}
+			if ( empty( $instance['ratio'] ) ) {
+				$instance['ratio'] = $this->defaults['ratio'];
 			}
 			$height = $this->height_ratio( $instance['width'], $instance['ratio'] );
 
