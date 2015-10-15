@@ -63,7 +63,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 				// Enqueue scripts and styles for Widgets page
-				add_action( 'admin_enqueue_scripts', array( $this, 'widget_scripts' ) );
+				add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 			} else { // ELSE if ( is_admin() )
 
@@ -216,17 +216,17 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 		/**
 		 * Enqueue admin scripts and styles for widget customization
 		 */
-		function widget_scripts() {
+		function admin_scripts() {
 
 			global $pagenow;
 
 			// Enqueue only on widget or post pages
-			if ( ! in_array( $pagenow, array( 'widgets.php', 'customize.php', 'options-general.php', 'post.php' ) ) ) {
+			if ( ! in_array( $pagenow, array( 'widgets.php', 'customize.php', 'options-general.php', 'post.php', 'post-new.php' ) ) ) {
 				return;
 			}
 
 			// Enqueue on post page only if tinymce is enabled
-			if ( 'post.php' == $pagenow && empty( $this->defaults['tinymce'] ) ) {
+			if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) && empty( $this->defaults['tinymce'] ) ) {
 				return;
 			}
 
@@ -237,7 +237,7 @@ if ( ! class_exists( 'WPAU_YOUTUBE_CHANNEL' ) ) {
 				self::VER
 			);
 
-		} // END function widget_scripts()
+		} // END function admin_scripts()
 
 		/**
 		 * Print dashboard notice

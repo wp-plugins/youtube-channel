@@ -4,7 +4,7 @@ Donate link: http://urosevic.net/wordpress/donate/?donate_for=youtube-channel
 Tags: youtube, channel, playlist, single, widget, widgets, youtube player, feed, video, thumbnail, embed, sidebar, iframe, html5, responsive
 Requires at least: 3.9.0
 Tested up to: 4.3.2
-Stable tag: 3.0.8.6
+Stable tag: 3.0.8.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -349,6 +349,7 @@ If you don't wish to pay for enhancements (then you don't care would that be imp
 == Changelog ==
 = 3.0.8.7 =
 * Enhance: Merge two improvements for MagnificPopupAU fork from core library (commit 60d5aa4 and 1d0f697)
+* Fix: TinyMCE button does not have icon when new post/page is created
 * Fix: Strip non-number characters entered in shortcode TinyMCE creator for Fetch, Show, Initial Width and Description length attributes.
 * Fix: make sure that Initial Width is always in pixels (if user enter width in percentage, strip percent sign and threat value as pixel value)
 
