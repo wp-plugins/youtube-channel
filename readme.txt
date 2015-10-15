@@ -182,6 +182,12 @@ When you generate your own YouTube Data API Key, from your **Dashboard** go to *
 Also, do not forget to check and update **Channel ID** in plugin's General settings, Widgets and/or shortcodes.
 You can get **Channel ID** from page [Account Advanced](https://www.youtube.com/account_advanced) while you're loagged in to your YouTube account.
 
+[youtube http://www.youtube.com/watch?v=wOqkfkNhOUE]
+
+[youtube http://www.youtube.com/watch?v=qaLqWi4-9jI]
+
+[youtube http://www.youtube.com/watch?v=u5TnGBVoG9c]
+
 == Frequently Asked Questions ==
 
 Please note, latest FAQ you can find [on our website](http://urosevic.net/wordpress/plugins/youtube-channel/faq/). This section on WordPress.org has been updated only on plugin version release, so questions answered between releases are not visible here.
